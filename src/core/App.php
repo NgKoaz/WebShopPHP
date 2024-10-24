@@ -2,7 +2,6 @@
 
 require_once "Router.php";
 
-require_once "/phppractice/src/controllers/HomeController.php";
 
 class App
 {
@@ -13,13 +12,6 @@ class App
         $this->router = new Router;
     }
 
-    public function addControllers(...$controllers)
-    {
-        foreach ($controllers as $controller) {
-            $this->router->addController($controller);
-        }
-    }
-
     public function resolve()
     {
         $this->router->resolve();
@@ -27,15 +19,23 @@ class App
 
     // module: "<ModuleName>"
     // controllers: "["...Controller", "...Controller", ...]"
-    public function declareModule($moduleInfo)
+    public function declareModule($module, ...$controllers)
     {
-        echo "CHECK FILE";
-        echo file_exists("/phppractice/src/modules/admin");
-        // if (isset($moduleInfo["module"]) && file_exists("/phppractice/src/modules/admin")) {
-        // }
-        // $module = [
-        //     "Name" => "gdlgs"
-        // ];
-        // throw new Exception("An error occurred. Stopping execution.");
+        if (!isset($controllers)) return;
+        foreach ($controllers as $controller) {
+            $this->router->addControllerInModule($module, $controller);
+        }
     }
+
+
+
+
+
+
+    // public function addControllers(...$controllers)
+    // {
+    //     foreach ($controllers as $controller) {
+    //         $this->router->addController($controller);
+    //     }
+    // }
 }

@@ -4,17 +4,12 @@ require_once "../src/init.php";
 
 $app = new App;
 
-
-$app->addControllers(
+$app->declareModule(
+    "user",
     "HomeController",
-    "ProductDetailController",
     "CategoryController",
-    "CartController",
+    "ProductController",
+    "CartController"
 );
-
-$app->declareModule([
-    "module" => "admin",
-    "controllers" => ["HomeController"]
-]);
 
 $app->resolve();

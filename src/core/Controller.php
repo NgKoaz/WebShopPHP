@@ -2,11 +2,12 @@
 
 abstract class Controller
 {
-    abstract public static function registerRoutes($router);
+    static $module = "";
 
-    public function view($viewPath, $viewData = [])
+    abstract public static function registerRoutes($router, $module);
+
+    public function view($module, $controller, $view = "index", $viewData = [])
     {
-        $viewPath = trim($viewPath, "/");
-        require_once "/phppractice/src/views/$viewPath.php";
+        require_once "/phppractice/src/modules/$module/views/$controller/$view.php";
     }
 }

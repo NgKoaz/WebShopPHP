@@ -14,34 +14,20 @@ class Router
         $this->routes["POST"][$uri] = $callback;
     }
 
-    public function addController($controller)
+    public function addControllerInModule($module, $controller)
     {
-        $controllerPath = "/phppractice/src/controllers/$controller.php";
-        if (file_exists($controllerPath)) {
-            require_once $controllerPath;
+        $path = "/phppractice/src/modules/$module/controllers/$controller.php";
+        if (file_exists($path)) {
+            require_once $path;
             if (class_exists($controller)) {
-                call_user_func([$controller, "registerRoutes"], $this);
+                call_user_func([$controller, "registerRoutes"], $this, $module);
             } else {
-                echo "ERROR: Not found any proper class in `$controller.php` file.";
+                throw new Exception("ERROR: Not found any proper class in `$controller.php` file.");
             }
         } else {
-            echo "ERROR: Controller File is not found! Please check!";
+            throw new Exception("ERROR: $controller.php file is not found! Please check!");
         }
     }
-
-    // private function registerRoutesForController($controller)
-    // {
-    //     // get_class_methods($controller);
-    //     var_dump(get_class_methods($controller));
-    //     $methodArray = get_class_methods($controller);
-
-    //     foreach ($methodArray as $method) {
-    //         $method = strtolower($method);
-    //         $method.
-    //         print_r("\n" . strtolower($method) . "\n");
-    //     }
-    // }
-
 
     public function resolve()
     {
@@ -54,8 +40,13 @@ class Router
             }
         }
 
-        echo "404 - NOT FOUND!";
+        $this->notFoundView();
         return;
+    }
+
+    private function notFoundView()
+    {
+        echo "404 - NOT FOUND!";
     }
 
     // @result: boolean type;
@@ -77,4 +68,40 @@ class Router
         echo "Method $method not found in controller $controller!";
         return false;
     }
+
+
+
+
+
+
+
+
+    // public function addController($controller)
+    // {
+    //     $controllerPath = "/phppractice/src/controllers/$controller.php";
+    //     if (file_exists($controllerPath)) {
+    //         require_once $controllerPath;
+    //         if (class_exists($controller)) {
+    //             call_user_func([$controller, "registerRoutes"], $this);
+    //         } else {
+    //             echo "ERROR: Not found any proper class in `$controller.php` file.";
+    //         }
+    //     } else {
+    //         echo "ERROR: Controller File is not found! Please check!";
+    //     }
+    // }
+
+
+    // private function registerRoutesForController($controller)
+    // {
+    //     // get_class_methods($controller);
+    //     var_dump(get_class_methods($controller));
+    //     $methodArray = get_class_methods($controller);
+
+    //     foreach ($methodArray as $method) {
+    //         $method = strtolower($method);
+    //         $method.
+    //         print_r("\n" . strtolower($method) . "\n");
+    //     }
+    // }
 }
