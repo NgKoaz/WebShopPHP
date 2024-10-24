@@ -14,15 +14,34 @@ class Router
         $this->routes["POST"][$uri] = $callback;
     }
 
-    public function declareRoutesFromController($controllerName)
+    public function addController($controller)
     {
-        $controllerPath = "/phppractice/src/controllers/$controllerName.php";
+        $controllerPath = "/phppractice/src/controllers/$controller.php";
         if (file_exists($controllerPath)) {
             require_once $controllerPath;
-            call_user_func(["HomeController", "registerRoutes"], $this);
+            if (class_exists($controller)) {
+                call_user_func([$controller, "registerRoutes"], $this);
+            } else {
+                echo "ERROR: Not found any proper class in `$controller.php` file.";
+            }
         } else {
+            echo "ERROR: Controller File is not found! Please check!";
         }
     }
+
+    // private function registerRoutesForController($controller)
+    // {
+    //     // get_class_methods($controller);
+    //     var_dump(get_class_methods($controller));
+    //     $methodArray = get_class_methods($controller);
+
+    //     foreach ($methodArray as $method) {
+    //         $method = strtolower($method);
+    //         $method.
+    //         print_r("\n" . strtolower($method) . "\n");
+    //     }
+    // }
+
 
     public function resolve()
     {

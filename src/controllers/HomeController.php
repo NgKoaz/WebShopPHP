@@ -5,7 +5,7 @@ class HomeController extends Controller
 
     public function __construct()
     {
-        echo "Lm hcua di xong di toi uu an cac";
+        echo "Lm hcua di xong di toi uu";
         $this->getIndex();
     }
 
