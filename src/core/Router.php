@@ -4,9 +4,12 @@ class Router
 {
     private $routes = [];
 
-    public function get($uri, $callback)
+    public function get($uri, $callback, ...$middlewares)
     {
-        $this->routes["GET"][$uri] = $callback;
+        $this->routes["GET"][$uri] = [
+            "callback" => $callback,
+            "middlewares" => $middlewares
+        ];
     }
 
     public function post($uri, $callback)
@@ -31,13 +34,31 @@ class Router
 
     public function resolve()
     {
+        if (empty($this->routes)) throw new Exception("ERROR: Set first URI for app!");
+        $request = $_REQUEST;
         $method = $_SERVER["REQUEST_METHOD"];
         $path = $_SERVER["REQUEST_URI"];
-        if (isset($this->routes[$method][$path])) {
-            $callback = $this->routes[$method][$path];
-            if ($this->callControllerMethod($callback)) {
-                return;
+        $handler = $this->routes[$method][$path];
+        if (isset($handler)) {
+
+            $callback = $handler["callback"] ?? false;
+            if (!$callback) throw new Exception("ERROR: No callback for method: $method and path: $path");
+
+            $next = function ($request) use ($callback) {
+                $this->callControllerMethod($callback);
+            };
+
+            $middlewares = $handler["middlewares"];
+            if (is_array($middlewares)) {
+                while ($middleware = array_pop($middlewares)) {
+                    $next = function ($request) use ($middleware, $next) {
+                        $mdInstance = new $middleware;
+                        $mdInstance->handle($request, $next);
+                    };
+                }
             }
+            $next($request);
+            return;
         }
 
         $this->notFoundView();

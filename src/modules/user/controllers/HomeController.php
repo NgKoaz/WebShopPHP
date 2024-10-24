@@ -8,11 +8,17 @@ class HomeController extends Controller
     {
         HomeController::$module = $module;
 
-        $router->get("/", "HomeController@getIndex");
+        $router->get("/", "HomeController@getIndex", AuthMiddleware::class);
     }
 
     public function getIndex()
     {
+        $loginValidator = new LoginValidator;
+        if (!$loginValidator->validate([])) {
+            var_dump($loginValidator->getErrors());
+            return;
+        }
+
         $this->view(ProductController::$module, "home", "index");
     }
 }
