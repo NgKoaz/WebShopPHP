@@ -1,0 +1,6 @@
+Options -Indexes +FollowSymLinks
+
+<FilesMatch "\.php$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>

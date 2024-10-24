@@ -1,0 +1,6 @@
+RewriteEngine On
+
+RewriteBase /
+
+# Remove index.php from URLs
+RewriteRule ^(.*)$ public/index.php [QSA,L]

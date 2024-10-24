@@ -1,0 +1,61 @@
+<?php
+
+class Router
+{
+    private $routes = [];
+
+    public function get($uri, $callback)
+    {
+        $this->routes["GET"][$uri] = $callback;
+    }
+
+    public function post($uri, $callback)
+    {
+        $this->routes["POST"][$uri] = $callback;
+    }
+
+    public function declareRoutesFromController($controllerName)
+    {
+        $controllerPath = "/phppractice/src/controllers/$controllerName.php";
+        if (file_exists($controllerPath)) {
+            require_once $controllerPath;
+            call_user_func(["HomeController", "registerRoutes"], $this);
+        } else {
+        }
+    }
+
+    public function resolve()
+    {
+        $method = $_SERVER["REQUEST_METHOD"];
+        $path = $_SERVER["REQUEST_URI"];
+        if (isset($this->routes[$method][$path])) {
+            $callback = $this->routes[$method][$path];
+            if ($this->callControllerMethod($callback)) {
+                return;
+            }
+        }
+
+        echo "404 - NOT FOUND!";
+        return;
+    }
+
+    // @result: boolean type;
+    private function callControllerMethod($callback)
+    {
+        list($controller, $method) = explode("@", $callback);
+
+        if (!class_exists($controller)) {
+            echo "Controller $controller not found!";
+            return false;
+        }
+
+        $conInstance = new $controller();
+        if (method_exists($conInstance, $method)) {
+            $conInstance->$method();
+            return true;
+        }
+
+        echo "Method $method not found in controller $controller!";
+        return false;
+    }
+}
