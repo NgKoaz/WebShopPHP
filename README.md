@@ -6,11 +6,11 @@
 ## Framework :dart:
 - :white_check_mark: In creating self-framework process. Next Goal: Build module structure, get all controllers inside modules, register routes for those controllers imported.
 - :white_check_mark: Add middleware and validator for framework.
-- :x: Add .gitignore, composer.json
+- :white_check_mark: Add `runtime` folder to save temp data from users.
+- :x: Add `.gitignore`, `composer.json`.
 - :x: Use autoloading.
 - :x: Use absolute directory only.
 - :x: Create a default NotFound Page and return 404 status code if no route matches.
-- 
 
 
 ## Database :dart:
