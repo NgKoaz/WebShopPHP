@@ -10,7 +10,9 @@
 - :x: Add `.gitignore`, `composer.json`.
 - :x: Use autoloading.
 - :x: Use absolute directory only.
+- :x: Sanatize request data.
 - :x: Create a default NotFound Page and return 404 status code if no route matches.
+- 
 
 
 ## Database :dart:
