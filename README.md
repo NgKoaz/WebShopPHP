@@ -12,8 +12,9 @@
 - :x: Use absolute directory only.
 - :x: Sanatize request data.
 - :x: Create a default NotFound Page and return 404 status code if no route matches.
+- :x: Set Layout function
+- :x: Model core
 - 
-
 
 ## Database :dart:
 - :x: Determine all actors, stakeholders and other objects necessary.
