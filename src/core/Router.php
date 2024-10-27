@@ -1,5 +1,9 @@
 <?php
 
+namespace App\core;
+
+use Exception;
+
 class Router
 {
     private $routes = [];
@@ -20,10 +24,11 @@ class Router
     public function addControllerInModule($module, $controller)
     {
         $path = "/phppractice/src/modules/$module/controllers/$controller.php";
+        $namespace = "App\\modules\\$module\\controllers\\$controller";
         if (file_exists($path)) {
             require_once $path;
-            if (class_exists($controller)) {
-                call_user_func([$controller, "registerRoutes"], $this, $module);
+            if (class_exists($namespace)) {
+                call_user_func([$namespace, "registerRoutes"], $this, $module);
             } else {
                 throw new Exception("ERROR: Not found any proper class in `$controller.php` file.");
             }

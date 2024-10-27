@@ -1,5 +1,12 @@
 <?php
 
+namespace App\modules\user\controllers;
+
+use App\core\Controller;
+use App\middleware\AuthMiddleware;
+use App\validator\LoginValidator;
+
+
 class HomeController extends Controller
 {
     public function __construct() {}

@@ -1,5 +1,9 @@
 <?php
 
+namespace App\modules\user\controllers;
+
+use App\core\Controller;
+
 class CartController extends Controller
 {
     public static function registerRoutes($router, $module)

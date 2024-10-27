@@ -1,5 +1,7 @@
 <?php
 
+namespace App\core;
+
 abstract class Controller
 {
     static $module = "";

@@ -1,7 +1,8 @@
 <?php
 
-require_once "Router.php";
+namespace App\core;
 
+use Exception;
 
 class App
 {
@@ -14,7 +15,10 @@ class App
 
     public function resolve()
     {
-        $this->router->resolve();
+        try {
+            $this->router->resolve();
+        } catch (Exception $e) {
+        }
     }
 
     // module: "<ModuleName>"
