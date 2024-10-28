@@ -3,10 +3,18 @@
 namespace App\core;
 
 use Exception;
+use ReflectionClass;
 
 class Router
 {
     private $routes = [];
+
+    private array $routingTable = [];
+
+    public function addRoute(string $method, string $uri, string $controller, string $action, array $middlewares)
+    {
+        $this->routingTable[$method][$uri] = new RouteHandler($controller, $action, $middlewares);
+    }
 
     public function get($uri, $callback, ...$middlewares)
     {
@@ -21,26 +29,88 @@ class Router
         $this->routes["POST"][$uri] = $callback;
     }
 
-    public function addControllerInModule($module, $controller)
+
+    public function registerControllerRoutes($controller)
     {
-        $path = "/phppractice/src/modules/$module/controllers/$controller.php";
-        $namespace = "App\\modules\\$module\\controllers\\$controller";
-        if (file_exists($path)) {
-            require_once $path;
-            if (class_exists($namespace)) {
-                call_user_func([$namespace, "registerRoutes"], $this, $module);
-            } else {
-                throw new Exception("ERROR: Not found any proper class in `$controller.php` file.");
-            }
+        if (class_exists($controller)) {
+            $this->getRoutesByAttributes($controller);
+            // call_user_func([$controller, "registerRoutes"], $this, "user");
         } else {
-            throw new Exception("ERROR: $controller.php file is not found! Please check!");
+            throw new Exception("[ERROR] Not found any proper class in `$controller.php` file.");
         }
+    }
+
+    public function getClassShortName() {}
+
+    public function getRoutesByAttributes($controller)
+    {
+        $reflection = new ReflectionClass($controller);
+        $methods = $reflection->getMethods();
+        foreach ($methods as $method) {
+            $attributes = $method->getAttributes();
+            if (count($attributes) == 0) continue;
+
+            $route = [];
+            foreach ($attributes as $attribute) {
+                $attribute = $attribute->newInstance();
+                switch ($attribute->getType()) {
+                    case CoreAttribute::HTTP_METHOD_TYPE:
+                        $route["method"] = $attribute->getHttpMethod();
+                        $route["uri"] = $attribute->getPath();
+                        break;
+
+                    case CoreAttribute::MIDDLEWARE_TYPE:
+                        $route["middlewares"][] = $attribute::class;
+                        break;
+
+                    default:
+                }
+            }
+
+            if (isset($route["method"]) && isset($route["uri"])) {
+                $this->addRoute(
+                    $attribute->getHttpMethod(),
+                    $attribute->getPath(),
+                    $controller,
+                    $method->getName(),
+                    $route["middlewares"] ?? []
+                );
+            }
+        }
+    }
+
+
+    // public function addControllerInModule($module, $controller)
+    // {
+    //     if (class_exists($controller)) {
+    //         $this->getRoute($controller);
+    //         // call_user_func([$namespace . $controller, "registerRoutes"], $this, $module);
+    //     } else {
+    //         throw new Exception("ERROR: Not found any proper class in `$controller.php` file.");
+    //     }
+    // }
+
+
+    public function resolve2(Request $request)
+    {
+        if (empty($this->routingTable)) throw new Exception("ERROR: Set first URI for app!");
+        $method = $_SERVER["REQUEST_METHOD"];
+        $path = $_SERVER["REQUEST_URI"];
+        if (isset($this->routingTable[$method][$path])) {
+            /** 
+             * @var RouteHandler 
+             */
+            $handler = $this->routingTable[$method][$path];
+            $handler->run($request);
+            return;
+        }
+        $this->notFoundView();
     }
 
     public function resolve()
     {
-        if (empty($this->routes)) throw new Exception("ERROR: Set first URI for app!");
-        $request = $_REQUEST;
+        if (empty($this->routes))
+            $request = $_REQUEST;
         $method = $_SERVER["REQUEST_METHOD"];
         $path = $_SERVER["REQUEST_URI"];
         $handler = $this->routes[$method][$path];
@@ -94,40 +164,4 @@ class Router
         echo "Method $method not found in controller $controller!";
         return false;
     }
-
-
-
-
-
-
-
-
-    // public function addController($controller)
-    // {
-    //     $controllerPath = "/phppractice/src/controllers/$controller.php";
-    //     if (file_exists($controllerPath)) {
-    //         require_once $controllerPath;
-    //         if (class_exists($controller)) {
-    //             call_user_func([$controller, "registerRoutes"], $this);
-    //         } else {
-    //             echo "ERROR: Not found any proper class in `$controller.php` file.";
-    //         }
-    //     } else {
-    //         echo "ERROR: Controller File is not found! Please check!";
-    //     }
-    // }
-
-
-    // private function registerRoutesForController($controller)
-    // {
-    //     // get_class_methods($controller);
-    //     var_dump(get_class_methods($controller));
-    //     $methodArray = get_class_methods($controller);
-
-    //     foreach ($methodArray as $method) {
-    //         $method = strtolower($method);
-    //         $method.
-    //         print_r("\n" . strtolower($method) . "\n");
-    //     }
-    // }
 }

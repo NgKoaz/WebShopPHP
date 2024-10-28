@@ -14,6 +14,6 @@ class CategoryController extends Controller
 
     public function getIndex()
     {
-        $this->view(CategoryController::$module, "category", "index");
+        $this->view(self::$module, "category", "index");
     }
 }

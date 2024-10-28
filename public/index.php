@@ -3,20 +3,25 @@
 require_once "../vendor/autoload.php";
 
 use App\core\App;
-use App\modules\user\controllers;
+use App\modules\user\UserModule;
 
-$app = new App;
+
+
+$app = new App();
+
+
 
 try {
-    $app->declareModule(
-        "user",
-        "HomeController",
-        "CategoryController",
-        "ProductController",
-        "CartController"
-    );
+    $app->importModule(new UserModule);
+    // $app->declareModule(
+    //     "user",
+    //     HomeController::class,
+    //     // "CategoryController",
+    //     // "ProductController",
+    //     // "CartController"
+    // );
 } catch (Exception $e) {
     echo "<pre>" . $e . "</pre>";
 }
 
-$app->resolve();
+$app->run();

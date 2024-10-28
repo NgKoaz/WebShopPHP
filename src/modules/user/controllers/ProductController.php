@@ -10,12 +10,11 @@ class ProductController extends Controller
     {
         ProductController::$module = $module;
 
-        $controllerName = "ProductController";
-        $router->get("/product", "$controllerName@getIndex");
+        $router->get("/product", ProductController::class . "@getIndex");
     }
 
     public function getIndex()
     {
-        $this->view(ProductController::$module, "product", "index");
+        $this->view(self::$module, "product", "index");
     }
 }

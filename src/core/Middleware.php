@@ -2,9 +2,15 @@
 
 namespace App\core;
 
+use Attribute;
 use Closure;
 
-abstract class Middleware
+abstract class Middleware extends CoreAttribute
 {
-    abstract public function handle($request, Closure $next);
+    public function __construct()
+    {
+        parent::__construct(CoreAttribute::MIDDLEWARE_TYPE);
+    }
+
+    abstract public function handle(Request $request, Closure $next);
 }
