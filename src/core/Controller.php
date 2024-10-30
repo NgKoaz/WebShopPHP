@@ -6,10 +6,6 @@ use ReflectionClass;
 
 abstract class Controller
 {
-    static $module = "";
-
-    abstract public static function registerRoutes($router, $module);
-
     public function reduceControllerName(string $longName)
     {
         $lowername = strtolower($longName);

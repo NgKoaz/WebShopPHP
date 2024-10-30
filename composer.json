@@ -11,5 +11,18 @@
             "email": "nguyenkhoa220703@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "doctrine/migrations": "^3.8",
+        "doctrine/orm": "^3.3",
+        "vlucas/phpdotenv": "^5.6",
+        "symfony/cache": "^7.1"
+    },
+    "scripts": {
+        "migrate": "./vendor/bin/doctrine-migrations migrate",
+        "rollback": "./vendor/bin/doctrine-migrations rollback",
+        "execute-down": "./vendor/bin/doctrine-migrations execute --down",
+        "execute-up": "./vendor/bin/doctrine-migrations execute --up",
+        "diff": "./vendor/bin/doctrine-migrations diff",
+        "diff-zero": "./vendor/bin/doctrine-migrations diff --from-empty-schema"
+    }
 }

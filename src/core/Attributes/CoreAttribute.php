@@ -1,6 +1,6 @@
 <?php
 
-namespace App\core;
+namespace App\core\Attributes;
 
 use Attribute;
 
@@ -9,7 +9,6 @@ abstract class CoreAttribute
 {
     public const HTTP_METHOD_TYPE = 0;
     public const MIDDLEWARE_TYPE = 1;
-
 
     public function __construct(public string $type) {}
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\core\attributes;
+namespace App\core\Attributes\Http;
 
-use App\core\CoreAttribute;
+use App\core\Attributes\CoreAttribute;
 
 class HttpMethod extends CoreAttribute
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\core\attributes;
+namespace App\core\Attributes\Http;
 
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD)]
-class HttpPost extends HttpMethod
+class HttpGet extends HttpMethod
 {
     public function __construct(string $path = "/")
     {
-        parent::__construct("POST", $path);
+        parent::__construct("GET", $path);
     }
 }

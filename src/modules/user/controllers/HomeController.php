@@ -2,8 +2,8 @@
 
 namespace App\modules\user\controllers;
 
-use App\core\attributes\HttpGet;
-use App\core\attributes\HttpPost;
+use App\core\Attributes\Http\HttpGet;
+use App\core\Attributes\Http\HttpPost;
 use App\core\Controller;
 use App\middleware\AuthMiddleware;
 use App\validator\LoginValidator;
@@ -12,12 +12,6 @@ use App\validator\LoginValidator;
 class HomeController extends Controller
 {
     public function __construct() {}
-
-    public static function registerRoutes($router, $module)
-    {
-        HomeController::$module = $module;
-        // $router->get("/", HomeController::class . "@getIndex", AuthMiddleware::class);
-    }
 
     #[AuthMiddleware]
     #[HttpGet("/")]

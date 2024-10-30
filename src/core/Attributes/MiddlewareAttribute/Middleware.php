@@ -1,8 +1,9 @@
 <?php
 
-namespace App\core;
+namespace App\core\Attributes\MiddlewareAttribute;
 
-use Attribute;
+use App\core\Attributes\CoreAttribute;
+use App\core\Request;
 use Closure;
 
 abstract class Middleware extends CoreAttribute

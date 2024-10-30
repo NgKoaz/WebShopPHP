@@ -1,9 +1,9 @@
 <?php
 
-namespace App\middleware;
+namespace App\Middleware;
 
 use Closure;
-use App\core\Middleware;
+use App\core\Attributes\MiddlewareAttribute\Middleware;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD)]
