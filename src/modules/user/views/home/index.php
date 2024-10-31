@@ -1,5 +1,7 @@
 <?php
 
+use App\core\App;
+
 $title = "Home Page";
 ob_start();
 
@@ -12,5 +14,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-include "/phppractice/src/layout/layout.php";
+include App::getLayoutDirectory() . "/layout.php";
 ?>

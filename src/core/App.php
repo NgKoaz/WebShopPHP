@@ -25,6 +25,11 @@ class App
         return self::$ROOT_DIRECTORY;
     }
 
+    public static function getLayoutDirectory(): string
+    {
+        return self::$ROOT_DIRECTORY . "/src/layout";
+    }
+
     public static function getCacheRoutingTablePath()
     {
         return self::$CACHE_ROUTING_TABLE_PATH;

@@ -15,10 +15,10 @@
 - :white_check_mark: Setting `Middleware` by using `Attribute`. Example: `#[AuthMiddleware]`.
 - :white_check_mark: Integrate `Database Migrations`, `ORM` of `Doctrine` library.
 - :white_check_mark: Cache Routing Table. 
+- :x: Handle the route like `/:id/`. Get params from route.
 - :x: Add `Dependency Injection`.
 - :x: Sanatize request data.
 - :x: Create a default NotFound Page and return 404 status code if no route matches.
-- :x: Set Layout function
 - :x: Model core
 
 
