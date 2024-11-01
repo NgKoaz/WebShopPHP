@@ -8,8 +8,6 @@ use ReflectionClass;
 
 class Router
 {
-    // private array $routes = [];
-
     private static array $routingTable = [];
 
     public function __construct()
@@ -41,20 +39,6 @@ class Router
     {
         return self::$routingTable;
     }
-
-    // public function get($uri, $callback, ...$middlewares)
-    // {
-    //     $this->routes["GET"][$uri] = [
-    //         "callback" => $callback,
-    //         "middlewares" => $middlewares
-    //     ];
-    // }
-
-    // public function post($uri, $callback)
-    // {
-    //     $this->routes["POST"][$uri] = $callback;
-    // }
-
 
     public function registerControllerRoutes($controller)
     {
