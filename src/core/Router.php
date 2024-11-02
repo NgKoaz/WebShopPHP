@@ -21,8 +21,8 @@ class Router
         if (file_exists(App::getCacheRoutingTablePath())) {
             $table = json_decode(file_get_contents(App::getCacheRoutingTablePath()), true);
             foreach ($table as $method => $route) {
-                foreach ($route as $uri => $handler) {
-                    self::$routingTable[$method][$uri] = new RouteHandler(...$handler);
+                foreach ($route as $patternUri => $handler) {
+                    self::$routingTable[$method][$patternUri] = new RouteHandler(...$handler);
                 }
             }
         } else {
@@ -30,9 +30,9 @@ class Router
         }
     }
 
-    public function addRoute(string $method, string $uri, string $controller, string $action, array $middlewares)
+    public function addRoute(string $method, string $patternUri, string $controller, string $action, array $middlewares)
     {
-        self::$routingTable[$method][$uri] = new RouteHandler($controller, $action, $middlewares);
+        self::$routingTable[$method][$patternUri] = new RouteHandler($controller, $action, $middlewares);
     }
 
     public static function getRoutingTable(): array
@@ -86,19 +86,28 @@ class Router
         }
     }
 
-
     public function resolve2(Request $request)
     {
         if (empty(self::$routingTable)) throw new Exception("ERROR: Set first URI for app!");
         $method = $_SERVER["REQUEST_METHOD"];
-        $path = $_SERVER["REQUEST_URI"];
-        if (isset(self::$routingTable[$method][$path])) {
-            /** 
-             * @var RouteHandler 
-             */
-            $handler = self::$routingTable[$method][$path];
-            $handler->run($request);
-            return;
+        $uri = $_SERVER["REQUEST_URI"];
+        $uri = explode("?", $uri)[0];
+
+        // 1. Determine route by method first.
+        $methodRoutes = self::$routingTable[$method];
+
+        // 2. Iterate routes to find a valid route.
+        foreach ($methodRoutes as $patternUri => $routeHandler) {
+            $paramNames = $this->getParamNamesInRoute($patternUri);
+            $regexUri = $this->exchangeRegexUri($patternUri);
+
+            if (preg_match($regexUri, $uri, $matches)) {
+                array_shift($matches);
+                $assocArray = array_combine($paramNames, $matches);
+
+                $routeHandler->run($request, $assocArray);
+                return;
+            }
         }
         $this->notFoundView();
     }
@@ -108,61 +117,21 @@ class Router
         return empty($this->routingTable);
     }
 
-    // public function resolve()
-    // {
-    //     if (empty($this->routes))
-    //         $request = $_REQUEST;
-    //     $method = $_SERVER["REQUEST_METHOD"];
-    //     $path = $_SERVER["REQUEST_URI"];
-    //     $handler = $this->routes[$method][$path];
-    //     if (isset($handler)) {
+    private function getParamNamesInRoute($uri): array
+    {
+        preg_match_all('/:([A-z]\w*)/', $uri, $matches);
+        return $matches[1];
+    }
 
-    //         $callback = $handler["callback"] ?? false;
-    //         if (!$callback) throw new Exception("ERROR: No callback for method: $method and path: $path");
-
-    //         $next = function ($request) use ($callback) {
-    //             $this->callControllerMethod($callback);
-    //         };
-
-    //         $middlewares = $handler["middlewares"];
-    //         if (is_array($middlewares)) {
-    //             while ($middleware = array_pop($middlewares)) {
-    //                 $next = function ($request) use ($middleware, $next) {
-    //                     $mdInstance = new $middleware;
-    //                     $mdInstance->handle($request, $next);
-    //                 };
-    //             }
-    //         }
-    //         $next($request);
-    //         return;
-    //     }
-
-    //     $this->notFoundView();
-    //     return;
-    // }
+    private function exchangeRegexUri($uri): string
+    {
+        $pattern = preg_replace('/:([A-z]\w*)/', '(\w+)', $uri);
+        $regex = "@^" . $pattern . "$@";
+        return $regex;
+    }
 
     private function notFoundView()
     {
-        echo "404 - NOT FOUND!";
+        require_once App::getRootDirectory() . "/src/views/_404.php";
     }
-
-    // @result: boolean type;
-    // private function callControllerMethod($callback)
-    // {
-    //     list($controller, $method) = explode("@", $callback);
-
-    //     if (!class_exists($controller)) {
-    //         echo "Controller $controller not found!";
-    //         return false;
-    //     }
-
-    //     $conInstance = new $controller();
-    //     if (method_exists($conInstance, $method)) {
-    //         $conInstance->$method();
-    //         return true;
-    //     }
-
-    //     echo "Method $method not found in controller $controller!";
-    //     return false;
-    // }
 }

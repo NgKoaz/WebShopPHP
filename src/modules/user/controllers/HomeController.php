@@ -6,6 +6,7 @@ use App\core\Attributes\Http\HttpGet;
 use App\core\Attributes\Http\HttpPost;
 use App\core\Controller;
 use App\middleware\AuthMiddleware;
+use App\modules\user\models\PostModel;
 use App\services\TestService;
 use App\services\UserManager;
 use App\validator\LoginValidator;
@@ -39,5 +40,12 @@ class HomeController extends Controller
         echo "POST HEHE";
 
         $this->view("index");
+    }
+
+    #[HttpGet("/:id/:name")]
+    public function getDetail(string $id, string $name, PostModel $postModel)
+    {
+        echo "HIOT HEllo getDetail here $id <br>";
+        var_dump($_GET);
     }
 }
