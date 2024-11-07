@@ -39,7 +39,8 @@ class App
     {
         try {
             if (isset($GLOBALS['IS_CACHING_ROUTES']) && $GLOBALS['IS_CACHING_ROUTES'] == true) return;
-            $this->router->resolve2($this->request);
+            $canResolve = $this->router->resolve2($this->request);
+            if (!$canResolve) $this->loadNotFoundView();
         } catch (Exception $e) {
         }
     }
@@ -48,19 +49,18 @@ class App
     {
         if (!(isset($GLOBALS['IS_CACHING_ROUTES']) && $GLOBALS['IS_CACHING_ROUTES'] == true)) return;
         $controllers = $module->getControllers();
-        if (isset($controllers)) {
+        if (count($controllers) > 0) {
             foreach ($controllers as $controller) {
                 $this->router->registerControllerRoutes($controller);
             }
             return;
         }
 
-        $this->notFoundView(); // throw instead
         return;
     }
 
-    public function notFoundView()
+    private function loadNotFoundView()
     {
-        echo "404 - Not Found!";
+        require_once App::getRootDirectory() . "/src/views/_404.php";
     }
 }

@@ -2,18 +2,17 @@
 
 namespace App\modules\user\controllers;
 
+use App\core\Attributes\Http\HttpGet;
 use App\core\Controller;
+
 
 class CartController extends Controller
 {
-    public static function registerRoutes($router, $module)
-    {
-        CartController::$module = $module;
-        $router->get("/cart", "CartController@getIndex");
-    }
+    public function __construct() {}
 
+    #[HttpGet("/cart")]
     public function getIndex()
     {
-        $this->view(CartController::$module, "cart", "index");
+        $this->view();
     }
 }

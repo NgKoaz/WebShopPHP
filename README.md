@@ -18,6 +18,7 @@
 - :white_check_mark: Handle the route like `/:id/`. Get params from route. Auto pass params into action of controllers.
 - :white_check_mark: Add `Dependency Injection`.
 - :x: `Model` core. Auto parse data into `Model` when `Model` as a param of action. Example: `function index(string $id, PostModel $postModel)`.
+- :white_check_mark: Add `LoadScripts`, `LoadStyleSheet` function for View Component.
 
 - :x: Enhance performance by using `Redis` for caching instead of using cache file.
 - :x: Sanatize request data.
@@ -30,7 +31,13 @@
 
 
 ## Dedicate to pages :dart:
-### User
-zzzz
+
+### Stage one (HARD-CODE PAGE, MOBILE FIRST)
+- :x: Home Page.
+- :x: Product Detail Page.
+- :x: Shop Page.
+- :x: Cart Page.
+- :x: Login Page.
+
 ### Admin
 zzz

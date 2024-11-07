@@ -6,6 +6,22 @@ use ReflectionClass;
 
 abstract class Controller
 {
+    private array $stylesheets = [];
+    private array $scripts = [];
+    private string $controllerPath = "";
+
+    private function getControllerPath(): string
+    {
+        if (strlen($this->controllerPath) > 0)
+            return $this->controllerPath;
+
+        $reflection = new ReflectionClass($this);
+        $controller = $this->reduceControllerName($reflection->getShortName());
+        $module = explode("\\", $reflection->getNamespaceName())[2];
+
+        return $this->controllerPath = "/src/modules/$module/views/$controller/";
+    }
+
     public function reduceControllerName(string $longName)
     {
         $lowername = strtolower($longName);
@@ -15,17 +31,38 @@ abstract class Controller
         return $lowername;
     }
 
-    public function view($view = "index", $viewData = [])
+    protected function addScript(string $filename): Controller
     {
-        $reflection = new ReflectionClass($this);
-        $controller = $this->reduceControllerName($reflection->getShortName());
-        $module = explode("\\", $reflection->getNamespaceName())[2];
-
-        require_once App::getRootDirectory() . "/src/modules/$module/views/$controller/$view.php";
+        $this->scripts[] = $filename;
+        return $this;
     }
 
-    public function getNamespace()
+    protected function addStylesheet(string $filename): Controller
     {
-        return (new ReflectionClass($this))->getNamespaceName();
+        $this->stylesheets[] = $filename;
+        return $this;
+    }
+
+    protected function loadScripts()
+    {
+        $scripts = $this->scripts;
+        foreach ($scripts as $script) {
+            $path = $this->getControllerPath() . "$script";
+            echo "<script src=\"" . $path . "\" defer></script>";
+        }
+    }
+
+    protected function loadStylesheets()
+    {
+        $stylesheets = $this->stylesheets;
+        foreach ($stylesheets as $stylesheet) {
+            $path = $this->getControllerPath() . "$stylesheet";
+            echo "<link rel=\"stylesheet\" href=\"" . $path . "\">";
+        }
+    }
+
+    protected function view($view = "index", $viewData = [])
+    {
+        require_once App::getRootDirectory() . $this->getControllerPath() . "$view.php";
     }
 }

@@ -1,0 +1,113 @@
+.breadcrumb {
+    margin: 20px 0px;
+}
+
+.search-area .top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-area .top .right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-area .top .right span {
+    display: none;
+}
+
+.search-area .top .main-title {
+    font-size: var(--h4-font-size);
+}
+
+.search-area .items {
+    padding-bottom: 24px;
+    margin-top: 30px;
+
+    border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 300px));
+    gap: 24px 14px;
+}
+
+.card {
+    max-width: 290px;
+}
+
+.card img {
+    width: 100%;
+}
+
+.card .title {
+    font-size: var(--lg-font-size);
+}
+
+.card .stars {
+    margin: 6px 0px;
+}
+
+.card .price {
+    font-size: var(--xl-font-size);
+    font-weight: 800;
+}
+
+.pagination {
+    margin-top: 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3px;
+}
+
+.pagination a {
+    display: inline-block;
+}
+
+.pagination span {
+    color: rgb(0, 0, 0, 0.6);
+    font-size: var(--md-font-size);
+}
+
+.pagination .page-num {
+    width: 40px;
+    height: 40px;
+
+
+    text-align: center;
+
+    padding: 10px 18px;
+    border-radius: 9px;
+
+    position: relative;
+}
+
+.pagination .page-num span {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+}
+
+.pagination a:hover {
+    background-color: rgb(0, 0, 0, 0.1);
+}
+
+.pagination .prev, .pagination .next {
+    padding: 8px 14px;
+    font-size: var(--md-font-size);
+    font-weight: 500;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.filter-sidebar, .filter-modal {
+    /* display: none; */
+}
+
+.filter-modal {
+    height: calc(100vh - 98px);
+}

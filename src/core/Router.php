@@ -3,6 +3,7 @@
 namespace App\core;
 
 use App\core\Attributes\CoreAttribute;
+use Error;
 use Exception;
 use ReflectionClass;
 
@@ -86,9 +87,9 @@ class Router
         }
     }
 
-    public function resolve2(Request $request)
+    public function resolve2(Request $request): bool
     {
-        if (empty(self::$routingTable)) throw new Exception("ERROR: Set first URI for app!");
+        if (empty(self::$routingTable)) return false;
         $method = $_SERVER["REQUEST_METHOD"];
         $uri = $_SERVER["REQUEST_URI"];
         $uri = explode("?", $uri)[0];
@@ -106,10 +107,11 @@ class Router
                 $assocArray = array_combine($paramNames, $matches);
 
                 $routeHandler->run($request, $assocArray);
-                return;
+                return true;
             }
         }
-        $this->notFoundView();
+
+        return false;
     }
 
     public function hasRoutingTable(): bool
@@ -128,10 +130,5 @@ class Router
         $pattern = preg_replace('/:([A-z]\w*)/', '(\w+)', $uri);
         $regex = "@^" . $pattern . "$@";
         return $regex;
-    }
-
-    private function notFoundView()
-    {
-        require_once App::getRootDirectory() . "/src/views/_404.php";
     }
 }

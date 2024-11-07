@@ -1,0 +1,244 @@
+.breadcrumb {
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+.main-title {
+    margin-bottom: 20px;
+}
+
+.main-content {
+    display: grid;
+    gap: 20px;
+}
+
+.items {
+    padding: 14px;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+    border-radius: 20px;
+}
+
+.item {
+    padding: 16px 0px;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.2);
+    display: flex;
+    gap: 14px;
+
+}
+
+.item:first-child {
+    padding-top: 0px;
+}
+
+.item:last-child {
+    padding-bottom: 0px;
+}
+
+.item .right {
+    flex-grow: 1;
+}
+
+.item .right .top {
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+}
+
+.delele-icon-container i {
+    font-size: 20px;
+    color: #FF3333;
+}
+
+
+.item .right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item .right .top .info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.item .right .top .info .name {
+    font-size: var(--lg-font-size);
+    font-weight: 700;
+
+    white-space: wrap;
+}
+
+.item .right .top .info .size,
+.item .right .top .info .color {
+    font-size: var(--md-font-size);
+}
+
+.item .right .top .info span {
+    color: rgb(0, 0, 0, 0.6);
+}
+
+.item .right .bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.item .right .bottom .price {
+    font-size: var(--xl-font-size);
+    font-weight: 700;
+}
+
+.item .right .bottom .quantity-modifier {
+    padding: 10px 50px;
+
+    background-color: #F0F0F0;
+    border-radius: 62px;
+
+    position: relative;
+}
+
+.item .right .bottom .quantity-modifier i {
+    padding: 2px 5px;
+    border-radius: 20px;
+    background-color: #F0F0F0;
+
+    display: inline-block;
+    position: absolute;
+    transform: translateY(-50%);
+    transition: 0.3s ease;
+}
+
+.item .right .bottom .quantity-modifier i:active {
+    background-color: rgb(0, 0, 0, 0.05);
+}
+
+.item .right .bottom .quantity-modifier .minus {
+    top: 50%;
+    left: 6px;
+}
+
+.item .right .bottom .quantity-modifier .plus {
+    top: 50%;
+    right: 6px;
+}
+
+
+.item:last-child {
+    border: none;
+}
+
+
+
+.quantity-modifier i {
+    font-size: 24px;
+}
+
+.order-summary {
+    padding: 20px;
+    border: 1px solid rgb(0, 0, 0, 0.2);
+    border-radius: 20px;
+}
+
+.order-summary .title {
+    font-size: var(--xl-font-size);
+    font-weight: 600;
+}
+
+.order-summary .bill-details {
+    margin-top: 16px;
+    padding-bottom: 20px;
+
+    font-size: var(--lg-font-size);
+
+    border-bottom: 1px solid rgb(0, 0, 0, 0.2);
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.order-summary .bill-details .sm-entry div:first-child {
+    color: rgb(0, 0, 0, 0.6);
+}
+
+.order-summary .bill-details .sm-entry div:last-child {
+    font-weight: 700;
+}
+
+.order-summary .bill-details .sm-entry:nth-child(2) div:last-child {
+    color: #FF3333;
+}
+
+.order-summary .sm-entry {
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-summary .lg-entry {
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-summary .lg-entry div:last-child {
+    font-weight: 700;
+}
+
+.order-summary .promotion-code {
+    margin-top: 16px;
+    display: flex;
+    gap: 12px;
+}
+
+.order-summary .promotion-code input {
+
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 46px;
+    padding-right: 16px;
+
+    font-size: var(--md-font-size);
+    flex-grow: 1;
+
+    border-radius: 62px;
+    background-color: #F0F0F0;
+}
+
+.order-summary .promotion-code button {
+    padding: 14px 20px;
+
+    border-radius: 62px;
+
+    color: white;
+
+    background-color: black;
+}
+
+.order-summary .promotion-code button:hover {
+    background-color: rgb(0, 0, 0, 0.8);
+}
+
+.order-summary .promotion-code button:active {
+    background-color: rgb(0, 0, 0, 0.6);
+}
+
+.order-summary .checkout-btn {
+    width: 100%;
+
+    margin-top: 16px;
+
+    padding: 16px 54px;
+    border-radius: 62px;
+    font-size: var(--md-font-size);
+    color: white;
+    background-color: black;
+}
+
+.order-summary .checkout-btn:hover {
+    background-color: rgb(0, 0, 0, 0.8);
+}
+
+.order-summary .checkout-btn:active {
+    background-color: rgb(0, 0, 0, 0.6);
+}

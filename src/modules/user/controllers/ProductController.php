@@ -2,19 +2,17 @@
 
 namespace App\modules\user\controllers;
 
+use App\core\Attributes\Http\HttpGet;
 use App\core\Controller;
+
 
 class ProductController extends Controller
 {
-    public static function registerRoutes($router, $module)
-    {
-        ProductController::$module = $module;
+    public function __construct() {}
 
-        $router->get("/product", ProductController::class . "@getIndex");
-    }
-
-    public function getIndex()
+    #[HttpGet("/product/:productId")]
+    public function getDetail(string $productId)
     {
-        $this->view(self::$module, "product", "index");
+        $this->view();
     }
 }

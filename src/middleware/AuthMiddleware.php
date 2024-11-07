@@ -11,7 +11,7 @@ class AuthMiddleware extends Middleware
 {
     public function handle($request, Closure $next)
     {
-        echo "Auth day!!!";
+        // echo "Auth day!!!";
         $next($request);
     }
 }

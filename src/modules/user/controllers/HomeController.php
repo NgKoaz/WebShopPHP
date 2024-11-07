@@ -20,12 +20,6 @@ class HomeController extends Controller
     #[HttpGet("/")]
     public function getIndex()
     {
-        $loginValidator = new LoginValidator;
-        if (!$loginValidator->validate([])) {
-            var_dump($loginValidator->getErrors());
-            return;
-        }
-        echo "GET HEHE";
         $this->view("index");
     }
 
@@ -40,12 +34,5 @@ class HomeController extends Controller
         echo "POST HEHE";
 
         $this->view("index");
-    }
-
-    #[HttpGet("/:id/:name")]
-    public function getDetail(string $id, string $name, PostModel $postModel)
-    {
-        echo "HIOT HEllo getDetail here $id <br>";
-        var_dump($_GET);
     }
 }
