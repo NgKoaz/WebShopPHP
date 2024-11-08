@@ -23,7 +23,7 @@
 <body>
     <div class="root-container">
         <!-- Header begin -->
-        <header>Sign up and get 20% off to your first order. Sign Up Now</header>
+        <header>Sign up and get 20% off to your first order. <a href="/">Sign Up Now</a></header>
         <nav>
             <div class="hamburger">
                 <img src="\public\images\homepage\icons\hamburger-icon.png">
@@ -149,9 +149,10 @@
         <!-- Footer end -->
     </div>
 
-    <script src="https://kit.fontawesome.com/f521236fc5.js" crossorigin="anonymous" defer></script>
     <script src="/src/layout/layout.js" crossorigin="anonymous" defer></script>
+
     <?php $this->loadScripts() ?>
+    <script src="https://kit.fontawesome.com/f521236fc5.js" crossorigin="anonymous" defer></script>
 </body>
 
 </html>

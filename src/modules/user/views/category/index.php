@@ -72,8 +72,8 @@ ob_start();
             <div class="top">
                 <h4 class="main-title left">Casual</h4>
                 <div class="right">
-                    <div>Showing 1-10 of 100 Products <span>Sort by: Most Popular</span></div>
-                    <button>icon</button>
+                    <div>Showing 1-10 of 100 <span>Sort by: Most Popular</span></div>
+                    <button class="filter-btn"><i class="bi bi-sliders2-vertical"></i></button>
                 </div>
             </div>
 
@@ -137,33 +137,49 @@ ob_start();
                     <a class="page-num"><span>3</span></a>
                     <a class="page-num"><span>344</span></a>
                 </div>
-                <a class="next">Next -></a>
+                <a class="next">Next </a>
             </div>
         </div>
     </div>
 
+    <div class="overlay"></div>
     <div class="filter-modal">
-        <div class="top-section">
-            <h3>Filters</h3>
-            <button>X</button>
+        <div class="top">
+            <h4 class="title">Filters</h4>
+            <button class="close-btn"><i class="bi bi-x"></i></button>
         </div>
-        <hr>
-        <div class="types">
-            <a>T-shirts</a>
-            <a>Shorts</a>
-            <a>Shirts</a>
-            <a>Hoodie</a>
-            <a>Jeans</a>
-        </div>
+        <div class="bottom">
+            <div class="types">
+                <div>
+                    <div>T-shirts</div>
+                    <input type="checkbox">
+                </div>
+                <div>
+                    <div>Shorts</div>
+                    <input type="checkbox">
+                </div>
+                <div>
+                    <div>Shirts</div>
+                    <input type="checkbox">
+                </div>
+                <div>
+                    <div>Hoodie</div>
+                    <input type="checkbox">
+                </div>
+                <div>
+                    <div>Jeans</div>
+                    <input type="checkbox">
+                </div>
+            </div>
 
-        <hr>
+            <!-- <hr> -->
 
-        <div class="droplist">
-            <h4 class="title">Price</h4>
-            <div>Price Slide</div>
-        </div>
+            <div class="price">
+                <div class="title">Price</div>
+                <div>Price Slide</div>
+            </div>
 
-        <hr>
+            <!-- <hr>
 
         <div class="droplist">
             <h4 class="title">Colors</h4>
@@ -179,21 +195,34 @@ ob_start();
                 <button>123</button>
                 <button>123</button>
             </div>
-        </div>
+        </div> -->
 
-        <hr>
+            <!-- <hr> -->
 
-        <div class="droplist">
-            <h4 class="title">Dress Style</h4>
-            <div class="styles">
-                <a>Casual</a>
-                <a>Formal</a>
-                <a>Party</a>
-                <a>Gym</a>
+            <div class="options">
+                <h4 class="title">Dress Style</h4>
+                <div class="styles">
+                    <div>
+                        <div>Casual</div>
+                        <input type="checkbox">
+                    </div>
+                    <div>
+                        <div>Formal</div>
+                        <input type="checkbox">
+                    </div>
+                    <div>
+                        <div>Party</div>
+                        <input type="checkbox">
+                    </div>
+                    <div>
+                        <div>Gym</div>
+                        <input type="checkbox">
+                    </div>
+                </div>
+                <button class=" aplly-btn">Apply Filter</button>
             </div>
         </div>
 
-        <button>Apply Filter</button>
     </div>
 </div>
 

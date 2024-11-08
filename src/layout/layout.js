@@ -9,5 +9,6 @@ const updateResizing = () => {
     else document.documentElement.style.removeProperty('--indent-default')
 }
 
-updateResizing();
+document.onreadystatechange = updateResizing;
+// document.addEventListener('readyonstatechange', updateResizing);
 window.addEventListener('resize', updateResizing);

@@ -1,3 +1,7 @@
+.app-container {
+    padding-inline: var(--indent-default);
+}
+
 .breadcrumb {
     margin: 20px 0px;
 }
@@ -5,12 +9,19 @@
 .search-area .top {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .search-area .top .right {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 8px;
+}
+
+.search-area .top .right div {
+    font-size: var(--md-font-size);
+    color: rgb(0, 0, 0, 0.6);
 }
 
 .search-area .top .right span {
@@ -21,14 +32,28 @@
     font-size: var(--h4-font-size);
 }
 
+.search-area .top .right .filter-btn {
+    width: 40px;
+    height: 40px;
+
+    background-color: #F0F0F0;
+    border-radius: 62px;
+}
+
+.search-area .top .right .filter-btn i {
+    font-size: 18px;
+}
+
 .search-area .items {
     padding-bottom: 24px;
     margin-top: 30px;
 
     border-bottom: 1px solid rgb(0, 0, 0, 0.1);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 300px));
+    justify-content: center;
+    align-items: center;
     gap: 24px 14px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 300px));
 }
 
 .card {
@@ -104,10 +129,123 @@
     border-radius: 8px;
 }
 
-.filter-sidebar, .filter-modal {
-    /* display: none; */
+.filter-sidebar, .filter-modal, .overlay {
+    display: none;
 }
 
+
 .filter-modal {
+    width: 100vw;
     height: calc(100vh - 98px);
+
+    padding: 20px;
+    background-color: #fff;
+
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
+
+    top: 98px;
+    left: 0px;
+    position: fixed;
+
+    overflow-y: auto;
+
+    z-index: 20;
+}
+
+.overlay {
+    height: 100vh;
+    width: 100vw;
+    background-color: rgb(0, 0, 0, 0.2);
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 10;
+}
+
+.filter-modal .bottom {
+    /* overflow-y: auto; */
+}
+
+.filter-modal .top {
+    padding-bottom: 16px;
+
+    border-bottom: 1px solid rgb(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filter-modal .top .title {
+    font-size: var(--xl-font-size);
+}
+
+.filter-modal .top .close-btn {
+    /* width: 24px;
+    height: 24px; */
+    padding: 0px;
+    background-color: #fff;
+
+}
+
+.filter-modal .top .close-btn i {
+    font-size: 32px;
+    color: rgb(0, 0, 0, 0.6);
+}
+
+
+.filter-modal .types {
+    margin-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.filter-modal .price {
+    margin-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.2);
+}
+
+.filter-modal .price .title {
+    font-size: var(--xl-font-size);
+    font-weight: 700;
+}
+
+.filter-modal .options .title {
+    margin: 20px 0px;
+    font-size: var(--xl-font-size);
+    font-weight: 700;
+}
+
+.filter-modal .options .styles {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.filter-modal .aplly-btn {
+    margin-top: 20px;
+    padding: 16px 56px;
+
+    width: 100%;
+
+    font-size: var(--md-font-size);
+    color: #fff;
+
+    border-radius: 62px;
+
+    background-color: black;
+
+    transition: 0.3s ease;
+}
+
+.filter-modal .aplly-btn:hover {
+    background-color: rgb(0, 0, 0, 0.8);
+}
+
+.filter-modal .aplly-btn:active {
+    background-color: rgb(0, 0, 0, 0.6);
 }

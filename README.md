@@ -24,20 +24,27 @@
 - :x: Sanatize request data.
 
 
-## Database :dart:
-- :x: Determine all actors, stakeholders and other objects necessary.
-- :x: Plot ER-Diagram.
-- :x: Turn ER-Diagram to SQL.
+## Function :dart: ??
+### User
+
+### Admin
 
 
 ## Dedicate to pages :dart:
 
-### Stage one (HARD-CODE PAGE, MOBILE FIRST)
-- :x: Home Page.
+### Stage one (HARD-CODED PAGE, MOBILE FIRST)
+- :white_check_mark: Home Page.
 - :x: Product Detail Page.
 - :x: Shop Page.
 - :x: Cart Page.
 - :x: Login Page.
+- :x: Admin Page.
 
-### Admin
-zzz
+### Stage two (DESIGN DATABASE)
+- :x: Plot ER Diagram.
+- :x: Plot relational table.
+- :x: Write Model and migrate into database (using ORM).
+- :x: Create fake datas.
+
+
+### Stage three (WRITE BACK-END)

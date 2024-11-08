@@ -27,7 +27,7 @@ ob_start();
         </div>
 
         <div class="product-info">
-            <h1 class="title">One Life Graphic T-shirt</h1>
+            <h4 class="title">One Life Graphic T-shirt</h4>
             <div class="stars">
                 <i class="bi bi-star-fill star-ic"></i>
                 <i class="bi bi-star-fill star-ic"></i>
@@ -63,8 +63,9 @@ ob_start();
 
         <div class="cart-section">
             <div class="quantity-modifier">
-                <button>+</button>
-                <button>-</button>
+                1
+                <i class="bi bi-dash-lg minus"></i>
+                <i class="bi bi-plus-lg plus"></i>
             </div>
 
             <button class="add-cart-btn">
@@ -84,10 +85,12 @@ ob_start();
 
             <div class="review-tab">
                 <div class="top">
-                    <h3 class="title">All reviews</h3>
-                    <div class="buttons">
-                        <button>Filter</button>
-                        <button>Write a review</button>
+                    <h4 class="title">Reviews <span>(123)</span></h4>
+                    <div class="btns">
+                        <button class="filter-btn">
+                            <i class="bi bi-sliders2-vertical"></i>
+                        </button>
+                        <button class="write-btn">Write a Review</button>
                     </div>
                 </div>
 
@@ -107,7 +110,7 @@ ob_start();
                         <p class="comment">
                             "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
                         </p>
-                        <small class="date">On Post</small>
+                        <small class="date">Post On</small>
                     </div>
 
 

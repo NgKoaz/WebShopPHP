@@ -134,11 +134,15 @@ ob_start();
             </div>
 
             <div class="promotion-code">
-                <input type="text" placeholder="Add promo code">
+                <div class="input-container">
+                    <i class="bi bi-tag"></i>
+                    <input type="text" placeholder="Add promo code">
+                </div>
                 <button>Apply</button>
             </div>
 
-            <button class="checkout-btn">Go to Checkout -></button>
+            <button class="checkout-btn">Go to Checkout <i class="bi bi-chevron-double-right"></i>
+            </button>
         </div>
     </div>
 </div>
