@@ -24,7 +24,6 @@
     list-style: none;
     outline: none;
     border: none;
-
     transition: 0.2s ease;
 }
 
@@ -69,6 +68,7 @@ nav {
     grid-area: hamburger;
     display: flex;
     align-items: center;
+    width: 32px;
 }
 
 .logo {

@@ -15,29 +15,49 @@ ob_start();
         <span>Home > Shop > Men > T-shirt</span>
     </div>
     <div class="main-content">
-        <div class="product-images">
-            <div class="large-image">
-                <img src="/public/images/product/lg.png">
+        <div class="product">
+            <div class="left">
+                <div class="product-images">
+                    <div class="large-image">
+                        <img src="/public/images/product/lg.png">
+                    </div>
+                    <div class="small-images">
+                        <div class=""><img src="/public/images/product/sm2.png"></div>
+                        <div class=""><img src="/public/images/product/sm2.png"></div>
+                        <div class=""><img src="/public/images/product/sm3.png"></div>
+                    </div>
+                </div>
             </div>
-            <div class="small-images">
-                <div class=""><img src="/public/images/product/sm2.png"></div>
-                <div class=""><img src="/public/images/product/sm2.png"></div>
-                <div class=""><img src="/public/images/product/sm3.png"></div>
+
+            <div class="right">
+                <div class="product-info">
+                    <h4 class="title">One Life Graphic T-shirt</h4>
+                    <div class="stars">
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-half star-ic"></i>
+                        <i class="bi bi-star star-ic"></i>
+                    </div>
+                    <div class="price">$260</div>
+                    <p class="description">This graphic t-shirt which is perfect for any occasion. Crafted from a soft and breathable fabric, it offers superior comfort and style.</p>
+                </div>
+
+                <div class="cart-section">
+                    <div class="quantity-modifier">
+                        1
+                        <i class="bi bi-dash-lg minus"></i>
+                        <i class="bi bi-plus-lg plus"></i>
+                    </div>
+
+                    <button class="add-cart-btn">
+                        Add to Cart
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div class="product-info">
-            <h4 class="title">One Life Graphic T-shirt</h4>
-            <div class="stars">
-                <i class="bi bi-star-fill star-ic"></i>
-                <i class="bi bi-star-fill star-ic"></i>
-                <i class="bi bi-star-fill star-ic"></i>
-                <i class="bi bi-star-half star-ic"></i>
-                <i class="bi bi-star star-ic"></i>
-            </div>
-            <div class="price">$260</div>
-            <p class="description">This graphic t-shirt which is perfect for any occasion. Crafted from a soft and breathable fabric, it offers superior comfort and style.</p>
-        </div>
+
 
         <!-- <hr>
 
@@ -61,17 +81,7 @@ ob_start();
 
         <hr>
 
-        <div class="cart-section">
-            <div class="quantity-modifier">
-                1
-                <i class="bi bi-dash-lg minus"></i>
-                <i class="bi bi-plus-lg plus"></i>
-            </div>
 
-            <button class="add-cart-btn">
-                Add to Cart
-            </button>
-        </div>
 
         <div class="tabs">
             <div class="top">
@@ -95,76 +105,78 @@ ob_start();
                 </div>
 
 
-                <div class="reviews">
-                    <div class="review-card">
-                        <div class="stars">
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-half star-ic"></i>
-                            <i class="bi bi-star star-ic"></i>
+                <div class="review-container">
+                    <div class="reviews">
+                        <div class="review-card">
+                            <div class="stars">
+                                <i class="bi bi-star-fill star-ic"></i>
+                                <i class="bi bi-star-fill star-ic"></i>
+                                <i class="bi bi-star-fill star-ic"></i>
+                                <i class="bi bi-star-half star-ic"></i>
+                                <i class="bi bi-star star-ic"></i>
+                            </div>
+                            <div class="author-name">
+                                Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
+                            </div>
+                            <p class="comment">
+                                "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
+                            </p>
+                            <small class="date">Post On</small>
                         </div>
-                        <div class="author-name">
-                            Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
-                        </div>
-                        <p class="comment">
-                            "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                        </p>
-                        <small class="date">Post On</small>
-                    </div>
 
 
-                    <div class="review-card">
-                        <div class="stars">
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-half star-ic"></i>
-                            <i class="bi bi-star star-ic"></i>
+                        <div class="review-card">
+                            <div class="stars">
+                                <i class="bi bi-star-fill star-ic"></i>
+                                <i class="bi bi-star-fill star-ic"></i>
+                                <i class="bi bi-star-fill star-ic"></i>
+                                <i class="bi bi-star-half star-ic"></i>
+                                <i class="bi bi-star star-ic"></i>
+                            </div>
+                            <div class="author-name">
+                                Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
+                            </div>
+                            <p class="comment">
+                                "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectat ions.ad as ujdkha jdkhas kjdh jksah jkdh asjkhdjk askjhj khjkd shakjfh jhjkkkja shdkjf hakjsdhfjkhsd jfhjkdshkjfh akshkjdhj sahkjhhs kja hsf dhfd”
+                            </p>
+                            <small class="date">On Post</small>
                         </div>
-                        <div class="author-name">
-                            Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
-                        </div>
-                        <p class="comment">
-                            "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                        </p>
-                        <small class="date">On Post</small>
-                    </div>
 
 
-                    <div class="review-card">
-                        <div class="stars">
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-half star-ic"></i>
-                            <i class="bi bi-star star-ic"></i>
+                        <div class="review-card">
+                            <div class="stars">
+                                <i class="bi bi-star-fill star-ic"></i>
+                                <i class="bi bi-star-fill star-ic"></i>
+                                <i class="bi bi-star-fill star-ic"></i>
+                                <i class="bi bi-star-half star-ic"></i>
+                                <i class="bi bi-star star-ic"></i>
+                            </div>
+                            <div class="author-name">
+                                Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
+                            </div>
+                            <p class="comment">
+                                "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
+                            </p>
+                            <small class="date">On Post</small>
                         </div>
-                        <div class="author-name">
-                            Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
-                        </div>
-                        <p class="comment">
-                            "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                        </p>
-                        <small class="date">On Post</small>
-                    </div>
 
 
-                    <div class="review-card">
-                        <div class="stars">
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-half star-ic"></i>
-                            <i class="bi bi-star star-ic"></i>
+                        <div class="review-card">
+                            <div class="stars">
+                                <i class="bi bi-star-fill star-ic"></i>
+                                <i class="bi bi-star-fill star-ic"></i>
+                                <i class="bi bi-star-fill star-ic"></i>
+                                <i class="bi bi-star-half star-ic"></i>
+                                <i class="bi bi-star star-ic"></i>
+                            </div>
+                            <div class="author-name">
+                                Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
+                            </div>
+                            <p class="comment">
+                                "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
+                            </p>
+                            <small class="date">On Post</small>
                         </div>
-                        <div class="author-name">
-                            Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
-                        </div>
-                        <p class="comment">
-                            "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                        </p>
-                        <small class="date">On Post</small>
                     </div>
                 </div>
 

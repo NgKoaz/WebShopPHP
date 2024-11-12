@@ -22,7 +22,7 @@ $connectionConfig = [
     'driver' => $_ENV["DB_DRIVER"],
 ];
 
-$entitiesPath = [__DIR__ . '/src/entities'];
+$entitiesPath = [__DIR__ . '/src/Entities'];
 $ORMConfig = ORMSetup::createAttributeMetadataConfiguration($entitiesPath, true);
 $connection = DriverManager::getConnection($connectionConfig);
 $entityManager = new EntityManager($connection, $ORMConfig);

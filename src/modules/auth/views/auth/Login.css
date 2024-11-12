@@ -1,0 +1,120 @@
+.app-container {
+    margin-top: 24px;
+    margin-inline: 16px;
+}
+
+.app-container .left {
+    background-color: #f2f0f1;
+    display: none;
+}
+
+.app-container .left img {
+    object-fit: cover;
+}
+
+.app-container .right .main-title {
+    font-size: var(--h4-font-size);
+}
+
+.login-form {
+    margin-top: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--black-10);
+}
+
+.login-form label {
+    display: none;
+}
+
+.login-form .account-actions {
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-form .account-actions div:first-child {
+    display: flex;
+    justify-content: baseline;
+    gap: 3px;
+}
+
+.login-form .account-actions div:last-child {
+    text-decoration: underline;
+}
+
+.third-party {
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.other-actions {
+    text-align: center;
+}
+
+.other-actions a {
+    text-decoration: underline;
+}
+
+
+@media screen and (min-width: 768px) {
+    .app-container {}
+
+    .app-container {
+        margin-inline: auto;
+        max-width: 768px;
+
+        display: flex;
+        border-radius: 24px;
+        box-shadow: 0px 0px 4px 1px;
+        /* background-color: #fff; */
+    }
+
+    .app-container .left {
+        flex: 1 1 30%;
+        display: block;
+        border-top-left-radius: 24px;
+        border-bottom-left-radius: 24px;
+    }
+
+    .app-container .left img {
+        height: 100%;
+        border-top-left-radius: 24px;
+        border-bottom-left-radius: 24px;
+    }
+
+    .app-container .right {
+        flex: 1 1 70%;
+        min-width: 320px;
+        padding: 32px;
+    }
+}
+
+
+@media screen and (min-width: 1240px) {
+    .app-container .left {
+        flex: 1 1 50%;
+        min-width: 320px;
+    }
+
+    .app-container .left img {
+        object-fit: none;
+    }
+
+    .app-container .right {
+        flex: 1 1 50%;
+        min-width: 320px;
+        padding: 48px;
+    }
+
+    .app-container {
+        /* height: 90vh; */
+        /* margin-inline: auto; */
+        max-width: 1240px;
+
+        /* display: flex;
+        border-radius: 24px;
+        box-shadow: 0px 0px 4px 1px; */
+        /* background-color: #fff; */
+    }
+}

@@ -34,11 +34,11 @@
 
 ### Stage one (HARD-CODED PAGE, MOBILE FIRST)
 - :white_check_mark: Home Page.
-- :x: Product Detail Page.
-- :x: Shop Page.
-- :x: Cart Page.
-- :x: Login Page.
-- :x: Admin Page.
+- :white_check_mark: Product Detail Page.
+- :white_check_mark: Shop Page.
+- :white_check_mark: Cart Page.
+- :white_check_mark: Login Page.
+- :white_check_mark: Admin Page.
 
 ### Stage two (DESIGN DATABASE)
 - :x: Plot ER Diagram.
@@ -48,3 +48,11 @@
 
 
 ### Stage three (WRITE BACK-END)
+
+
+
+
+
+
+## Short-term plan
+- Design Database

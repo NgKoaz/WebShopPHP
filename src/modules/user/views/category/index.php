@@ -15,57 +15,84 @@ ob_start();
         <span>Home > Shop > Men > T-shirt</span>
     </div>
     <div class="main-content">
-        <div class="filter-sidebar">
-            <div class="title">Filters</div>
+        <div class="sidebar">
+            <div class="filter-sidebar">
+                <div class="top">
+                    <div class="title">Filters</div>
+                    <i class="bi bi-sliders2-vertical"></i>
+                </div>
+                <div class="bottom">
+                    <ul class="types">
+                        <li>
+                            <label for="t-shirts-type">T-shirts</label>
+                            <input id="t-shirts-type" type="checkbox">
+                        </li>
+                        <li>
+                            <label for="shorts-type">Shorts</label>
+                            <input id="shorts-type" type="checkbox">
+                        </li>
+                        <li>
+                            <label for="shirts-type">Shirts</label>
+                            <input id="shirts-type" type="checkbox">
 
-            <hr>
+                        </li>
+                        <li>
+                            <label for="hoodie-type">Hoodie</label>
+                            <input id="hoodie-type" type="checkbox">
+                        </li>
+                        <li>
+                            <label for="jeans-type">Jeans</label>
+                            <input id="jeans-type" type="checkbox">
+                        </li>
+                    </ul>
 
-            <div class="types">
-                <a>T-shirts</a>
-                <a>Shorts</a>
-                <a>Shirts</a>
-                <a>Hoodie</a>
-                <a>Jeans</a>
-            </div>
+                    <div class="price">
+                        <h4 class="title">Price</h4>
+                        <div>Price Slide</div>
+                    </div>
 
-            <hr>
 
-            <div class="droplist">
-                <h4 class="title">Price</h4>
-                <div>Price Slide</div>
-            </div>
+                    <!-- <div class="colors">
+                    <h4 class="title">Colors</h4>
+                    <div>Color Picker</div>
+                </div>
 
-            <hr>
 
-            <div class="droplist">
-                <h4 class="title">Colors</h4>
-                <div>Color Picker</div>
-            </div>
+                <div class="sizes">
+                    <h4 class="title">Size</h4>
+                    <div class="size-options">
+                        <button>123</button>
+                        <button>123</button>
+                        <button>123</button>
+                    </div>
+                </div> -->
 
-            <hr>
+                    <div class="styles">
+                        <h4 class="title">Dress Style</h4>
+                        <ul>
+                            <li>
+                                <label for="casual-style">Casual</label>
+                                <input id="casual-style" type="checkbox">
+                            </li>
+                            <li>
+                                <label for="formal-style">Formal</label>
+                                <input id="formal-style" type="checkbox">
+                            </li>
+                            <li>
+                                <label for="party-style">Party</label>
+                                <input id="party-style" type="checkbox">
 
-            <div class="droplist">
-                <h4 class="title">Size</h4>
-                <div class="size-options">
-                    <button>123</button>
-                    <button>123</button>
-                    <button>123</button>
+                            </li>
+                            <li>
+                                <label for="gym-style">Gym</label>
+                                <input id="gym-style" type="checkbox">
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button class="apply-btn">Apply</button>
                 </div>
             </div>
-
-            <hr>
-
-            <div class="droplist">
-                <h4 class="title">Dress Style</h4>
-                <div class="styles">
-                    <a>Casual</a>
-                    <a>Formal</a>
-                    <a>Party</a>
-                    <a>Gym</a>
-                </div>
-            </div>
-
-            <button>Apply Filter</button>
 
         </div>
         <div class="search-area">
@@ -125,6 +152,104 @@ ob_start();
                         $140
                     </div>
                 </div>
+
+                <div class="card">
+                    <img src="/public/images/newarrivals/cloth1.png">
+                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
+                    <div class="stars">
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-half star-ic"></i>
+                        <i class="bi bi-star star-ic"></i>
+                        <span>5/5</span>
+                    </div>
+                    <div class="price">
+                        $140
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="/public/images/newarrivals/cloth1.png">
+                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
+                    <div class="stars">
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-half star-ic"></i>
+                        <i class="bi bi-star star-ic"></i>
+                        <span>5/5</span>
+                    </div>
+                    <div class="price">
+                        $140
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="/public/images/newarrivals/cloth1.png">
+                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
+                    <div class="stars">
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-half star-ic"></i>
+                        <i class="bi bi-star star-ic"></i>
+                        <span>5/5</span>
+                    </div>
+                    <div class="price">
+                        $140
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="/public/images/newarrivals/cloth1.png">
+                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
+                    <div class="stars">
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-half star-ic"></i>
+                        <i class="bi bi-star star-ic"></i>
+                        <span>5/5</span>
+                    </div>
+                    <div class="price">
+                        $140
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="/public/images/newarrivals/cloth1.png">
+                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
+                    <div class="stars">
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-half star-ic"></i>
+                        <i class="bi bi-star star-ic"></i>
+                        <span>5/5</span>
+                    </div>
+                    <div class="price">
+                        $140
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="/public/images/newarrivals/cloth1.png">
+                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
+                    <div class="stars">
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-half star-ic"></i>
+                        <i class="bi bi-star star-ic"></i>
+                        <span>5/5</span>
+                    </div>
+                    <div class="price">
+                        $140
+                    </div>
+                </div>
+
+
             </div>
 
             <hr>
@@ -219,7 +344,7 @@ ob_start();
                         <input type="checkbox">
                     </div>
                 </div>
-                <button class=" aplly-btn">Apply Filter</button>
+                <button class="aplly-btn">Apply Filter</button>
             </div>
         </div>
 

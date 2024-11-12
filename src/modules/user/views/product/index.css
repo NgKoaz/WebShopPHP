@@ -10,14 +10,25 @@ img {
     margin: 20px 0px;
 }
 
+.product .left {
+    display: flex;
+    flex-direction: column;
+}
+
 .product-images {
+    max-width: 300px;
     display: grid;
     gap: 12px;
+    align-self: center;
+    flex: 1;
 }
 
 .product-images .small-images {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
     /* grid-template-rows: 1fr 1fr 1fr; */
 }
 
@@ -186,21 +197,30 @@ img {
     background-color: #000;
 }
 
+.review-container {
+
+    position: relative;
+}
+
 .reviews {
-    margin-top: 27px;
+    margin-top: 20px;
     /* margin-inline: 0px; */
-    display: grid;
-    justify-content: space-around;
+    display: flex;
+    /* justify-content: space-around; */
     /* align-items:  */
-    gap: 16px;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 358px));
+    /* gap: 16px; */
+    /* grid-template-columns: repeat(auto-fit, minmax(300px, 358px)); */
+    top: 0;
+    left: 0;
+    position: absolute;
 }
 
 .review-card {
     min-width: 300px;
     max-width: 358px;
 
-    padding: 24px;
+    padding: 20px;
+    margin: 5px;
 
     border: 1px solid rgb(0, 0, 0, 0.2);
     border-radius: 20px;
@@ -299,4 +319,33 @@ img {
 .other-products .products .card .price {
     font-size: var(--xl-font-size);
     font-weight: 800;
+}
+
+
+
+
+
+@media screen and (min-width: 450px) {}
+
+@media screen and (min-width: 768px) {
+    .main-content {
+        /* display: flex; */
+    }
+
+    .product-images {
+        min-width: 358px;
+    }
+
+    .main-content .product {
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+    }
+
+}
+
+@media screen and (min-width: 1240px) {
+    .product-images {
+        min-width: 444px;
+    }
 }
