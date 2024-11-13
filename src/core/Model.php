@@ -8,7 +8,8 @@ use ReflectionClass;
 
 class Model implements ArrayAccess
 {
-    public array $errors = [];
+    private bool $runIsValidOneTime = false;
+    private array $errors = [];
 
     public function parse(array $assocArr): void
     {
@@ -21,17 +22,38 @@ class Model implements ArrayAccess
 
     public function isValid(): bool
     {
+        if ($this->runIsValidOneTime) return empty($this->errors);
+        $this->runIsValidOneTime = true;
+
         $reflectionClass = new ReflectionClass($this);
         $properties = $reflectionClass->getProperties();
         foreach ($properties as $property) {
-            var_dump($property->getAttributes());
+            $propValue = $property->getValue($this);
+            $attributes = $property->getAttributes();
+            foreach ($attributes as $attribute) {
+                $attrInstance = $attribute->newInstance();
+                if ($attrInstance->isValid($propValue)) continue;
+
+                $this->errors[$property->getName()][] = $attrInstance->getErrorMessage();
+            }
         }
-        return false;
+        return empty($this->errors);
     }
 
+    public function getFullError(): array
+    {
+        return $this->errors;
+    }
 
+    public function getError(string $property): mixed
+    {
+        return isset($this->errors[$property]) ? $this->errors[$property] : null;
+    }
 
-
+    public function setError(string $name, string $value)
+    {
+        $this->errors[$name] = $value;
+    }
 
     public function offsetGet(mixed $offset): mixed
     {

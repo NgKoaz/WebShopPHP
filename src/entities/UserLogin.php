@@ -27,7 +27,7 @@ class UserLogin
     #[Column(name: "user_id")]
     public int $userId;
 
-    #[OneToOne(inversedBy: "userLogin")]
+    #[OneToOne(targetEntity: User::class, inversedBy: "userLogin")]
     #[JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false)]
     public User $user;
 }

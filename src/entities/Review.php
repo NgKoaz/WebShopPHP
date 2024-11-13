@@ -25,16 +25,19 @@ class Review
     #[Column]
     public int $rate;
 
-    #[Column(name: "user_id")]
-    public int $userId;
+    // #[Column(name: "user_id")]
+    // public int $userId;
 
-    #[ManyToOne]
-    #[JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false)]
-    public User $user;
+    // #[Column(name: "product_id")]
+    // public int $productId;
 
-    #[ManyToOne(inversedBy: "reviews")]
-    #[JoinColumn(name: "product_id", referencedColumnName: "id", nullable: false)]
-    public Product $product;
+    // #[ManyToOne]
+    // #[JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false)]
+    // public User $user;
+
+    // #[ManyToOne(inversedBy: "reviews")]
+    // #[JoinColumn(name: "product_id", referencedColumnName: "id", nullable: false)]
+    // public Product $product;
 
     #[Column(name: "is_deleted")]
     public bool $isDeleted;

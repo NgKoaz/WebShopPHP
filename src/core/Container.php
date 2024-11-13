@@ -32,22 +32,24 @@ class Container implements ContainerInterface
             throw new ContainerException("You need to pass a classname not an interface! [$className]");
     }
 
-    public function addSingleton(string $id, string $className): Container
+    public function addSingleton(string $id, callable | string $className): Container
     {
-        $this->checkValidParams($id, $className);
+        if (!is_callable($className)) $this->checkValidParams($id, $className);
         $this->services[$id] = new ServiceHolder($className, true, $this);
         return $this;
     }
 
-    public function addTransient(string $id, string $className): Container
+    public function addTransient(string $id, callable | string $className): Container
     {
-        $this->checkValidParams($id, $className);
+        if (!is_callable($className)) $this->checkValidParams($id, $className);
         $this->services[$id] = new ServiceHolder($className, false, $this);
         return $this;
     }
 
-    public function create(string $className)
+    public function create(callable | string $className): mixed
     {
+        if (is_callable($className)) return $className();
+
         // 1. Check contruct function and get params.
         // 2. Traverse params, create new object for contruct's needs.
         if (!class_exists($className))

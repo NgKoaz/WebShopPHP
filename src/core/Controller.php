@@ -61,7 +61,7 @@ abstract class Controller
         }
     }
 
-    protected function view(string $view = "index", Model $model = new Model, array $viewData = [])
+    protected function view(string $view = "index", Model $model = new Model, ArrayList $viewData = new ArrayList)
     {
         require_once App::getRootDirectory() . $this->getControllerPath() . "$view.php";
     }

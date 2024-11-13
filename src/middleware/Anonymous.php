@@ -2,23 +2,26 @@
 
 namespace App\Middleware;
 
-use Closure;
 use App\core\Attributes\MiddlewareAttribute\Middleware;
 use App\core\Request;
 use Attribute;
+use Closure;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-class AuthMiddleware extends Middleware
+class Anonymous extends Middleware
 {
-    public function __construct()
+    public function __construct(private string $redirectUri = "/")
     {
         parent::__construct();
     }
 
     public function handle(Request $request, Closure $next)
     {
-        $user = $request->getUserRoles();
-        var_dump($user);
+        if (!$request->hasUserLoggedIn()) {
+            header("Location: $this->redirectUri", response_code: 302);
+            die();
+        }
+
         $next($request);
     }
 }

@@ -52,13 +52,28 @@ class Router
 
     public function getRoutesByAttributes($controller)
     {
+        $route = [];
         $reflection = new ReflectionClass($controller);
         $methods = $reflection->getMethods();
+
+        // Get from class
+        $classAttrs = $reflection->getAttributes();
+        foreach ($classAttrs as $attr) {
+            $attrIns = $attr->newInstance();
+            switch ($attrIns->getType()) {
+                case CoreAttribute::MIDDLEWARE_TYPE:
+                    $route["middlewares"][] = $attrIns::class;
+                    break;
+
+                default:
+            }
+        }
+
+        // Get from method
         foreach ($methods as $method) {
             $attributes = $method->getAttributes();
             if (count($attributes) == 0) continue;
 
-            $route = [];
             foreach ($attributes as $attribute) {
                 $attribute = $attribute->newInstance();
                 switch ($attribute->getType()) {

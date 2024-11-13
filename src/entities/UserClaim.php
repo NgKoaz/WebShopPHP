@@ -27,7 +27,7 @@ class UserClaim
     #[Column(name: "user_id")]
     public int $userId;
 
-    #[OneToOne(inversedBy: "userClaim")]
+    #[OneToOne(targetEntity: User::class, inversedBy: "userClaim")]
     #[JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false)]
     public User $user;
 }

@@ -5,6 +5,7 @@ namespace App\Entities;
 use DateTime;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
@@ -14,22 +15,19 @@ use Doctrine\ORM\Mapping\Table;
 class User
 {
     #[Id]
-    #[Column]
-    public string $id;
+    #[Column, GeneratedValue]
+    public int $id;
 
-    #[Column]
+    #[Column(unique: true)]
     public string $username;
 
-    #[Column(nullable: true)]
+    #[Column(unique: true)]
     public string $email;
 
     #[Column(name: "password_hash")]
     public string $passwordHash;
 
-    #[Column]
-    public string $salt;
-
-    #[Column(name: "phone_number", nullable: true)]
+    #[Column(name: "phone_number")]
     public string $phoneNumber;
 
     #[Column(name: "first_name")]
@@ -38,8 +36,11 @@ class User
     #[Column(name: "last_name")]
     public string $lastName;
 
-    #[Column(name: "address")]
+    #[Column(name: "address", nullable: true)]
     public string $address;
+
+    #[Column(nullable: true)]
+    public string $roles;
 
     #[Column(name: "is_deleted")]
     public bool $isDeleted;
@@ -50,9 +51,9 @@ class User
     #[Column(name: "created_at", type: 'datetime')]
     public DateTime $createdAt;
 
-    #[OneToOne(mappedBy: "userClaim")]
-    public User $user;
+    #[OneToOne(targetEntity: UserClaim::class, mappedBy: "user")]
+    public UserClaim $userClaim;
 
-    #[OneToOne(mappedBy: "user")]
+    #[OneToOne(targetEntity: UserLogin::class, mappedBy: "user")]
     public UserLogin $userLogin;
 }

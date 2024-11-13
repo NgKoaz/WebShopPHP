@@ -40,8 +40,8 @@ class Product
     #[JoinColumn(name: "category_id", referencedColumnName: "id", nullable: false)]
     public Category $category;
 
-    #[OneToMany(Review::class, mappedBy: "product")]
-    public Collection $reviews;
+    // #[OneToMany(targetEntity: Review::class, mappedBy: "product")]
+    // public Collection $reviews;
 
     #[Column(name: "is_deleted")]
     public bool $isDeleted;

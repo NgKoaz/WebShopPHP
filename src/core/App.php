@@ -16,8 +16,9 @@ class App
 
     public function __construct()
     {
+        $container = Container::getInstance();
         $this->router = new Router;
-        $this->request = new Request($_REQUEST);
+        $this->request = $container->create(Request::class);
     }
 
     public static function getRootDirectory()
@@ -42,6 +43,7 @@ class App
             $canResolve = $this->router->resolve2($this->request);
             if (!$canResolve) $this->loadNotFoundView();
         } catch (Exception $e) {
+            die($e->getMessage());
         }
     }
 

@@ -9,26 +9,7 @@ class ServiceHolder
 {
     private mixed $instance;
 
-    public function __construct(private string $className, private bool $isSingleton, private Container $container) {}
-
-    // public function create()
-    // {
-    //     $reflection = new ReflectionClass($this->className);
-    //     $contructor = $reflection->getConstructor();
-    //     if ($contructor == null) return new $this->className;
-    //     $params = $contructor->getParameters();
-    //     if (count($params) == 0) return new $this->className;
-
-    //     // There are params in constructor, we need to pass all of these from container.
-    //     $dependencies = [];
-    //     foreach ($params as $param) {
-    //         if (!$param->hasType())
-    //             throw new ContainerException("Param [$" . $param->getName() . "] doesn't have type hint!");
-    //         $type = $param->getType();
-    //         $dependencies[] = $this->container->get($type);
-    //     }
-    //     return $reflection->newInstanceArgs($dependencies);
-    // }
+    public function __construct(private mixed $className, private bool $isSingleton, private Container $container) {}
 
     public function getInstance()
     {

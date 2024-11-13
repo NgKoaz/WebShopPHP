@@ -8,6 +8,7 @@ $this
     ->addStylesheet("Login.css");
 
 ob_start();
+echo $viewData["TempMessage"];
 ?>
 
 
@@ -16,18 +17,22 @@ ob_start();
     <div class="login-form">
         <form method="POST" action="/login">
             <div class="input-group mb-4">
-                <label>123</label>
-                <input type="text" class="input" placeholder="Email or phone number">
+                <label>Username</label>
+                <input type="text" class="input" placeholder="Email or phone number"
+                    name="username"
+                    value="<?= $model["username"] ?>">
 
             </div>
             <div class="input-group mb-4">
-                <label>123</label>
-                <input type="password" class="input" placeholder="Password">
+                <label>Password</label>
+                <input type="password" class="input" placeholder="Password"
+                    name="password"
+                    value="<?= $model["password"] ?>">
             </div>
 
             <div class="account-actions">
                 <div class="checkbox-input">
-                    <input type="checkbox" id="rememberMe" name="remember">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
                     <span for="rememberMe">Remember me</span>
                 </div>
                 <div><a href="/forgot-password">Forgot password?</a></div>
