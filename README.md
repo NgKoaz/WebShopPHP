@@ -56,3 +56,10 @@
 
 ## Short-term plan
 - Design Database
+
+
+
+# Functional
+## Auth
+### Register
+- Regular register.

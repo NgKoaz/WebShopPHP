@@ -1,7 +1,26 @@
-a {
-    a {
-        div {
-            display: grid;
-        }
-    }
+label {
+    display: none;
+}
+
+.register-container .main-title {
+    font-size: var(--h4-font-size);
+}
+
+.register-form {
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--black-10);
+}
+
+.third-party {
+    margin-top: 24px;
+}
+
+
+.other-actions {
+    text-align: center;
+}
+
+.other-actions a {
+    margin-left: 5px;
+    text-decoration: underline;
 }

@@ -5,8 +5,10 @@ namespace App\core;
 use call_user_method_array;
 use Error;
 use Exception;
+use Reflection;
 use ReflectionClass;
 use ReflectionMethod;
+use Symfony\Component\VarExporter\Internal\Reference;
 
 class RouteHandler
 {
@@ -41,10 +43,15 @@ class RouteHandler
             $varName = $actionParam->getName();
 
             $reflectionClass = new ReflectionClass($typeName);
-            $parentClass = $reflectionClass->getParentClass();
-            if (!is_bool($parentClass) && $parentClass->getShortName() == "Model") {
-                $params[$varName] = new $typeName;
+            $nameParentClass = $reflectionClass->getParentClass()->getName();
+            if ($nameParentClass != Model::class) {
+                throw new Error("[ERROR] Your model must inherit from " . Model::class);
             }
+
+            // Pass model param.
+            $model = $reflectionClass->newInstance();
+            $model->parse($_POST);
+            $params[$varName] = $model;
         }
 
         $next = function ($request) use ($instance, $params) {

@@ -61,8 +61,14 @@ abstract class Controller
         }
     }
 
-    protected function view($view = "index", $viewData = [])
+    protected function view(string $view = "index", Model $model = new Model, array $viewData = [])
     {
         require_once App::getRootDirectory() . $this->getControllerPath() . "$view.php";
+    }
+
+    protected function redirect(string $routeUri, int $httpCode = 302)
+    {
+        header("Location: $routeUri");
+        http_response_code($httpCode);
     }
 }

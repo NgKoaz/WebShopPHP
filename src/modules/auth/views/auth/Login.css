@@ -1,18 +1,4 @@
-.app-container {
-    margin-top: 24px;
-    margin-inline: 16px;
-}
-
-.app-container .left {
-    background-color: #f2f0f1;
-    display: none;
-}
-
-.app-container .left img {
-    object-fit: cover;
-}
-
-.app-container .right .main-title {
+.login-container .main-title {
     font-size: var(--h4-font-size);
 }
 
@@ -58,8 +44,6 @@
 
 
 @media screen and (min-width: 768px) {
-    .app-container {}
-
     .app-container {
         margin-inline: auto;
         max-width: 768px;
