@@ -16,7 +16,7 @@ class ArrayList implements ArrayAccess, Countable
 
     public function offsetGet(mixed $offset): mixed
     {
-        return isset($this->data[$offset]) ? $this->data[$offset] : false;
+        return isset($this->data[$offset]) ? $this->data[$offset] : null;
     }
 
     public function offsetSet(mixed $offset, mixed $value): void

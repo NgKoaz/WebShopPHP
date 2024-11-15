@@ -69,8 +69,13 @@ class RouteHandler
 
         if (is_array($this->middlewares)) {
             while ($middleware = array_pop($this->middlewares)) {
-                $next = function ($request) use ($middleware, $next, $container) {
-                    $middleware = $container->create($middleware);
+                $next = function ($request) use ($middleware, $next) {
+                    $reflection = new ReflectionClass($this->controller);
+                    $attrFromClass = $reflection->getAttributes($middleware);
+                    $attrFromMethod = $reflection->getMethod($this->action)->getAttributes($middleware);
+                    $middleware = (count($attrFromMethod) !== 0) ? $attrFromMethod[0]->newInstance() : ((count($attrFromClass) !== 0) ? $attrFromClass[0]->newInstance() : null);
+                    if ($middleware === null) throw new Exception("Middleware $middleware is not found in controller {$this->controller}");
+
                     $middleware->handle($request, $next);
                 };
             }

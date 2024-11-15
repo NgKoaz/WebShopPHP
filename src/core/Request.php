@@ -20,9 +20,9 @@ class Request
         return $this->loginManager->isLoggedIn();
     }
 
-    public function getUserRoles(): mixed
-    {
-        $user = $this->getCurrentUser();
-        return ($user !== null) ? $this->roleManager->getUserRoles($user) : null;
-    }
+    // public function getUserRoles(): mixed
+    // {
+    //     $user = $this->getCurrentUser();
+    //     return ($user !== null) ? $this->roleManager->getUserRoles($user) : null;
+    // }
 }

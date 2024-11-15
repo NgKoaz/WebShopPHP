@@ -13,5 +13,7 @@ abstract class Middleware extends CoreAttribute
         parent::__construct(CoreAttribute::MIDDLEWARE_TYPE);
     }
 
+    // abstract public function getParams();
+
     abstract public function handle(Request $request, Closure $next);
 }

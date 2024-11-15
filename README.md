@@ -61,5 +61,6 @@
 
 # Functional
 ## Auth
-### Register
-- Regular register.
+- :white_check_mark: Regular register.
+- :white_check_mark: Regular login
+- :white_check_mark: Defend Route.

@@ -2,10 +2,11 @@
 
 namespace App\modules\user\controllers;
 
+use App\core\ArrayList;
 use App\core\Attributes\Http\HttpGet;
 use App\core\Attributes\Http\HttpPost;
 use App\core\Controller;
-use App\middleware\AuthMiddleware;
+use App\middleware\Auth;
 use App\services\LoginManager;
 use App\validator\LoginValidator;
 
@@ -17,8 +18,9 @@ class HomeController extends Controller
     #[HttpGet("/")]
     public function getIndex()
     {
-        var_dump($this->loginManager->getCurrentUser());
-        $this->view("index");
+        $viewData = new ArrayList;
+        $viewData["IS_LOGGED_IN"] = $this->loginManager->isLoggedIn();
+        $this->view("index", viewData: $viewData);
     }
 
     #[HttpPost("/")]

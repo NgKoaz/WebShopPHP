@@ -17,7 +17,7 @@ ob_start();
         <div class="left">
             <h1 class="big-welcome-text">FIND CLOTHES THAT MATCHES YOUR STYLE</h1>
             <p class="welcome-description">Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality and cater to your sense of style.</p>
-            <button class="shopnow-btn">Shop Now</button>
+            <a href="/category"><button class="shopnow-btn">Shop Now</button></a>
             <div class="figure-list">
                 <div class="figure">
                     <h4 class="figure-title">200+</h4>

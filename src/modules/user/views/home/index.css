@@ -524,7 +524,7 @@
 
     .figure-list .figure:nth-child(3) {
         grid-area: f3;
-        text-align: center;
+        text-align: left;
         padding-left: 15px;
     }
 }

@@ -23,7 +23,6 @@ class AuthController extends Controller
         private LoginManager $loginManager
     ) {}
 
-    #[Anonymous]
     #[HttpGet("/login")]
     public function getLogin()
     {

@@ -406,7 +406,7 @@ footer {
         display: flex;
     }
 
-    .icon-list i:first-child {
+    .icon-list #icon-search {
         display: none;
     }
 

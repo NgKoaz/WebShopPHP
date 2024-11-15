@@ -23,7 +23,10 @@
 <body>
     <div class="root-container">
         <!-- Header begin -->
-        <header>Sign up and get 20% off to your first order. <a href="/login">Sign Up Now</a></header>
+        <?php
+        if (!(isset($viewData["IS_LOGGED_IN"]) && $viewData["IS_LOGGED_IN"]))
+            echo '<header>Sign up and get 20% off to your first order. <a href="/login">Sign Up Now</a></header>';
+        ?>
         <nav>
             <div class="hamburger">
                 <img src="\public\images\homepage\icons\hamburger-icon.png">
@@ -31,9 +34,9 @@
             <div class="logo"><a href="/">BK.CO</a></div>
 
             <div class="nav-tab-list">
-                <a href="/">Shop</a>
-                <a href="/">New Arrivals</a>
-                <a href="/">Top Selling</a>
+                <a href="/category">Shop</a>
+                <a href="/category">New Arrivals</a>
+                <a href="/category">Top Selling</a>
             </div>
 
             <div class="search-bar">
@@ -42,8 +45,8 @@
             </div>
 
             <div class="icon-list">
-                <i class="fa-solid fa-magnifying-glass icon-24"></i>
-                <i class="fa-solid fa-cart-shopping icon-24"></i>
+                <i id="icon-search" class="fa-solid fa-magnifying-glass icon-24"></i>
+                <a href="/cart"><i class="fa-solid fa-cart-shopping icon-24"></i></a>
                 <i class="fa-regular fa-circle-user icon-24"></i>
             </div>
         </nav>

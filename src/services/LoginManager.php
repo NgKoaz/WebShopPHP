@@ -6,7 +6,7 @@ use App\Entities\User;
 
 class LoginManager
 {
-    private string $USER_ID = "USER_ID";
+    private string $USER_ID = "MY_USER_ID";
 
     public function __construct(private UserManager $userManager, private SessionManager $sessionManager) {}
 
@@ -32,7 +32,7 @@ class LoginManager
     public function isLoggedIn(): bool
     {
         $userId = $this->sessionManager->getPersistentEntry($this->USER_ID);
-        return isset($userId);
+        return $userId !== null;
     }
 
     public function logout(): void
