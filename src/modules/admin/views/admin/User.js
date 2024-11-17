@@ -449,7 +449,7 @@ function handleSuccessDeleteRequest(response) {
 }
 
 function handleErrorDeleteRequest(response) {
-    showSuccessToast("Error!", "Non-expected error. Please, reload page!");
+    showErrorToast("Error!", "Non-expected error. Please, reload page!");
 }
 
 function onDeleteSubmit(event) {

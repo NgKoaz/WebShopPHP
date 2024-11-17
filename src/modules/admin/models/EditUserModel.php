@@ -9,20 +9,20 @@ use App\core\Model;
 class EditUserModel extends Model
 {
     #[Required()]
-    public int $id;
+    public ?int $id = null;
 
     #[Required()]
-    public string $firstname;
+    public ?string $firstname = null;
 
     #[Required()]
-    public string $lastname;
+    public ?string $lastname = null;
 
     #[Required()]
     #[Phone()]
-    public string $phone;
+    public ?string $phone = null;
 
-    public string $password;
+    public ?string $password = null;
 
     #[Required()]
-    public bool $isDeleted;
+    public ?bool $isDeleted = null;
 }

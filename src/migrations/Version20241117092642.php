@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241113161002 extends AbstractMigration
+final class Version20241117092642 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -21,9 +21,9 @@ final class Version20241113161002 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE bills (id INT AUTO_INCREMENT NOT NULL, status VARCHAR(255) NOT NULL, payMethod VARCHAR(255) NOT NULL, payment_service_provider VARCHAR(255) NOT NULL, total_price INT NOT NULL, order_id INT NOT NULL, UNIQUE INDEX UNIQ_22775DD08D9F6D38 (order_id), PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE categories (id INT AUTO_INCREMENT NOT NULL, parent_category_id INT NOT NULL, UNIQUE INDEX UNIQ_3AF34668796A8F92 (parent_category_id), PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE categories (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, parent_category_id INT NOT NULL, UNIQUE INDEX UNIQ_3AF34668796A8F92 (parent_category_id), PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE orders (id INT AUTO_INCREMENT NOT NULL, status VARCHAR(255) NOT NULL, products VARCHAR(255) NOT NULL, canceled_at DATETIME NOT NULL, created_at DATETIME NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE products (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, price NUMERIC(10, 2) NOT NULL, quantity INT NOT NULL, rate INT NOT NULL, is_deleted TINYINT(1) NOT NULL, deleted_at DATETIME NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, category_id INT NOT NULL, INDEX IDX_B3BA5A5A12469DE2 (category_id), PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE products (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, price NUMERIC(10, 2) NOT NULL, quantity INT NOT NULL, rate INT NOT NULL, slug VARCHAR(255) NOT NULL, is_deleted TINYINT(1) NOT NULL, deleted_at DATETIME DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, category_id INT DEFAULT NULL, INDEX IDX_B3BA5A5A12469DE2 (category_id), PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE reviews (id INT AUTO_INCREMENT NOT NULL, comment VARCHAR(255) NOT NULL, rate INT NOT NULL, is_deleted TINYINT(1) NOT NULL, deleted_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, created_at DATETIME NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE role_claims (id INT AUTO_INCREMENT NOT NULL, role_id INT NOT NULL, claim_name VARCHAR(255) NOT NULL, claim_value VARCHAR(255) NOT NULL, INDEX IDX_1585F20FD60322AC (role_id), PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE roles (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');

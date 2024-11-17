@@ -90,8 +90,7 @@ class ApiUserController extends Controller
 
             if (!$isError) {
                 $this->userManager->deleteUserById($model->id);
-                $user = $this->userManager->findById($model->id);
-                return $this->json($user);
+                return $this->json($model->id);
             }
         }
         return $this->json(["code" => 404, "errors" => $model->getFullError()], 400);

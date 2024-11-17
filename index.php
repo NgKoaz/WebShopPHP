@@ -8,6 +8,7 @@ use App\modules\auth\AuthModule;
 use App\core\Container;
 use App\modules\admin\AdminModule;
 use App\services\LoginManager;
+use App\services\ProductManager;
 use App\services\RoleManager;
 use App\services\SessionManager;
 use App\services\UserManager;
@@ -40,7 +41,8 @@ Container::getInstance()
     ->addSingleton(SessionManager::class, SessionManager::class)
     ->addSingleton(UserManager::class, UserManager::class)
     ->addSingleton(LoginManager::class, LoginManager::class)
-    ->addSingleton(RoleManager::class, RoleManager::class);
+    ->addSingleton(RoleManager::class, RoleManager::class)
+    ->addSingleton(ProductManager::class, ProductManager::class);
 
 $app = new App();
 

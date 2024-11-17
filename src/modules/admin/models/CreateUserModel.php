@@ -10,22 +10,22 @@ use App\core\Model;
 class CreateUserModel extends Model
 {
     #[Required()]
-    public string $firstname;
+    public ?string $firstname = null;
 
     #[Required()]
-    public string $lastname;
+    public ?string $lastname = null;
 
     #[Required()]
-    public string $username;
+    public ?string $username = null;
 
     #[Required()]
     #[Email()]
-    public string $email;
+    public ?string $email = null;
 
     #[Required()]
     #[Phone()]
-    public string $phone;
+    public ?string $phone = null;
 
     #[Required()]
-    public string $password;
+    public ?string $password = null;
 }

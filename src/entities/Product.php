@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 
 #[Entity]
@@ -33,14 +32,14 @@ class Product
     #[Column()]
     public int $quantity;
 
-    #[Column]
+    #[Column(nullable: false)]
     public int $rate;
 
     #[Column]
     public string $slug;
 
     #[ManyToOne()]
-    #[JoinColumn(name: "category_id", referencedColumnName: "id", nullable: false)]
+    #[JoinColumn(name: "category_id", referencedColumnName: "id", nullable: true)]
     public Category $category;
 
     // #[OneToMany(targetEntity: Review::class, mappedBy: "product")]
@@ -49,7 +48,7 @@ class Product
     #[Column(name: "is_deleted")]
     public bool $isDeleted;
 
-    #[Column(name: "deleted_at", type: "datetime")]
+    #[Column(name: "deleted_at", type: "datetime", nullable: true)]
     public DateTime $deletedAt;
 
     #[Column(name: "created_at", type: "datetime")]
