@@ -52,7 +52,9 @@ class Model implements ArrayAccess
 
     public function setError(string $name, string $value)
     {
-        $this->errors[$name] = $value;
+        if (!isset($this->errors[$name]))
+            $this->errors[$name] = [];
+        $this->errors[$name][] = $value;
     }
 
     public function offsetGet(mixed $offset): mixed

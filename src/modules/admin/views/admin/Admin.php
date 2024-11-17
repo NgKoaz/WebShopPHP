@@ -3,6 +3,8 @@
 use App\core\App;
 
 $title = "Bach Khoa Clothes";
+$viewData["title"] = "Overview";
+
 $this
     ->addScript("Admin.js")
     ->addStylesheet("Admin.css");

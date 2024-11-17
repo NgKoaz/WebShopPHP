@@ -3,6 +3,7 @@
 namespace App\modules\admin;
 
 use App\core\Module;
+use App\modules\admin\controllers\ApiUserController;
 use App\modules\admin\controllers\AdminController;
 
 class AdminModule extends Module
@@ -11,6 +12,7 @@ class AdminModule extends Module
     {
         return [
             AdminController::class,
+            ApiUserController::class
         ];
     }
 }

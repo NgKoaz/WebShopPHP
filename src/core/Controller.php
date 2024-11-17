@@ -71,4 +71,11 @@ abstract class Controller
         header("Location: $routeUri");
         http_response_code($httpCode);
     }
+
+    protected function json(mixed $object, int $httpCode = 200)
+    {
+        header("Content-Type: application/json");
+        http_response_code($httpCode);
+        echo json_encode($object);
+    }
 }

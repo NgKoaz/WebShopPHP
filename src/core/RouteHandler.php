@@ -27,6 +27,11 @@ class RouteHandler
 
     public function run(Request $request, array $params)
     {
+        // Add param into Get method.
+        foreach ($_GET as $key => $value) {
+            $params[$key] = $value;
+        }
+
         // Create controller from DI container.
         $container = Container::getInstance();
         $instance = $container->create($this->controller);

@@ -54,7 +54,6 @@ class Router
     {
         $route = [];
         $reflection = new ReflectionClass($controller);
-        $methods = $reflection->getMethods();
 
         // Get from class
         $classAttrs = $reflection->getAttributes();
@@ -70,6 +69,7 @@ class Router
         }
 
         // Get from method
+        $methods = $reflection->getMethods();
         foreach ($methods as $method) {
             $attributes = $method->getAttributes();
             if (count($attributes) == 0) continue;

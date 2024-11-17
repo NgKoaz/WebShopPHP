@@ -36,6 +36,9 @@ class Product
     #[Column]
     public int $rate;
 
+    #[Column]
+    public string $slug;
+
     #[ManyToOne()]
     #[JoinColumn(name: "category_id", referencedColumnName: "id", nullable: false)]
     public Category $category;

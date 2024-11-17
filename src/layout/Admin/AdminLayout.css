@@ -6,8 +6,11 @@
 
     outline: none;
     border: none;
-    text-decoration: none;
     transition: 0.2s ease;
+}
+
+a {
+    text-decoration: none;
 }
 
 :root {
@@ -25,9 +28,9 @@
 
     --black-10: rgb(0, 0, 0, 0.1);
 
-    --header-height: 100px;
+    --header-height: 85px;
 
-    --main-page-color: #E5E5E5;
+    --main-page-color: #f5f7fa;
     --line-color: #E6EFF5;
 
     --selected-color: #2D60FF;
@@ -79,7 +82,7 @@ img {
 }
 
 aside {
-    width: 250px;
+    width: 230px;
 }
 
 aside.active {
@@ -109,13 +112,14 @@ aside .logo a {
     color: var(--selected-color);
 }
 
-ul.nav {
+ul.my-navbar {
     margin-top: 4px;
+    padding-left: 0px;
 }
 
 
 
-ul.nav li a {
+ul.my-navbar li a {
     display: flex;
     align-items: center;
     height: 60px;
@@ -124,18 +128,18 @@ ul.nav li a {
     color: var(--non-selected-color);
 }
 
-ul.nav li a span {
-    margin-left: 20px;
-    font-size: var(--lg-font-size);
-    font-weight: 800;
+ul.my-navbar li a span {
+    padding-left: 20px;
+    font-size: var(--md-font-size);
+    font-weight: 700;
 }
 
-ul.nav li a.active {
+ul.my-navbar li a.active {
     margin-left: 0px;
     color: var(--selected-color);
 }
 
-ul.nav li a.active::before {
+ul.my-navbar li a.active::before {
     content: "";
     display: inline-block;
     height: 50px;
@@ -165,6 +169,8 @@ ul.nav li a.active::before {
     border-radius: 20px;
 
     font-size: 32px;
+    font-family: 'Courier New', Courier, monospace;
+    line-height: normal;
     color: var(--selected-color);
     background-color: none;
 }
@@ -199,8 +205,8 @@ header .header-right .setting-icon {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     background-color: #F5F7FA;
     border: 1px solid #dedede;
