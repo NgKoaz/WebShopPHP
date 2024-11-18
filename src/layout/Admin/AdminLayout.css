@@ -85,9 +85,8 @@ aside {
     width: 230px;
 }
 
-aside.active {
-    /* width: 250px; */
-}
+/* aside.active {
+} */
 
 
 aside.left {
@@ -181,6 +180,7 @@ ul.my-navbar li a.active::before {
 
 .root-container>.right {
     flex-grow: 1;
+    height: auto;
 }
 
 header {
@@ -222,6 +222,6 @@ header .header-right .setting-icon:active {
 }
 
 main {
-    height: calc(100% - var(--header-height));
+    min-height: calc(100% - var(--header-height));
     background-color: var(--main-page-color);
 }

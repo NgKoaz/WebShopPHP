@@ -17,4 +17,9 @@ class RoleManager
             return $this->entityManager->getRepository(Role::class)->findBy(["id" => $roleIds]);
         return null;
     }
+
+    public function getRoles()
+    {
+        return $this->entityManager->getRepository(Role::class)->findAll([]);
+    }
 }

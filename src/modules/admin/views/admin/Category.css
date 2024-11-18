@@ -1,0 +1,20 @@
+.category-manager {
+    padding: 20px 20px 0px 20px;
+}
+
+.categories {
+    margin-top: 20px;
+}
+
+.minus-btn {
+    padding: 0;
+    font-size: 35px;
+    color: #ff9f1a;
+    background: none;
+}
+
+.plus-btn {
+    font-size: 35px;
+    color: #17c0eb;
+    background: none;
+}

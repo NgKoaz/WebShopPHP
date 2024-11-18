@@ -9,6 +9,7 @@ abstract class Controller
     private array $stylesheets = [];
     private array $scripts = [];
     private string $controllerPath = "";
+    private array $libScripts = [];
 
     private function getControllerPath(): string
     {
@@ -37,6 +38,12 @@ abstract class Controller
         return $this;
     }
 
+    protected function addLibraryScript(string $path): Controller
+    {
+        $this->libScripts[] = $path;
+        return $this;
+    }
+
     protected function addStylesheet(string $filename): Controller
     {
         $this->stylesheets[] = $filename;
@@ -48,6 +55,14 @@ abstract class Controller
         $scripts = $this->scripts;
         foreach ($scripts as $script) {
             $path = $this->getControllerPath() . "$script";
+            echo "<script src=\"" . $path . "\" defer></script>";
+        }
+    }
+
+    protected function loadLibraryScripts()
+    {
+        $libScripts = $this->libScripts;
+        foreach ($libScripts as $path) {
             echo "<script src=\"" . $path . "\" defer></script>";
         }
     }

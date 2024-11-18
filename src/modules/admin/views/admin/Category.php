@@ -6,58 +6,58 @@ $title = "Bach Khoa Clothes";
 $viewData["title"] = "Product Manager";
 
 $this
-    ->addScript("Product.js")
-    ->addStylesheet("Product.css");
+    ->addScript("Category.js")
+    ->addStylesheet("Category.css");
 
 ob_start();
 ?>
 
-<div class="user-manager">
+<div class="category-manager">
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Launch demo modal
-    </button>
+    <!-- <button draggable="true" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Create new category
+    </button> -->
+
+    <div class="actions d-flex justify-content-between">
+        <div>
+            <button class="btn btn-primary" onclick="addCategory()">
+                Create new category
+            </button>
+        </div>
+        <div>
+            <div class="btn-group" role="group">
+                <input type="checkbox" class="btn-check" id="autoSlugBtnCheck" checked onchange="toggleAutoGenerate()">
+                <label class="btn btn-outline-primary" for="autoSlugBtnCheck">Auto Generate Slug</label>
+            </div>
+            <div class="btn-group" role="group">
+                <input type="checkbox" class="btn-check" id="autoSaveBtnCheck" checked onchange="toggleAutoSave()">
+                <label class="btn btn-outline-success" for="autoSaveBtnCheck">Auto Save</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="categories">
+        <!-- Category profab -->
+        <!-- <div class="category row align-items-baseline">
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Category</span>
+                    <input type="text" class="form-control" placeholder="Category's name" aria-label="Category's name">
+                    <span class="input-group-text">Slug</span>
+                    <input type="text" class="form-control" placeholder="Slug" aria-label="Slug">
+                </div>
+            </div>
+            <div class="col-md-6 d-flex justify-content-start align-items-center">
+                <button class="btn btn-success">Save</button>
+
+                <button class="plus-btn"><i class="bi bi-patch-plus-fill"></i></button>
+
+                <button class="minus-btn"><i class="bi bi-patch-minus-fill"></i></button>
+            </div>
+        </div> -->
+    </div>
 
 
-    <table class="table table-bordered mt-3">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="1">Larry the Bird</td>
-                <td>@twitter</td>
-                <td>@twitter</td>
-            </tr>
-        </tbody>
-    </table>
-    <nav>
-        <ul class="pagination justify-content-end">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-    </nav>
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

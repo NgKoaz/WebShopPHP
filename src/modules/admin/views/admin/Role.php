@@ -6,8 +6,8 @@ $title = "Bach Khoa Clothes";
 $viewData["title"] = "Product Manager";
 
 $this
-    ->addScript("Product.js")
-    ->addStylesheet("Product.css");
+    ->addScript("Role.js")
+    ->addStylesheet("Role.css");
 
 ob_start();
 ?>
