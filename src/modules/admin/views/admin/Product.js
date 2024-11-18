@@ -77,7 +77,7 @@ function showSuccessToast(title, message) {
 
 // START TABLE
 function updateTable(data) {
-    products = data["products"] ?? [];
+    const products = data["products"] ?? [];
     state["products"] = products;
 
     tbody.innerHTML = ""
@@ -107,24 +107,24 @@ function updateTable(data) {
 }
 
 function changePage(page) {
-    if (page <= 0 || page > toastTitle || page === currentPageState) return;
+    if (page <= 0 || page > toastTitle || page === state.currentPage) return;
     refreshDataForTable(page);
 }
 
 function updatePagination(data) {
-    totalPages = data["totalPages"] ?? 1;
-    currentPage = data["currentPage"] ?? 1;
+    const totalPages = data["totalPages"] ?? 1;
+    const currentPage = data["currentPage"] ?? 1;
 
-    currentPageState = currentPage;
-    totalPagesState = totalPages
+    state.currentPage = currentPage;
+    state.totalPages = totalPages
 
-    page = 1;
-    pagination.innerHTML = `<li class="page-item ${currentPageState <= 1 ? "disabled" : ""}"><a class="page-link" href="#" onclick="changePage(${currentPageState - 1})">Previous</a></li>`;
+    let page = 1;
+    pagination.innerHTML = `<li class="page-item ${state.currentPage <= 1 ? "disabled" : ""}"><a class="page-link" href="#" onclick="changePage(${state.currentPage - 1})">Previous</a></li>`;
     while (page <= totalPages) {
-        pagination.innerHTML += `<li class="page-item ${currentPageState == page ? "active" : ""}"><a class="page-link" href="#" onclick="changePage(${page})">${page}</a></li>`;
+        pagination.innerHTML += `<li class="page-item ${state.currentPage == page ? "active" : ""}"><a class="page-link" href="#" onclick="changePage(${page})">${page}</a></li>`;
         page++;
     }
-    pagination.innerHTML += `<li class="page-item ${currentPageState >= totalPagesState ? "disabled" : ""}"><a class="page-link" href="#" onclick="changePage(${currentPageState + 1})">Next</a></li>`;
+    pagination.innerHTML += `<li class="page-item ${state.currentPage >= state.totalPages ? "disabled" : ""}"><a class="page-link" href="#" onclick="changePage(${state.currentPage + 1})">Next</a></li>`;
 }
 
 function refreshDataForTable(page = 1, limit = 12) {
@@ -137,7 +137,7 @@ function refreshDataForTable(page = 1, limit = 12) {
             updatePagination(response);
         },
         error: function (xhr, status, error) {
-            console.error("Request failed:", error);
+            showErrorToast("Error!", "Non-expected error. Please, reload page!")
         }
     });
 }
@@ -268,7 +268,7 @@ function handleSuccessCreateRequest(response) {
 
 function onCreateSubmit(event) {
     event.preventDefault();
-    form = new FormData(event.target);
+    const form = new FormData(event.target);
     // for (var pair of form.entries()) {
     //     console.log(pair[0] + ': ' + pair[1]);  // Log field name and value
     // }
@@ -363,7 +363,7 @@ function showDetailModal(event) {
 function toggleIsDeleted(event) {
     event.preventDefault()
     state.isDeleted = !state.isDeleted;
-    input = event.target.previousElementSibling;
+    const input = event.target.previousElementSibling;
     input.value = state.isDeleted ? "Inactive" : "Active";
     input.style.color = state.isDeleted ? redColor : darkGreenColor;
 
@@ -383,7 +383,7 @@ function handleSuccessEditRequest(response) {
 function handleErrorEditRequest(response) {
     if (response?.errors === null) return;
 
-    inputs = {
+    const inputs = {
         "name": document.querySelector("#nameInput"),
         "description": document.querySelector("#descriptionInput"),
         "price": document.querySelector("#priceInput"),
@@ -391,7 +391,7 @@ function handleErrorEditRequest(response) {
         "slug": document.querySelector("#slugInput")
     }
 
-    feedbacks = {
+    const feedbacks = {
         "name": document.querySelector("#nameInvalidFeedback"),
         "description": document.querySelector("#descriptionInvalidFeedback"),
         "price": document.querySelector("#priceInvalidFeedback"),

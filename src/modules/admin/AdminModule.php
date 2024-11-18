@@ -7,6 +7,7 @@ use App\modules\admin\controllers\ApiUserController;
 use App\modules\admin\controllers\AdminController;
 use App\modules\admin\controllers\ApiCategoryController;
 use App\modules\admin\controllers\ApiProductController;
+use App\modules\admin\controllers\ApiRoleController;
 
 class AdminModule extends Module
 {
@@ -16,7 +17,8 @@ class AdminModule extends Module
             AdminController::class,
             ApiUserController::class,
             ApiProductController::class,
-            ApiCategoryController::class
+            ApiCategoryController::class,
+            ApiRoleController::class,
         ];
     }
 }

@@ -18,8 +18,57 @@ class RoleManager
         return null;
     }
 
-    public function getRoles()
+    public function findById(mixed $id): ?Role
+    {
+        return $this->entityManager->getRepository(Role::class)->findOneBy(["id" => $id]);
+    }
+
+    public function findByName(string $name): ?Role
+    {
+        return $this->entityManager->getRepository(Role::class)->findOneBy(["name" => $name]);
+    }
+
+    public function hasName(string $name): bool
+    {
+        return $this->findByName($name) !== null;
+    }
+
+    public function hasId(mixed $id): bool
+    {
+        return $this->findById($id) !== null;
+    }
+
+    public function hasNameWithId(mixed $id, string $name): bool
+    {
+        $role = $this->findByName($name);
+        if ($role === null) return true;
+        return $role->id == +$id;
+    }
+
+    public function getRoles(): array
     {
         return $this->entityManager->getRepository(Role::class)->findAll([]);
+    }
+
+    public function createRole(string $name): void
+    {
+        $role = new Role;
+        $role->name = $name;
+        $this->entityManager->persist($role);
+        $this->entityManager->flush();
+    }
+
+    public function updateRole(mixed $id, string $name): void
+    {
+        $role = $this->findById($id);
+        $role->name = $name;
+        $this->entityManager->flush();
+    }
+
+    public function deleteRole(mixed $id): void
+    {
+        $role = $this->findById($id);
+        $this->entityManager->remove($role);
+        $this->entityManager->flush();
     }
 }
