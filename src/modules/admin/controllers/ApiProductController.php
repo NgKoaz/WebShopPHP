@@ -48,7 +48,7 @@ class ApiProductController extends Controller
                 $model->setError("id", "Product Id is not found!");
                 $isError = true;
             }
-            if (!$this->productManager->hasSlugWithId($model->id, $model->slug)) {
+            if ($this->productManager->hasSlugWithId($model->id, $model->slug)) {
                 $model->setError("slug", "Slug have already existed!");
                 $isError = true;
             }
@@ -79,23 +79,4 @@ class ApiProductController extends Controller
         }
         return $this->json(["code" => 404, "errors" => $model->getFullError()], 400);
     }
-
-
-    // #[HttpGet("/admin/products")]
-    // public function getProducts()
-    // {
-    //     $this->view("Product");
-    // }
-
-    // #[HttpGet("/admin/categories")]
-    // public function getCategories()
-    // {
-    //     $this->view("Category");
-    // }
-
-    // #[HttpGet("/admin/roles")]
-    // public function getRoles()
-    // {
-    //     $this->view("Role");
-    // }
 }

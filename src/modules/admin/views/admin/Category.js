@@ -1,8 +1,20 @@
 const selector = {}
 const state = {}
+const storage = {}
 selector.categories = document.querySelector(".categories");
 state.autoGenerate = true;
-state.autoSave = true;
+state.categories = []
+
+storage.greenColor = "#32ff7e";
+storage.darkGreenColor = "#3ae374";
+storage.redColor = "#ff3838";
+
+selector.toastLive = document.getElementById('liveToast');
+selector.toastBootstrap = bootstrap.Toast.getOrCreateInstance(selector.toastLive);
+selector.toastTitle = document.querySelector(".toast .toast-title");
+selector.toastBody = document.querySelector(".toast .toast-body");
+selector.toastRect = document.querySelector(".toast rect");
+
 
 //#region Utility
 function generateSlug(slug) {
@@ -28,50 +40,146 @@ function generateSlug(slug) {
 }
 //#endregion
 
+//#region TOAST
+function showErrorToast(title, message) {
+    selector.toastRect.setAttribute('fill', storage.redColor);
+    selector.toastTitle.innerHTML = title;
+    selector.toastTitle.style.color = storage.redColor;
+    selector.toastBody.innerHTML = message;
+    selector.toastBootstrap.show();
+}
+
+function showSuccessToast(title, message) {
+    selector.toastRect.setAttribute('fill', storage.greenColor);
+    selector.toastTitle.innerHTML = title;
+    selector.toastTitle.style.color = storage.greenColor;
+    selector.toastBody.innerHTML = message;
+    selector.toastBootstrap.show();
+}
+//#endregion
+
 function toggleAutoGenerate() {
     state.autoGenerate = !state.autoGenerate;
 }
 
-function toggleAutoSave() {
-    state.autoSave = !state.autoSave;
+function renderCategories(response) {
+    selector.categories.innerHTML = '';
+    state.categories = response;
+    state.categories.forEach(c => addCategory(c));
 }
-
-categories = [
-    {
-        id: 1,
-        name: "Catjieji123s",
-        slug: "cdfgdfomiaf124dlsdi",
-        level: 0,
-    },
-    {
-        id: 2,
-        name: "fdagds",
-        slug: "xxx",
-        level: 0,
-    },
-    {
-        id: 3,
-        name: "132",
-        slug: "aaa",
-        level: 0,
-    },
-    {
-        id: 4,
-        name: "gg2",
-        slug: "sdf",
-        level: 0,
-    },
-];
 
 function refreshCategories() {
-    categories.forEach(c => addCategory(c));
+    $.ajax({
+        url: `/api/admin/categories`,
+        method: 'GET',
+        success: function (response) {
+            console.log(response);
+            renderCategories(response);
+        },
+        error: function (xhr, status, error) {
+            console.error("Request failed:", xhr.responseText);
+        }
+    });
 }
-
 
 function autoGenerateSlug(event, cElementId) {
     if (!state.autoGenerate) return;
     const cObj = document.querySelector(`#${cElementId} input[name='slug']`);
     if (cObj) cObj.value = generateSlug(event.target.value);
+}
+
+function handleSaveError(response, cElementId) {
+    if (response?.errors === null) return;
+    if (response?.errors?.id) {
+        showErrorToast("Error!", "Non-expected error. Please, reload page!");
+        return;
+    }
+    console.log(`#${cElementId} input[name='name']`);
+
+    inputs = {
+        "name": document.querySelector(`#${cElementId} input[name='name']`),
+        "slug": document.querySelector(`#${cElementId} input[name='slug']`),
+    }
+
+    feedbacks = {
+        "name": document.querySelector(`#${cElementId} .nameInvalidFeedback`),
+        "slug": document.querySelector(`#${cElementId} .slugInvalidFeedback`)
+    }
+
+    Object.keys(inputs).forEach(key => {
+        inputs[key].classList.remove("is-invalid");
+        feedbacks[key].innerHTML = "";
+    })
+
+    errors = response.errors;
+    Object.keys(errors).forEach(errKey => {
+        // console.log(errKey, errors[errKey]);
+        if (inputs[errKey]) {
+            inputs[errKey].classList.add("is-invalid");
+            feedbacks[errKey].innerHTML = errors[errKey].join("<br>");
+        }
+    })
+    showErrorToast("Error!", "Check your error message!");
+}
+
+function onSaveClick(cElementId) {
+    const cObj = document.querySelector(`#${cElementId}`);
+    const nameInput = document.querySelector(`#${cElementId} input[name='name']`);
+    const slugInput = document.querySelector(`#${cElementId} input[name='slug']`);
+
+    const form = new FormData();
+    form.append("id", cObj.dataset.id ?? "");
+    form.append("name", nameInput.value ?? "");
+    form.append("slug", slugInput.value ?? "");
+    if (cObj.dataset.parentId) {
+        parentElement = document.querySelector(`#${cObj.dataset.parentId}`);
+        form.append("parentId", parentElement.id);
+    }
+    // for (var pair of form.entries()) {
+    //     console.log(pair[0] + ': ' + pair[1]);
+    // }
+    $.ajax({
+        url: `/api/admin/categories/${cObj.dataset.id ? "update" : "create"}`,
+        method: "POST",
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            showSuccessToast("Success!", `Category has been ${cObj.dataset.id ? "updated" : "created"}!`);
+            refreshCategories();
+        },
+        error: function (xhr, status, error) {
+            handleSaveError(JSON.parse(xhr.responseText), cElementId);
+        }
+    });
+}
+
+function onDeleteClick(cElementId) {
+    const cObj = document.querySelector(`#${cElementId}`);
+
+    if (cObj.dataset.id) {
+        const form = new FormData();
+        form.append("id", cObj.dataset.id ?? "");
+        $.ajax({
+            url: `/api/admin/categories/delete`,
+            method: "POST",
+            data: form,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                deleteCategory(cElementId);
+                showSuccessToast("Success!", `Category has been ${cObj.dataset.id ? "updated" : "created"}!`);
+                refreshCategories();
+            },
+            error: function (xhr, status, error) {
+                handleSaveError(JSON.parse(xhr.responseText), cElementId);
+            }
+        });
+
+        return;
+    }
+
+    deleteCategory(cElementId);
 }
 
 function addCategory(cData, parentElementId) {
@@ -96,17 +204,23 @@ function addCategory(cData, parentElementId) {
                 <input type="text" class="form-control" placeholder="Category's name" aria-label="Category's name" name="name" value="${cData.name ?? ""}" onchange="autoGenerateSlug(event, '${cElementId}')">
                 <span class="input-group-text">Slug</span>
                 <input type="text" class="form-control" placeholder="Slug" aria-label="Slug" name="slug" value="${cData.slug ?? ""}">
+                <div class="invalid-feedback d-flex">
+                    <div class="nameInvalidFeedback col-md-6">
+                    </div>
+                    <div class="slugInvalidFeedback col-md-6">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-6 d-flex justify-content-start align-items-center">
-            <button class="btn btn-success">Save</button>
+            <button class="btn btn-success" onclick="onSaveClick('${cElementId}')">Save</button>
 
-            <button class="plus-btn" onclick="addCategory(null, '${cElementId}')"><i class="bi bi-patch-plus-fill"></i></button>
+            <button class="plus-btn ms-5 d-inline-block" onclick=""><i class="bi bi-patch-plus-fill"></i></button>
 
-            <button class="minus-btn" onclick="deleteCategory('${cElementId}')"><i class="bi bi-patch-minus-fill"></i></button>
+            <button class="minus-btn ms-3" onclick="onDeleteClick('${cElementId}')"><i class="bi bi-patch-minus-fill"></i></button>
         </div>
     `;
-
+    //addCategory(null, '${cElementId}')
     nextSibling = parentElement?.nextSibling;
     if (nextSibling) selector.categories.insertBefore(cElement, nextSibling);
     else selector.categories.appendChild(cElement);

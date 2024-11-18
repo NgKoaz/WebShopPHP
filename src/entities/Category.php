@@ -18,13 +18,16 @@ class Category
     #[Column, GeneratedValue]
     public int $id;
 
-    #[Column]
-    public string $name;
+    #[Column(nullable: true)]
+    public ?string $name;
 
-    #[Column]
-    public string $slug;
+    #[Column(nullable: true)]
+    public ?string $slug;
+
+    #[Column(name: "parent_id", nullable: true)]
+    public ?int $parentId;
 
     #[OneToOne]
-    #[JoinColumn(name: "parent_category_id", referencedColumnName: "id", nullable: false)]
+    #[JoinColumn(name: "parent_id", referencedColumnName: "id", nullable: false)]
     public Category $parentCategory;
 }
