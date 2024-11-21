@@ -3,6 +3,7 @@
 namespace App\modules\auth;
 
 use App\core\Module;
+use App\modules\auth\controllers\ApiAuthController;
 use App\modules\auth\controllers\AuthController;
 
 class AuthModule extends Module
@@ -10,7 +11,8 @@ class AuthModule extends Module
     public function getControllers(): array
     {
         return [
-            AuthController::class
+            AuthController::class,
+            ApiAuthController::class
         ];
     }
 }

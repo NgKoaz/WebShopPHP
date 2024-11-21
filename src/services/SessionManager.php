@@ -12,6 +12,8 @@ class SessionManager
 
     public function __construct()
     {
+        ini_set('session.gc_maxlifetime', 1800);
+        ini_set('session.cookie_lifetime', 1800);
         session_start();
         $_SESSION[$this->FLASH] = new ArrayList;
         if (!isset($_SESSION[$this->PERSISTENT])) $_SESSION[$this->PERSISTENT] = new ArrayList;
@@ -27,10 +29,45 @@ class SessionManager
         return $_SESSION[$this->FLASH][$this->TEMP_MESSAGE];
     }
 
+    private function checkEntry(string $entry): void
+    {
+        if (!isset($_SESSION[$entry])) $_SESSION[$entry] = [];
+    }
+
+    public function setEntry(string $entry, string $name, mixed $value)
+    {
+        $this->checkEntry($entry);
+        $_SESSION[$entry][$name] = $value;
+    }
+
+    public function getEntry(string $entry)
+    {
+        $this->checkEntry($entry);
+        return $_SESSION[$entry];
+    }
+
+    public function unsetEntry(string $entry)
+    {
+        unset($_SESSION[$entry]);
+    }
+
+    public function unsetInEntry(string $entry, string $name)
+    {
+        unset($_SESSION[$entry][$name]);
+    }
+
     public function setPersistentEntry(string $name, mixed $value): void
     {
-        if (!isset($_SESSION[$this->PERSISTENT])) $_SESSION[$this->PERSISTENT] = new ArrayList;
         $_SESSION[$this->PERSISTENT][$name] = $value;
+    }
+
+    public function appendPersistentEntry(string $entry, string $name, mixed $value): void
+    {
+        if (!isset($_SESSION[$this->PERSISTENT][$entry])) {
+            $_SESSION[$this->PERSISTENT][$entry] = new ArrayList;
+        }
+
+        $_SESSION[$this->PERSISTENT][$entry]->append($name, $value);
     }
 
     public function getPersistentEntry(string $name): mixed

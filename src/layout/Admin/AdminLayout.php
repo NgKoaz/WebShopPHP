@@ -62,8 +62,14 @@
         <div class="right">
             <header>
                 <h2 class="header-left"><?= $viewData["title"] ?></h2>
-                <div class="header-right">
-                    <i class="bi bi-gear-fill icon-24 setting-icon"></i>
+                <div class="header-right dropdown">
+                    <i class="bi bi-gear-fill icon-24 setting-icon dropdown-menu-btn"></i>
+                    <ul class="menu">
+                        <a href="/" style="color: black;">
+                            <li class="item">Switch to user</li>
+                        </a>
+                        <li class="item danger" data-logout-btn>Logout</li>
+                    </ul>
                 </div>
             </header>
             <main>

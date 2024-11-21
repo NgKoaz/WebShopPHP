@@ -14,5 +14,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-include App::getLayoutDirectory() . "/layout.php";
+include App::getLayoutDirectory() . "/User/UserLayout.php";
 ?>

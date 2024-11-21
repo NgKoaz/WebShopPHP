@@ -5,6 +5,7 @@ namespace App\services;
 use App\Entities\Product;
 use DateTime;
 use Doctrine\ORM\EntityManager;
+use PgSql\Lob;
 
 class ProductManager
 {
@@ -24,12 +25,57 @@ class ProductManager
         ];
     }
 
+    public function getProductsComplex(int $page, int $limit, string $query, array $options): array
+    {
+        $count = $this->entityManager
+            ->getRepository(Product::class)
+            ->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->where('LOWER(p.name) LIKE :name')
+            ->setParameter('name', '%' . strtolower($query) . '%')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $totalPages = ceil($count / $limit);
+        $page = ($page < 1) ? 1 : $page;
+        $page = ($page > $totalPages) ? $totalPages : $page;
+        $offset = ($page - 1) * $limit;
+
+
+        $productsQuery = $this->entityManager
+            ->getRepository(Product::class)
+            ->createQueryBuilder('p')
+            ->where('LOWER(p.name) LIKE :name')
+            ->setParameter('name', '%' . strtolower($query) . '%')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
+
+        $order = isset($options["order"]) ? $options["order"] : null;
+        if ($order !== null) {
+            switch ($order) {
+                case "createdAt":
+                    $productsQuery->orderBy("p.$order", 'DESC');
+                    break;
+            }
+        }
+
+        $products = $productsQuery
+            ->getQuery()
+            ->getResult();
+
+        return [
+            "products" => $products,
+            "totalPages" => $totalPages,
+            "currentPage" => $page
+        ];
+    }
+
     public function getProductBySlug(mixed $slug): ?Product
     {
         return  $this->entityManager->getRepository(Product::class)->findOneBy(["slug" => $slug]);
     }
 
-    public function getProductById(mixed $id): ?Product
+    public function findProductById(mixed $id): ?Product
     {
         return $this->entityManager->getRepository(Product::class)->findOneBy(["id" => $id]);
     }
@@ -47,7 +93,7 @@ class ProductManager
 
     public function hasId(string $id): bool
     {
-        return $this->getProductById($id) !== null;
+        return $this->findProductById($id) !== null;
     }
 
     public function createProduct(string $name, string $description, string $price, int $quantity, string $slug): void
@@ -69,7 +115,7 @@ class ProductManager
 
     public function editProduct(mixed $id, string $name, string $description, string $price, string $quantity, string $slug, bool $isDeleted)
     {
-        $product = $this->getProductById($id);
+        $product = $this->findProductById($id);
         $product->name = $name;
         $product->description = $description;
         $product->price = $price;
@@ -82,8 +128,19 @@ class ProductManager
 
     public function deleteProduct(mixed $id)
     {
-        $product = $this->getProductById($id);
+        $product = $this->findProductById($id);
         $this->entityManager->remove($product);
         $this->entityManager->flush();
+    }
+
+    public function findProductsByName(string $name): array
+    {
+        return $this->entityManager
+            ->getRepository(Product::class)
+            ->createQueryBuilder('p')
+            ->where('LOWER(p.name) LIKE :name')
+            ->setParameter('name', '%' . strtolower($name) . '%') // Partial match
+            ->getQuery()
+            ->getResult();
     }
 }

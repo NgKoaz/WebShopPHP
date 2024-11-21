@@ -8,34 +8,32 @@ $this
     ->addStylesheet("Login.css");
 
 ob_start();
-echo $viewData["TempMessage"];
 ?>
 
 
 <div class="login-container">
     <h4 class="main-title">Nice to see you again</h4>
     <div class="login-form">
-        <form method="POST" action="/login">
+        <form onsubmit="onSubmitForm(event)">
             <div class="input-group mb-4">
-                <label>Username</label>
-                <input type="text" class="input" placeholder="Email or phone number"
-                    name="username"
-                    value="<?= $model["username"] ?>">
-
+                <label for="usernameInput">Username</label>
+                <input type="text" id="usernameInput" class="input" placeholder="Email or phone number"
+                    name="username">
+                <div id="usernameInvalidFeedback" class="invalid-feedback"></div>
             </div>
             <div class="input-group mb-4">
-                <label>Password</label>
-                <input type="password" class="input" placeholder="Password"
-                    name="password"
-                    value="<?= $model["password"] ?>">
+                <label for="passwordInput">Password</label>
+                <input type="password" id="passwordInput" class="input" placeholder="Password"
+                    name="password">
+                <div id="passwordInvalidFeedback" class="invalid-feedback"></div>
             </div>
 
             <div class="account-actions">
                 <div class="checkbox-input">
-                    <input type="checkbox" id="rememberMe" name="rememberMe">
-                    <span for="rememberMe">Remember me</span>
+                    <input type="checkbox" id="rememberMe" name="rememberMe" style="margin-bottom: 0px;">
+                    <label id="labelRememberMe" for="rememberMe" style="margin-bottom: 0px;">Remember me</label>
                 </div>
-                <div><a href="/forgot-password">Forgot password?</a></div>
+                <div><a href="/forgot-password" style="font-size: var(--md-font-size);">Forgot password?</a></div>
             </div>
 
             <button class="btn btn-black w-100">Sign in</button>

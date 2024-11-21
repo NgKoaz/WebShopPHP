@@ -93,4 +93,9 @@ abstract class Controller
         http_response_code($httpCode);
         echo json_encode($object);
     }
+
+    protected function loadSharedView(string $view)
+    {
+        require_once App::getRootDirectory() . "/src/views/$view.php";
+    }
 }

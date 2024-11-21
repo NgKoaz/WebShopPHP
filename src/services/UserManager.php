@@ -10,15 +10,15 @@ class UserManager
 {
     public function __construct(private EntityManager $entityManager) {}
 
-    public function register(string $firstName, string $lastName, string $username, string $email, string $phoneNumber, string $password): void
+    public function register(string $firstname, string $lastname, string $username, string $email, string $phone, string $password): void
     {
         $user = new User;
         $user->username = $username;
         $user->email = $email;
         $user->passwordHash = $this->passwordHash($password);
-        $user->phoneNumber = $phoneNumber;
-        $user->firstName = $firstName;
-        $user->lastName = $lastName;
+        $user->phoneNumber = $phone;
+        $user->firstName = $firstname;
+        $user->lastName = $lastname;
         $user->isDeleted = false;
         $user->createdAt = new DateTime;
 

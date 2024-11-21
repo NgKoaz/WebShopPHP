@@ -31,15 +31,6 @@ class AuthController extends Controller
         $this->view("Login", viewData: $viewData);
     }
 
-    #[HttpPost("/login")]
-    public function postLogin(LoginModel $model)
-    {
-        if ($model->isValid()) {
-            if ($this->loginUser($model) !== null) return $this->redirect("/");
-        }
-        return $this->view("Login", $model);
-    }
-
     #[HttpGet("/register")]
     public function getRegister()
     {
@@ -65,10 +56,5 @@ class AuthController extends Controller
             $this->userManager->hasEmail($model->username);
         $this->userManager->register($model->firstName, $model->lastName, $model->username, $model->email, $model->phone, $model->password);
         return $isValid;
-    }
-
-    private function loginUser(LoginModel $model): ?User
-    {
-        return $this->loginManager->login($model->username, $model->password);
     }
 }

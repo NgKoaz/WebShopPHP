@@ -7,6 +7,8 @@ use App\modules\user\controllers\CartController;
 use App\modules\user\controllers\CategoryController;
 use App\modules\user\controllers\HomeController;
 use App\modules\user\controllers\ProductController;
+use App\modules\user\controllers\UserApiCartController;
+use App\modules\user\controllers\UserApiProductController;
 
 class UserModule extends Module
 {
@@ -16,7 +18,9 @@ class UserModule extends Module
             HomeController::class,
             ProductController::class,
             CategoryController::class,
-            CartController::class
+            CartController::class,
+            UserApiProductController::class,
+            UserApiCartController::class
         ];
     }
 }

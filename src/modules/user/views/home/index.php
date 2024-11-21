@@ -17,7 +17,7 @@ ob_start();
         <div class="left">
             <h1 class="big-welcome-text">FIND CLOTHES THAT MATCHES YOUR STYLE</h1>
             <p class="welcome-description">Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality and cater to your sense of style.</p>
-            <a href="/category"><button class="shopnow-btn">Shop Now</button></a>
+            <a href="/categories"><button class="shopnow-btn">Shop Now</button></a>
             <div class="figure-list">
                 <div class="figure">
                     <h4 class="figure-title">200+</h4>
@@ -69,7 +69,7 @@ ob_start();
     <div class="new-arrival">
         <h2 class="section-title">NEW ARRIVALS</h2>
         <div class="card-list">
-            <div class="card">
+            <!-- <div class="card">
                 <img src="/public/images/newarrivals/cloth1.png">
                 <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
                 <div class="stars">
@@ -86,59 +86,12 @@ ob_start();
                 <div class="price">
                     $140
                 </div>
-            </div>
+            </div> -->
 
-            <div class="card">
-                <img src="/public/images/newarrivals/cloth2.png">
-                <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                <div class="stars">
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-half star-ic"></i>
-                    <i class="bi bi-star star-ic"></i>
-                    <span>5/5</span>
-                </div>
-                <div class="price">
-                    $140
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="/public/images/newarrivals/cloth3.png">
-                <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                <div class="stars">
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-half star-ic"></i>
-                    <i class="bi bi-star star-ic"></i>
-                    <span>5/5</span>
-                </div>
-                <div class="price">
-                    $140
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="/public/images/newarrivals/cloth4.png">
-                <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                <div class="stars">
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-half star-ic"></i>
-                    <i class="bi bi-star star-ic"></i>
-                    <span>5/5</span>
-                </div>
-                <div class="price">
-                    $140
-                </div>
-            </div>
         </div>
 
         <div class="btn-view-all-container">
-            <button>View All</button>
+            <button onclick="onClickNavLink(event, 0)">View All</button>
         </div>
     </div>
     <!-- New arrival end -->
@@ -220,7 +173,7 @@ ob_start();
         </div>
 
         <div class="btn-view-all-container">
-            <button>View All</button>
+            <button onclick="onClickNavLink(event, 1)">View All</button>
         </div>
     </div>
     <!-- Top selling end -->
@@ -231,28 +184,28 @@ ob_start();
             <h2 class="section-title">BROWSE BY DRESS STYLE</h2>
         </div>
         <div class="styles">
-            <div class="style-card">
+            <div class="style-card" data-href="/categories/casual">
                 <h4 class="style-title">Casual</h4>
                 <picture>
                     <source media="(min-width: 768px)" srcset="/public/images/homepage/browse/lg/casual.png">
                     <img src="/public/images/homepage/browse/sm/casual.png">
                 </picture>
             </div>
-            <div class="style-card">
+            <div class="style-card" data-href="/categories/formal">
                 <h4 class="style-title">Formal</h4>
                 <picture>
                     <source media="(min-width: 768px)" srcset="/public/images/homepage/browse/lg/formal.png">
                     <img src="/public/images/homepage/browse/sm/formal.png">
                 </picture>
             </div>
-            <div class="style-card">
+            <div class="style-card" data-href="/categories/party">
                 <h4 class="style-title">Party</h4>
                 <picture>
                     <source media="(min-width: 768px)" srcset="/public/images/homepage/browse/lg/party.png">
                     <img src="/public/images/homepage/browse/sm/party.png">
                 </picture>
             </div>
-            <div class="style-card">
+            <div class="style-card" data-href="/categories/gym">
                 <h4 class="style-title">Gym</h4>
                 <picture>
                     <source media="(min-width: 768px)" srcset="/public/images/homepage/browse/lg/gym.png">
@@ -329,5 +282,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-include App::getLayoutDirectory() . "/layout.php";
+include App::getLayoutDirectory() . "/User/UserLayout.php";
 ?>

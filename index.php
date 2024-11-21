@@ -7,6 +7,7 @@ use App\modules\user\UserModule;
 use App\modules\auth\AuthModule;
 use App\core\Container;
 use App\modules\admin\AdminModule;
+use App\services\CartManager;
 use App\services\CategoryManager;
 use App\services\LoginManager;
 use App\services\ProductManager;
@@ -44,17 +45,14 @@ Container::getInstance()
     ->addSingleton(LoginManager::class, LoginManager::class)
     ->addSingleton(RoleManager::class, RoleManager::class)
     ->addSingleton(ProductManager::class, ProductManager::class)
-    ->addSingleton(CategoryManager::class, CategoryManager::class);
+    ->addSingleton(CategoryManager::class, CategoryManager::class)
+    ->addSingleton(CartManager::class, CartManager::class);
 
 $app = new App();
 
 $app->importModule(new UserModule);
 $app->importModule(new AuthModule);
 $app->importModule(new AdminModule);
-
-
-
-
 
 
 

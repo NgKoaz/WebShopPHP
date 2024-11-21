@@ -13,43 +13,43 @@ ob_start();
 <div class="register-container">
     <h4 class="main-title mb-4">Welcome a new customer</h4>
     <div class="register-form">
-        <form method="POST" action="/register">
+        <form onsubmit="onSubmitForm(event)">
             <div class="composite-input mb-4">
                 <div class="w-50">
                     <label>First name</label>
-                    <input type="text" class="input" placeholder="First name" name="firstName"
-                        value="<?= $model["firstName"] ?>">
+                    <input type="text" class="input" id="firstnameInput" placeholder="First name" name="firstname">
+                    <div id="firstnameInvalidFeedback" class="invalid-feedback"></div>
                 </div>
                 <div class="w-50">
                     <label>Last name</label>
-                    <input type="text" class="input" placeholder="Last name" name="lastName"
-                        value="<?= $model["lastName"] ?>">
+                    <input type="text" class="input" id="lastnameInput" placeholder="Last name" name="lastname">
+                    <div id="lastnameInvalidFeedback" class="invalid-feedback"></div>
                 </div>
             </div>
             <div class="input-group mb-4">
                 <label>Username</label>
-                <input type="text" class="input" placeholder="Username" name="username"
-                    value="<?= $model["username"] ?>">
+                <input type="text" class="input" id="usernameInput" placeholder="Username" name="username">
+                <div id="usernameInvalidFeedback" class="invalid-feedback"></div>
             </div>
             <div class="input-group mb-4">
                 <label>Email</label>
-                <input type="text" class="input" placeholder="Email" name="email"
-                    value="<?= $model["email"] ?>">
+                <input type="text" class="input" id="emailInput" placeholder="Email" name="email">
+                <div id="emailInvalidFeedback" class="invalid-feedback"></div>
             </div>
             <div class="input-group mb-4">
                 <label>Phone number</label>
-                <input type="text" class="input" placeholder="Phone number" name="phone"
-                    value="<?= $model["phone"] ?>">
+                <input type="text" class="input" id="phoneInput" placeholder="Phone" name="phone">
+                <div id="phoneInvalidFeedback" class="invalid-feedback"></div>
             </div>
             <div class="input-group mb-4">
                 <label>Password</label>
-                <input type="password" class="input" placeholder="Password" name="password"
-                    value="<?= $model["password"] ?>">
+                <input type="password" class="input" id="passwordInput" placeholder="Password" name="password">
+                <div id="passwordInvalidFeedback" class="invalid-feedback"></div>
             </div>
             <div class="input-group mb-4">
                 <label>Confirm password</label>
-                <input type="password" class="input" placeholder="Confirm password" name="confirmPassword"
-                    value="<?= $model["confirmPassword"] ?>">
+                <input type="password" class="input" id="confirmInput" placeholder="Confirm password">
+                <div id="confirmInvalidFeedback" class="invalid-feedback"></div>
             </div>
 
             <button class="btn btn-black w-100">Register</button>

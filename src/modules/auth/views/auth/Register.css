@@ -1,5 +1,10 @@
 label {
-    display: none;
+    margin-bottom: 5px;
+    font-size: var(--md-font-size);
+}
+
+input {
+    margin-bottom: 6px;
 }
 
 .register-container .main-title {
@@ -23,4 +28,12 @@ label {
 .other-actions a {
     margin-left: 5px;
     text-decoration: underline;
+}
+
+
+
+@media screen and (min-width: 768px) {
+    label {
+        display: block;
+    }
 }

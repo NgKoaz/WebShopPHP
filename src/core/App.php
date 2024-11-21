@@ -41,7 +41,7 @@ class App
         try {
             if (isset($GLOBALS['IS_CACHING_ROUTES']) && $GLOBALS['IS_CACHING_ROUTES'] == true) return;
             $canResolve = $this->router->resolve2($this->request);
-            if (!$canResolve) $this->loadNotFoundView();
+            if (!$canResolve) $this->loadSharedView("404");
         } catch (Exception $e) {
             die($e->getMessage());
         }
@@ -61,8 +61,8 @@ class App
         return;
     }
 
-    private function loadNotFoundView()
+    private function loadSharedView(string $view)
     {
-        require_once App::getRootDirectory() . "/src/views/_404.php";
+        require_once App::getRootDirectory() . "/src/views/$view.php";
     }
 }

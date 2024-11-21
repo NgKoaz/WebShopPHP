@@ -16,7 +16,7 @@
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=kid_star" /> -->
 
     <link rel="stylesheet" href="/src/layout/global.css">
-    <link rel="stylesheet" href="/src/layout/layout.css">
+    <link rel="stylesheet" href="/src/layout/User/UserLayout.css">
     <?php $this->loadStylesheets() ?>
 </head>
 
@@ -34,23 +34,84 @@
             <div class="logo"><a href="/">BK.CO</a></div>
 
             <div class="nav-tab-list">
-                <a href="/category">Shop</a>
-                <a href="/category">New Arrivals</a>
-                <a href="/category">Top Selling</a>
+                <a href="/categories">Shop</a>
+                <a onclick="onClickNavLink(event, 0)">New Arrivals</a>
+                <a onclick="onClickNavLink(event, 1)">Top Selling</a>
             </div>
 
-            <div class="search-bar">
+            <form id="searchFormPc" class="search-bar">
                 <i class="fa-solid fa-magnifying-glass icon-24"></i>
-                <input type="text" placeholder="Search for products...">
-            </div>
+                <input type="text" placeholder=" Search for products..." oninput="onChangeSearchInputPc(event)">
+
+                <div class="search-result-container">
+                    <ul class="search-results">
+                        <!-- <li class="itemResult">
+                            <a class="itemLink" href="#">
+                                <div class="image">
+                                    <img src="/public/images/cart/p1.png">
+                                </div>
+                                <div class="info">
+                                    <div class="title">Mu asdf dasda dasd sd dsah ksh kghs khdfk asd khsjh fks</div>
+                                    <div class="price">$1238</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="more-results">
+                            <button id="moreResultsBtn">More results</button>
+                        </li> -->
+                    </ul>
+                </div>
+            </form>
+
 
             <div class="icon-list">
-                <i id="icon-search" class="fa-solid fa-magnifying-glass icon-24"></i>
+                <i id="icon-search" class="fa-solid fa-magnifying-glass icon-24" onclick="onSearchIconClick(event)"></i>
                 <a href="/cart"><i class="fa-solid fa-cart-shopping icon-24"></i></a>
-                <i class="fa-regular fa-circle-user icon-24"></i>
+                <div class="dropdown">
+                    <button class="dropdown-btn">
+                        <i class="fa-regular fa-circle-user icon-24" onclick="onProfileIconClick(event)"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <a href="/admin">
+                            <li class="dropdown-item">Switch to Admin</li>
+                        </a>
+                        <li class="dropdown-item">Setting</li>
+                        <li class="dropdown-item" onclick="sendLogoutRequest(event)">Logout</li>
+                    </ul>
+                </div>
             </div>
         </nav>
-        <hr class="mx-default">
+
+
+        <form id="searchFormMobile" onsubmit="onSubmitLogout(event)">
+            <div class="search-bar" style="height: 35px;">
+                <i class="fa-solid fa-magnifying-glass icon-24" style="font-size: 20px;"></i>
+                <input type="text" placeholder="Search for products..." oninput="onChangeSearchInputMb(event)">
+            </div>
+            <div class="search-result-container">
+                <ul class="search-results">
+                    <!-- <li class="itemResult">
+                        <a class="itemLink" href="#">
+                            <div class="image">
+                                <img src="/public/images/cart/p1.png">
+                            </div>
+                            <div class="info">
+                                <div class="title">Mu asdf dasda dasd sd dsah ksh kghs khdfk asd khsjh fks</div>
+                                <div class="price">$1238</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="more-results">
+                        <button id="moreResultsBtn">More results</button>
+                    </li> -->
+                </ul>
+            </div>
+        </form>
+
+
+        <form id="logoutForm" onsubmit="onSubmitLogout(event)">
+            <input type="submit">
+        </form>
         <!-- Header end -->
 
 
@@ -153,7 +214,7 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous" defer></script>
-    <script src="/src/layout/layout.js" crossorigin="anonymous" defer></script>
+    <script src="/src/layout/User/UserLayout.js" crossorigin="anonymous" defer></script>
     <?php $this->loadScripts() ?>
     <script src="https://kit.fontawesome.com/f521236fc5.js" crossorigin="anonymous" defer></script>
 </body>

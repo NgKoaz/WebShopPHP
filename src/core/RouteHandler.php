@@ -59,6 +59,21 @@ class RouteHandler
             $params[$varName] = $model;
         }
 
+        // Just take the params that action need.
+        // var_dump($params);
+
+        $paramInAction = [];
+        foreach ($actionParams as $actionParam) {
+            $paramInAction[$actionParam->getName()] = "";
+        }
+        $params = array_intersect_key($params, $paramInAction);
+
+        // var_dump($params);
+        // echo "SEPI";
+        // var_dump($paramInAction);
+
+
+
         $next = function ($request) use ($instance, $params) {
             try {
                 if (count($params) > 0)

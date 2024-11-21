@@ -1,11 +1,18 @@
 <?php
 
 use App\core\App;
+use App\Entities\Product;
 
 $title = "Bach Khoa Clothes";
 $this
     ->addScript("index.js")
     ->addStylesheet("index.css");
+
+
+/**
+ * @var Product
+ */
+$product = $viewData["product"];
 
 ob_start();
 ?>
@@ -31,7 +38,7 @@ ob_start();
 
             <div class="right">
                 <div class="product-info">
-                    <h4 class="title">One Life Graphic T-shirt</h4>
+                    <h4 class="title"><?= $product->name ?></h4>
                     <div class="stars">
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
@@ -39,18 +46,18 @@ ob_start();
                         <i class="bi bi-star-half star-ic"></i>
                         <i class="bi bi-star star-ic"></i>
                     </div>
-                    <div class="price">$260</div>
-                    <p class="description">This graphic t-shirt which is perfect for any occasion. Crafted from a soft and breathable fabric, it offers superior comfort and style.</p>
+                    <div class="price">$<?= $product->price ?></div>
+                    <p class="description"><?= $product->description ?></p>
                 </div>
 
                 <div class="cart-section">
                     <div class="quantity-modifier">
-                        1
+                        <div class="quantity">1</div>
                         <i class="bi bi-dash-lg minus"></i>
                         <i class="bi bi-plus-lg plus"></i>
                     </div>
 
-                    <button class="add-cart-btn">
+                    <button class="add-cart-btn" data-product-id="<?= $product->id ?>" onclick="addProductIntoCart(event)">
                         Add to Cart
                     </button>
                 </div>
@@ -187,7 +194,7 @@ ob_start();
             </div>
         </div>
 
-        <div class="other-products">
+        <!-- <div class="other-products">
             <h2 class="title-section">YOU MIGHT ALSO LIKE</h2>
             <div class="products">
                 <div class="card">
@@ -223,7 +230,7 @@ ob_start();
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
 
@@ -231,5 +238,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-include App::getLayoutDirectory() . "/layout.php";
+include App::getLayoutDirectory() . "/User/UserLayout.php";
 ?>

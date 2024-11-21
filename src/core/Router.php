@@ -11,6 +11,8 @@ class Router
 {
     private static array $routingTable = [];
 
+    private static string $REGEX_URL = '/:([A-Za-z][\w-]*)/';
+
     public function __construct()
     {
         $this->loadRoutingTableFromCacheFile();
@@ -136,13 +138,13 @@ class Router
 
     private function getParamNamesInRoute($uri): array
     {
-        preg_match_all('/:([A-z]\w*)/', $uri, $matches);
+        preg_match_all(Router::$REGEX_URL, $uri, $matches);
         return $matches[1];
     }
 
     private function exchangeRegexUri($uri): string
     {
-        $pattern = preg_replace('/:([A-z]\w*)/', '(\w+)', $uri);
+        $pattern = preg_replace(Router::$REGEX_URL, '([\w-]+)', $uri);
         $regex = "@^" . $pattern . "$@";
         return $regex;
     }

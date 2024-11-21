@@ -21,6 +21,20 @@ class ArrayList implements ArrayAccess, Countable
 
     public function offsetSet(mixed $offset, mixed $value): void
     {
+        if (is_null($offset)) {
+            $this->data[] = $value;
+        } else {
+            $this->data[$offset] = $value;
+        }
+    }
+
+    public function array(): array
+    {
+        return $this->data;
+    }
+
+    public function append(mixed $offset, mixed $value)
+    {
         $this->data[$offset] = $value;
     }
 

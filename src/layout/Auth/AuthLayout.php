@@ -31,6 +31,7 @@
     </div>
 
     <script src="/src/layout/Auth/AuthLayout.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
     <?php $this->loadScripts() ?>
     <script src="https://kit.fontawesome.com/f521236fc5.js" crossorigin="anonymous" defer></script>
 </body>

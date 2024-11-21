@@ -105,7 +105,7 @@ ob_start();
             </div>
 
             <div class="items">
-                <div class="card">
+                <!-- <div class="card">
                     <img src="/public/images/newarrivals/cloth1.png">
                     <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
                     <div class="stars">
@@ -119,135 +119,7 @@ ob_start();
                     <div class="price">
                         $140
                     </div>
-                </div>
-
-                <div class="card">
-                    <img src="/public/images/newarrivals/cloth1.png">
-                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                        <span>5/5</span>
-                    </div>
-                    <div class="price">
-                        $140
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="/public/images/newarrivals/cloth1.png">
-                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                        <span>5/5</span>
-                    </div>
-                    <div class="price">
-                        $140
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="/public/images/newarrivals/cloth1.png">
-                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                        <span>5/5</span>
-                    </div>
-                    <div class="price">
-                        $140
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="/public/images/newarrivals/cloth1.png">
-                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                        <span>5/5</span>
-                    </div>
-                    <div class="price">
-                        $140
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="/public/images/newarrivals/cloth1.png">
-                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                        <span>5/5</span>
-                    </div>
-                    <div class="price">
-                        $140
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="/public/images/newarrivals/cloth1.png">
-                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                        <span>5/5</span>
-                    </div>
-                    <div class="price">
-                        $140
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="/public/images/newarrivals/cloth1.png">
-                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                        <span>5/5</span>
-                    </div>
-                    <div class="price">
-                        $140
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="/public/images/newarrivals/cloth1.png">
-                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                        <span>5/5</span>
-                    </div>
-                    <div class="price">
-                        $140
-                    </div>
-                </div>
+                </div> -->
 
 
             </div>
@@ -353,5 +225,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-include App::getLayoutDirectory() . "/layout.php";
+include App::getLayoutDirectory() . "/User/UserLayout.php";
 ?>

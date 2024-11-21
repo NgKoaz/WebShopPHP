@@ -63,10 +63,11 @@ img {
 .card {
     padding: 5px;
     width: calc(50% - 10px);
+    cursor: pointer;
 }
 
 .card .title {
-    font-size: var(--lg-font-size);
+    font-size: var(--md-font-size);
 }
 
 .card .stars {
@@ -74,8 +75,8 @@ img {
 }
 
 .card .price {
-    font-size: var(--xl-font-size);
-    font-weight: 800;
+    font-size: var(--lg-font-size);
+    font-weight: 700;
 }
 
 .pagination {
@@ -341,7 +342,7 @@ img {
 
 @media screen and (min-width: 450px) {
     .card {
-        max-width: 230px;
+        max-width: 224px;
     }
 }
 
@@ -359,11 +360,11 @@ img {
 }
 
 @media screen and (min-width: 1240px) {
-    .card {
+    /* .card {
         max-width: 290px;
-    }
+    } */
 
-    .search-area .items {
+    /* .search-area .items {
         grid-template-columns: repeat(auto-fit, minmax(200px, 290px));
-    }
+    } */
 }

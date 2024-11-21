@@ -10,7 +10,7 @@ class LoginManager
 
     public function __construct(private UserManager $userManager, private SessionManager $sessionManager) {}
 
-    public function login(string $usernameOrEmail, string $password): ?User
+    public function login(string $usernameOrEmail, string $password, bool $isRemember): ?User
     {
         $user = $this->userManager->findByUsername($usernameOrEmail);
         if (!isset($user)) $user = $this->userManager->findByEmail($usernameOrEmail);

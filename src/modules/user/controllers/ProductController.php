@@ -7,17 +7,20 @@ use App\core\Attributes\Http\HttpGet;
 use App\core\Controller;
 use App\Middleware\Auth;
 use App\services\LoginManager;
+use App\services\ProductManager;
 
-#[Auth("/login")]
 class ProductController extends Controller
 {
-    public function __construct(private LoginManager $loginManager) {}
+    public function __construct(private LoginManager $loginManager, private ProductManager $productManager) {}
 
-    #[HttpGet("/products/:productId")]
-    public function getDetail(string $productId)
+    #[HttpGet("/products/:slug")]
+    public function getDetail(string $slug)
     {
         $viewData = new ArrayList;
         $viewData["IS_LOGGED_IN"] = $this->loginManager->isLoggedIn();
-        $this->view(viewData: $viewData);
+        $product = $this->productManager->getProductBySlug($slug);
+        if ($product === null) return $this->loadSharedView("404");
+        $viewData["product"] = $product;
+        return $this->view(viewData: $viewData);
     }
 }

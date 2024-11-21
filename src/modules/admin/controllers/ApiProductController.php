@@ -48,14 +48,14 @@ class ApiProductController extends Controller
                 $model->setError("id", "Product Id is not found!");
                 $isError = true;
             }
-            if ($this->productManager->hasSlugWithId($model->id, $model->slug)) {
+            if (!$this->productManager->hasSlugWithId($model->id, $model->slug)) {
                 $model->setError("slug", "Slug have already existed!");
                 $isError = true;
             }
 
             if (!$isError) {
                 $this->productManager->editProduct($model->id, $model->name, $model->description, $model->price, $model->quantity, $model->slug, $model->isDeleted);
-                $product = $this->productManager->getProductById($model->id);
+                $product = $this->productManager->findProductById($model->id);
                 return $this->json($product);
             }
         }
