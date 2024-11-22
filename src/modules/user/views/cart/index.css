@@ -34,7 +34,7 @@
     border-bottom: 1px solid var(--black-10);
     display: flex;
     gap: 14px;
-
+    user-select: none;
 }
 
 .item:first-child {
@@ -43,10 +43,6 @@
 
 .item:last-child {
     padding-bottom: 0px;
-}
-
-.item .right {
-    flex-grow: 1;
 }
 
 .item .right .top {
@@ -64,6 +60,8 @@
 .item .right {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
     gap: 10px;
 }
 
@@ -74,8 +72,8 @@
 }
 
 .item .right .top .info .name {
-    font-size: var(--lg-font-size);
-    font-weight: 700;
+    font-size: var(--md-font-size);
+    font-weight: 600;
 
     white-space: wrap;
 }
@@ -96,7 +94,7 @@
 }
 
 .item .right .bottom .price {
-    font-size: var(--xl-font-size);
+    font-size: var(--lg-font-size);
     font-weight: 700;
 }
 

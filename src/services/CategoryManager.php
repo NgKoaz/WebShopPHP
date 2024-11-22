@@ -11,7 +11,11 @@ class CategoryManager
 
     public function getCategories(): array
     {
-        return $this->entityManager->getRepository(Category::class)->findAll([]);
+        $query = $this->entityManager->createQuery(
+            'SELECT c.id, c.name, c.slug, IDENTITY(c.parentCategory) AS parentId 
+             FROM App\Entities\Category c'
+        );
+        return $query->getResult();
     }
 
     public function findBySlug(string $slug): ?Category
@@ -29,7 +33,7 @@ class CategoryManager
         return $this->findBySlug($slug) !== null;
     }
 
-    public function hasId(string $id): bool
+    public function hasId(mixed $id): bool
     {
         return $this->findById($id) !== null;
     }
@@ -38,7 +42,7 @@ class CategoryManager
     {
         $category = $this->findBySlug($slug);
         if ($category === null) return true;
-        return $category->id === $id;
+        return $category->id === +$id;
     }
 
 
@@ -49,9 +53,10 @@ class CategoryManager
             $category->name = $name;
         if ($slug !== null)
             $category->slug = $slug;
-        if ($parentId !== null && strlen($parentId) > 0)
+        if ($parentId !== null && strlen($parentId) > 0) {
             $category->parentId = +$parentId;
-
+            $category->parentCategory = $this->findById(+$parentId);
+        }
         $this->entityManager->persist($category);
         $this->entityManager->flush();
     }
@@ -62,15 +67,34 @@ class CategoryManager
         $category->name = $name;
         $category->slug = $slug;
 
-        if ($parentId !== null && strlen($parentId) > 0)
-            $category->parentId = $parentId;
+        if ($parentId !== null && strlen($parentId) > 0 && +$parentId !== $category->parentId) {
+            $oldParent = $category->parentCategory;
 
+            // New parent
+            $category->parentId = +$parentId;
+            $category->parentCategory = $this->findById(+$parentId);
+
+            $oldParentId = ($oldParent !== null) ? $oldParent->id : null;
+
+            $childs = $category->subcategories;
+            foreach ($childs as $child) {
+                $child->parentId = $oldParentId;
+                $child->parentCategory = $oldParent;
+            }
+        }
         $this->entityManager->flush();
     }
 
     public function deleteCategory(string $id)
     {
         $category = $this->findById($id);
+        $parent = $category->parentCategory;
+        $parentId = ($parent !== null) ? $parent->id : null;
+        $subs = $category->subcategories;
+        foreach ($subs as $sub) {
+            $sub->parentId = $parentId;
+            $sub->parentCategory = $parent;
+        }
         $this->entityManager->remove($category);
         $this->entityManager->flush();
     }

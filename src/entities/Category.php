@@ -2,11 +2,14 @@
 
 namespace App\Entities;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
@@ -27,7 +30,10 @@ class Category
     #[Column(name: "parent_id", nullable: true)]
     public ?int $parentId;
 
-    #[OneToOne]
-    #[JoinColumn(name: "parent_id", referencedColumnName: "id", nullable: false)]
-    public Category $parentCategory;
+    #[ManyToOne(targetEntity: Category::class, inversedBy: "subcategories")]
+    #[JoinColumn(name: "parent_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
+    public ?Category $parentCategory = null;
+
+    #[OneToMany(mappedBy: "parentCategory", targetEntity: Category::class)]
+    public Collection $subcategories;
 }

@@ -53,8 +53,8 @@ ob_start();
                 <div class="cart-section">
                     <div class="quantity-modifier">
                         <div class="quantity">1</div>
-                        <i class="bi bi-dash-lg minus"></i>
-                        <i class="bi bi-plus-lg plus"></i>
+                        <i class="bi bi-dash-lg minus" onclick="changeQuantity('<?= $product->id ?>', -1)"></i>
+                        <i class="bi bi-plus-lg plus" onclick="changeQuantity('<?= $product->id ?>', 1)"></i>
                     </div>
 
                     <button class="add-cart-btn" data-product-id="<?= $product->id ?>" onclick="addProductIntoCart(event)">

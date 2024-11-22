@@ -21,6 +21,10 @@ ob_start();
         </div>
         <div>
             <div class="btn-group" role="group">
+                <input type="checkbox" class="btn-check" id="draggableBtn" onchange="toggleDraggable()">
+                <label class="btn btn-outline-danger" for="draggableBtn">Draggable</label>
+            </div>
+            <div class="btn-group" role="group">
                 <input type="checkbox" class="btn-check" id="autoSlugBtnCheck" checked onchange="toggleAutoGenerate()">
                 <label class="btn btn-outline-success" for="autoSlugBtnCheck">Auto Generate Slug</label>
             </div>
@@ -28,6 +32,7 @@ ob_start();
     </div>
 
     <div class="categories">
+
     </div>
 
     <!-- Toast -->

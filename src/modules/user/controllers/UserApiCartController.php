@@ -7,6 +7,8 @@ use App\core\Attributes\Http\HttpGet;
 use App\core\Attributes\Http\HttpPost;
 use App\core\Controller;
 use App\modules\user\models\AddCartModel;
+use App\modules\user\models\DeleteCartModel;
+use App\modules\user\models\EditCartModel;
 use App\services\CartManager;
 use App\services\LoginManager;
 use App\services\ProductManager;
@@ -40,9 +42,41 @@ class UserApiCartController extends Controller
         return $this->json(["code" => 404, "errors" => $model->getFullError()], 400);
     }
 
-    #[HttpPost("/api/edit")]
-    public function editCart() {}
+    #[HttpPost("/api/cart/edit")]
+    public function editCart(EditCartModel $model)
+    {
+        if ($model->isValid()) {
+            $isError = false;
 
-    #[HttpPost("/api/delete")]
-    public function deleteCart() {}
+            if (!$this->productManager->hasId($model->productId)) {
+                $model->setError("productId", "Product id is not found!");
+                $isError = true;
+            }
+
+            if (!$isError) {
+                $this->cartManager->setItem($model->productId, $model->quantity);
+                return $this->json($this->cartManager->getItems());
+            }
+        }
+        return $this->json(["code" => 404, "errors" => $model->getFullError()], 400);
+    }
+
+    #[HttpPost("/api/cart/delete")]
+    public function deleteCart(DeleteCartModel $model)
+    {
+        if ($model->isValid()) {
+            $isError = false;
+
+            if (!$this->productManager->hasId($model->productId)) {
+                $model->setError("productId", "Product id is not found!");
+                $isError = true;
+            }
+
+            if (!$isError) {
+                $this->cartManager->unsetItem($model->productId);
+                return $this->json($this->cartManager->getItems());
+            }
+        }
+        return $this->json(["code" => 404, "errors" => $model->getFullError()], 400);
+    }
 }

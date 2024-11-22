@@ -8,13 +8,26 @@
 
 .minus-btn {
     padding: 0;
-    font-size: 35px;
+    font-size: 24px;
     color: #ff9f1a;
     background: none;
 }
 
 .plus-btn {
-    font-size: 35px;
+    font-size: 24px;
     color: #17c0eb;
     background: none;
+}
+
+.drag-over {
+    transition: none;
+    border: 1px dashed #ff9f1a;
+}
+
+.dragging {
+    opacity: 0;
+}
+
+.input-group-text {
+    user-select: none;
 }

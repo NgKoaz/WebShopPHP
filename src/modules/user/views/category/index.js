@@ -37,7 +37,7 @@ function refreshItems(page = 1, name = "", options = "") {
 
             const content = products.reduce((content, product) => {
                 return content + `
-                <div class= "card" data - href="/products/${product.slug}">
+                <div class= "card" data-href="/products/${product.slug}">
                     <img src="/public/images/newarrivals/cloth1.png">
                     <h3 class="title">${product.name}</h3>
                     <div class="stars">

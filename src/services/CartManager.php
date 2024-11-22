@@ -14,15 +14,30 @@ class CartManager
     {
         $cartItems = $this->sessionManager->getEntry(CartManager::$CART);
         if (isset($cartItems[$productId])) {
-            $cartItems[$productId] += 1;
+            $cartItems[$productId] += $quantity;
             return;
         }
-        $this->sessionManager->setEntry(CartManager::$CART, $productId, $quantity);
+        $this->sessionManager->setInEntry(CartManager::$CART, $productId, $quantity);
+    }
+
+    public function setItem(mixed $productId, int $quantity): void
+    {
+        $cartItems = $this->sessionManager->getEntry(CartManager::$CART);
+        if (isset($cartItems[$productId])) {
+            $cartItems[$productId] = $quantity;
+            return;
+        }
+        $this->sessionManager->setInEntry(CartManager::$CART, $productId, $quantity);
+    }
+
+    public function unsetItem(mixed $productId): void
+    {
+        $cartItems = $this->sessionManager->unsetInEntry(CartManager::$CART, $productId);
     }
 
     public function getItems(): array
     {
-        $cartItems = $this->sessionManager->getEntry(CartManager::$CART)->array();
+        $cartItems = $this->sessionManager->getEntry(CartManager::$CART);
         $result = [];
         foreach ($cartItems as $productId => $quantity) {
             $product = $this->productManager->findProductById($productId);
@@ -36,6 +51,6 @@ class CartManager
                 "quantity" => $quantity
             ]);
         }
-        return $result;
+        return $result ?? [];
     }
 }

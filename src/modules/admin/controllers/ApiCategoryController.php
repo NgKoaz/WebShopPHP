@@ -31,6 +31,11 @@ class ApiCategoryController extends Controller
                 $isError = true;
             }
 
+            if ($model->parentId !== null && $this->categoryManager->hasId($model->parentId) === null) {
+                $model->setError("id", "Parent id is not exist!");
+                $isError = true;
+            }
+
             if (!$isError) {
                 $this->categoryManager->createCategory($model->name, $model->slug, $model->parentId);
                 $category = $this->categoryManager->findBySlug($model->slug);
@@ -52,8 +57,13 @@ class ApiCategoryController extends Controller
                 $isError = true;
             }
 
-            if ($this->categoryManager->hasSlug($model->slug)) {
+            if (!$this->categoryManager->hasSlugWithId($model->id, $model->slug)) {
                 $model->setError("slug", "Slug have already existed!");
+                $isError = true;
+            }
+
+            if ($model->parentId !== null && $this->categoryManager->hasId($model->parentId) === null) {
+                $model->setError("id", "Parent id is not exist!");
                 $isError = true;
             }
 

@@ -1,4 +1,5 @@
-const quantityContainer = document.querySelector(".cart-section .quantity-modifier .quantity");
+const quantityContainer = document.querySelector(".quantity-modifier .quantity");
+state.quantity = 1;
 
 
 function setHeightReviewContainer() {
@@ -10,20 +11,17 @@ function setHeightReviewContainer() {
         console.log(maxHeight);
         reviewContainer.width("100%").height(maxHeight + "px");
     });
-
 }
 
-$(document).ready(setHeightReviewContainer);
 
 
-$(window).on('load', setHeightReviewContainer);
 
-
+documentReadyCallback.push(setHeightReviewContainer);
 
 
 function addProductIntoCart(event) {
     const productId = event.target.dataset.productId;
-    const quantity = quantityContainer.innerHTML;
+    const quantity = state.quantity;
 
     const form = new FormData();
     form.append("productId", productId);
@@ -37,10 +35,18 @@ function addProductIntoCart(event) {
         contentType: false,
         success: function (response) {
             console.log(response);
+            state.quantity = 1;
+            quantityContainer.innerHTML = state.quantity;
         },
         error: function (xhr, status, error) {
             console.log(xhr.responseText);
-            // console.log(JSON.parse(xhr.responseText));
         }
     });
+}
+
+
+function changeQuantity(productId, changeValue) {
+    if (state.quantity + changeValue <= 0) return;
+    state.quantity += changeValue;
+    quantityContainer.innerHTML = state.quantity;
 }

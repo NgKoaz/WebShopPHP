@@ -34,10 +34,15 @@ class SessionManager
         if (!isset($_SESSION[$entry])) $_SESSION[$entry] = [];
     }
 
-    public function setEntry(string $entry, string $name, mixed $value)
+    public function setInEntry(string $entry, string $name, mixed $value)
     {
         $this->checkEntry($entry);
         $_SESSION[$entry][$name] = $value;
+    }
+
+    public function setEntry(string $entry, mixed $value)
+    {
+        $_SESSION[$entry] = $value;
     }
 
     public function getEntry(string $entry)
@@ -53,6 +58,7 @@ class SessionManager
 
     public function unsetInEntry(string $entry, string $name)
     {
+        $this->checkEntry($entry);
         unset($_SESSION[$entry][$name]);
     }
 
