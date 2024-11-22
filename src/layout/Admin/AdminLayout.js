@@ -1,16 +1,10 @@
 const dropdownMenuBtn = document.querySelectorAll(".dropdown-menu-btn");
 const dropdownMenu = document.querySelectorAll(".dropdown .menu");
+const documentOnClickCallback = [];
 
-function setActiveForNav() {
-    const path = window.location.pathname;
-    const links = document.querySelectorAll("ul.my-navbar li a");
-    links.forEach(link => {
-        if (link.getAttribute("href") === path) {
-            link.classList.add("active");
-        }
-    })
-}
 
+
+document.onclick = (event) => documentOnClickCallback.forEach(c => c(event));
 document.onreadystatechange = () => {
     setActiveForNav();
     setClickDropdown();
@@ -20,7 +14,9 @@ document.onreadystatechange = () => {
 }
 
 
-document.onclick = (event) => {
+
+documentOnClickCallback.push(closeDropdownWhenClickOutside);
+function closeDropdownWhenClickOutside(event) {
     const dropdown = event.target.closest(".dropdown");
     if (!dropdown) {
         dropdownMenu.forEach(menu => menu.classList.remove("active"))
@@ -54,4 +50,15 @@ function sendLogoutRequest(event) {
             console.log(JSON.parse(xhr.responseText));
         }
     });
+}
+
+
+function setActiveForNav() {
+    const path = window.location.pathname;
+    const links = document.querySelectorAll("ul.my-navbar li a");
+    links.forEach(link => {
+        if (link.getAttribute("href") === path) {
+            link.classList.add("active");
+        }
+    })
 }

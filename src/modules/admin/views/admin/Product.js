@@ -23,7 +23,7 @@ state = {
     isDeleted: false,
     currentPage: 1,
     totalPages: 1,
-    autoGenerate: true,
+    autoGenerate: true
 }
 
 //#region Utility
@@ -175,6 +175,47 @@ function onChangeName(event, slugSelector) {
     if (slugObject) slugObject.value = generateSlug(event.target.value)
 }
 
+function refreshCategorySelector(selectorId) {
+    const optionList = document.querySelector(`#${selectorId} .option-list`);
+    optionList.innerHTML = ``;
+
+    $.ajax({
+        url: "/api/admin/categories",
+        method: "GET",
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            const content = response.reduce((content, category) => {
+                return content + `
+                    <li class="option">
+                        <input type="checkbox" class="checkbox" name="categories[]" value="${category.id}" data-name="${category.name}">
+                        ${category.name}
+                    </li>`
+            }, "");
+            optionList.innerHTML = content;
+        },
+        error: function (xhr, status, error) {
+            console.log(xhr.responseText)
+            // handleErrorEditRequest(JSON.parse(xhr.responseText));
+        }
+    });
+}
+
+function updateChosenText(selectorId) {
+    const select = document.querySelector(`${selectorId}`)
+    const chosenItem = select.querySelector(".chosen-item");
+    const checkboxes = select.querySelectorAll(".option input");
+    chosenItem.innerHTML = "";
+
+    const content = [...checkboxes]
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.dataset.name)
+        .join(", ");
+
+
+    chosenItem.innerHTML = (content ? content : "Nothing selected!")
+}
+
 function showCreateModal() {
     state.autoGenerate = true;
     modalTitle.innerHTML = "Create an product";
@@ -216,13 +257,56 @@ function showCreateModal() {
                 </div>
                 <div id="slugInvalidFeedback" class="invalid-feedback"></div>
             </div>
+
+
+            <div class="mb-3 has-validation input-group">
+                <span class="input-group-text">Categories</span>
+                <div id="categorySelect" class="select-menu form-control">
+                    <div class="chosen-item">Nothing selected!</div>
+                    <i class="bi bi-caret-down-fill select-caret"></i>
+                    <ul class="option-list" name="categories">
+                        
+                    </ul>
+                </div>
+                
+                <div id="slugInvalidFeedback" class="invalid-feedback"></div>
+            </div>
         </form>
     `;
     updateModalSubmitButton('Create', false);
     submitModalButton.onclick = () => {
         const form = $("#modalForm")[0];
         $(form).trigger("submit");
+    };
+
+    const select = document.querySelector("#categorySelect");
+    select.onclick = (event) => {
+        const target = event.target;
+
+        if (target.tagName === "DIV") {
+            const optionList = select.querySelector(".option-list");
+            optionList.classList.toggle("show");
+        } else if (target.tagName === "LI") {
+            const checkbox = target.querySelector("input");
+            if (target.type !== "checkbox")
+                checkbox.click()
+            if (checkbox.checked) target.classList.add("active")
+            else target.classList.remove("active")
+
+            updateChosenText("#categorySelect");
+        }
     }
+
+    documentOnClickCallback.push((event) => {
+        const selectMenu = event.target.closest(".select-menu");
+
+        if (!selectMenu) {
+            const optionList = document.querySelector(".select-menu .option-list");
+            optionList.classList.remove("show");
+        }
+    })
+
+    refreshCategorySelector("categorySelect");
 }
 
 function handleErrorCreateRequest(response) {
@@ -269,9 +353,14 @@ function handleSuccessCreateRequest(response) {
 function onCreateSubmit(event) {
     event.preventDefault();
     const form = new FormData(event.target);
-    // for (var pair of form.entries()) {
-    //     console.log(pair[0] + ': ' + pair[1]);  // Log field name and value
-    // }
+
+    // const checkbox = document.querySelectorAll("#modalForm #categorySelect .option input")
+    // const categories = [...checkbox].filter(checkbox => checkbox.checked).map(checkbox => checkbox.dataset.value);
+    // form.append("categories", categories);
+
+    for (var pair of form.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);  // Log field name and value
+    }
     $.ajax({
         url: "/api/admin/products/create",
         method: "POST",
@@ -490,9 +579,17 @@ function showEditModal(event) {
             </div>
 
             <div class="mb-3 has-validation input-group">
-                <span class="input-group-text">Category</span>
-                <input type="text" class="form-control" value="${product.category ?? "NULL"}" required disabled>
-            </div>
+                    <span class="input-group-text">Categories</span>
+                    <div id="categorySelect" class="select-menu form-control">
+                        <div class="chosen-item">Nothing selected!</div>
+                        <i class="bi bi-caret-down-fill select-caret"></i>
+                        <ul class="option-list" name="categories">
+                            
+                        </ul>
+                    </div>
+                    
+                    <div id="slugInvalidFeedback" class="invalid-feedback"></div>
+                </div>
 
             <div class="mb-3 has-validation input-group">
                 <span class="input-group-text">Rate</span>
