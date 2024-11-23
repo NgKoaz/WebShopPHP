@@ -60,7 +60,7 @@ class UserManager
 
     public function findByEmail(string $email): ?User
     {
-        return $this->entityManager->getRepository(User::class)->findOneBy(['username' => $email]);
+        return $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
     }
 
     public function getUsersWithNumPage(int $page, int $limit): array

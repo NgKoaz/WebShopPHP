@@ -4,7 +4,6 @@ namespace App\modules\auth\controllers;
 
 use App\core\Attributes\Http\HttpPost;
 use App\core\Controller;
-use App\Middleware\Anonymous;
 use App\modules\auth\models\LoginModel;
 use App\modules\auth\models\LogoutModel;
 use App\modules\auth\models\RegisterModel;
@@ -55,10 +54,11 @@ class ApiAuthController extends Controller
                 $model->setError("username", "Username is already exist!");
                 $isError = true;
             }
-            if ($this->userManager->findByEmail($model->username) !== null) {
+            if ($this->userManager->findByEmail(trim($model->username)) !== null) {
                 $model->setError("username", "Username is already exist!");
                 $isError = true;
             }
+
             if ($this->userManager->findByEmail($model->email) !== null) {
                 $model->setError("email", "Email is already exist!");
                 $isError = true;
@@ -71,7 +71,8 @@ class ApiAuthController extends Controller
                     $model->username,
                     $model->email,
                     $model->phone,
-                    $model->password
+                    $model->password,
+                    []
                 );
                 $user = $this->userManager->findByUsername($model->username);
                 return $this->json($user);
