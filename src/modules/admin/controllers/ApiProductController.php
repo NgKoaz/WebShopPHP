@@ -8,11 +8,12 @@ use App\core\Controller;
 use App\modules\admin\models\CreateProductModel;
 use App\modules\admin\models\DeleteProductModel;
 use App\modules\admin\models\EditProductModel;
+use App\services\CategoryManager;
 use App\services\ProductManager;
 
 class ApiProductController extends Controller
 {
-    public function __construct(private ProductManager $productManager) {}
+    public function __construct(private ProductManager $productManager, private CategoryManager $categoryManager) {}
 
     #[HttpGet("/api/admin/products")]
     public function getProducts(int $page = 1, int $limit = 12)
@@ -30,8 +31,13 @@ class ApiProductController extends Controller
                 $isError = true;
             }
 
+            if (!$this->categoryManager->hasId($model->categoryId)) {
+                $model->setError("categoryId", "Category is not found!");
+                $isError = true;
+            }
+
             if (!$isError) {
-                $this->productManager->createProduct($model->name, $model->description, $model->price, $model->quantity, $model->slug);
+                $this->productManager->createProduct($model->name, $model->description, $model->price, $model->quantity, $model->slug, $model->categoryId);
                 $product = $this->productManager->getProductBySlug($model->slug);
                 return $this->json($product);
             }
@@ -52,9 +58,13 @@ class ApiProductController extends Controller
                 $model->setError("slug", "Slug have already existed!");
                 $isError = true;
             }
+            if (!$this->categoryManager->hasId($model->categoryId)) {
+                $model->setError("categoryId", "Category is not found!");
+                $isError = true;
+            }
 
             if (!$isError) {
-                $this->productManager->editProduct($model->id, $model->name, $model->description, $model->price, $model->quantity, $model->slug, $model->isDeleted);
+                $this->productManager->editProduct($model->id, $model->name, $model->description, $model->price, $model->quantity, $model->slug, $model->isDeleted, $model->categoryId);
                 $product = $this->productManager->findProductById($model->id);
                 return $this->json($product);
             }

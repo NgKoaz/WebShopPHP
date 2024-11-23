@@ -32,4 +32,8 @@ class EditProductModel extends Model
 
     #[Required()]
     public ?bool $isDeleted = null;
+
+    #[Required()]
+    #[Number()]
+    public ?string $categoryId = null;
 }

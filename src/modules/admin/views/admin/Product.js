@@ -28,7 +28,7 @@ state = {
 
 //#region Utility
 function formatCurrency(price) {
-    return Math.round(price).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    return Math.round(price).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 }
 
 function generateSlug(slug) {
@@ -88,7 +88,7 @@ function updateTable(data) {
             <td>${product.quantity}</td>
             <td>${formatCurrency(product.price)}</td>
             <td>${product.rate}</td>
-            <td>${product.category ?? "NULL"}</td>
+            <td>${product.category?.name ?? "NULL"}</td>
             <td>${product.slug}</td>
             <th style="color: ${product.isDeleted ? redColor : darkGreenColor}">${product.isDeleted ? "Deactive" : "Active"}</th>
             <td data-id="${product.id}">
@@ -132,7 +132,6 @@ function refreshDataForTable(page = 1, limit = 12) {
         url: `/api/admin/products?page=${page}&limit=${limit}`,
         method: 'GET',
         success: function (response) {
-            // console.log(response)
             updateTable(response);
             updatePagination(response);
         },
@@ -173,47 +172,6 @@ function onChangeName(event, slugSelector) {
     if (!state.autoGenerate) return;
     slugObject = document.querySelector(slugSelector);
     if (slugObject) slugObject.value = generateSlug(event.target.value)
-}
-
-function refreshCategorySelector(selectorId) {
-    const optionList = document.querySelector(`#${selectorId} .option-list`);
-    optionList.innerHTML = ``;
-
-    $.ajax({
-        url: "/api/admin/categories",
-        method: "GET",
-        processData: false,
-        contentType: false,
-        success: function (response) {
-            const content = response.reduce((content, category) => {
-                return content + `
-                    <li class="option">
-                        <input type="checkbox" class="checkbox" name="categories[]" value="${category.id}" data-name="${category.name}">
-                        ${category.name}
-                    </li>`
-            }, "");
-            optionList.innerHTML = content;
-        },
-        error: function (xhr, status, error) {
-            console.log(xhr.responseText)
-            // handleErrorEditRequest(JSON.parse(xhr.responseText));
-        }
-    });
-}
-
-function updateChosenText(selectorId) {
-    const select = document.querySelector(`${selectorId}`)
-    const chosenItem = select.querySelector(".chosen-item");
-    const checkboxes = select.querySelectorAll(".option input");
-    chosenItem.innerHTML = "";
-
-    const content = [...checkboxes]
-        .filter(checkbox => checkbox.checked)
-        .map(checkbox => checkbox.dataset.name)
-        .join(", ");
-
-
-    chosenItem.innerHTML = (content ? content : "Nothing selected!")
 }
 
 function showCreateModal() {
@@ -258,19 +216,14 @@ function showCreateModal() {
                 <div id="slugInvalidFeedback" class="invalid-feedback"></div>
             </div>
 
-
             <div class="mb-3 has-validation input-group">
                 <span class="input-group-text">Categories</span>
-                <div id="categorySelect" class="select-menu form-control">
-                    <div class="chosen-item">Nothing selected!</div>
-                    <i class="bi bi-caret-down-fill select-caret"></i>
-                    <ul class="option-list" name="categories">
-                        
-                    </ul>
-                </div>
-                
-                <div id="slugInvalidFeedback" class="invalid-feedback"></div>
+                <select id="categorySelect" class="form-select" name="categoryId">
+                    
+                </select>
+                <div id="categoryInvalidFeedback" class="invalid-feedback"></div>
             </div>
+
         </form>
     `;
     updateModalSubmitButton('Create', false);
@@ -279,35 +232,33 @@ function showCreateModal() {
         $(form).trigger("submit");
     };
 
-    const select = document.querySelector("#categorySelect");
-    select.onclick = (event) => {
-        const target = event.target;
-
-        if (target.tagName === "DIV") {
-            const optionList = select.querySelector(".option-list");
-            optionList.classList.toggle("show");
-        } else if (target.tagName === "LI") {
-            const checkbox = target.querySelector("input");
-            if (target.type !== "checkbox")
-                checkbox.click()
-            if (checkbox.checked) target.classList.add("active")
-            else target.classList.remove("active")
-
-            updateChosenText("#categorySelect");
-        }
-    }
-
-    documentOnClickCallback.push((event) => {
-        const selectMenu = event.target.closest(".select-menu");
-
-        if (!selectMenu) {
-            const optionList = document.querySelector(".select-menu .option-list");
-            optionList.classList.remove("show");
-        }
-    })
-
-    refreshCategorySelector("categorySelect");
+    refreshCategorySelect("categorySelect");
 }
+
+function refreshCategorySelect(categorySelectId) {
+    const categorySelect = document.querySelector(`#${categorySelectId}`);
+    categorySelect.innerHTML = `<option selected>Open this select menu</option>`;
+
+    $.ajax({
+        url: "/api/admin/categories",
+        method: "GET",
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            const content = response.reduce((content, category) => {
+                return content + `
+                    <option value="${category.id}">${category.name}</option>
+                    `
+            }, "");
+            categorySelect.innerHTML += content;
+            categorySelect.value = categorySelect.dataset.value;
+        },
+        error: function (xhr, status, error) {
+            console.log(xhr.responseText)
+        }
+    });
+}
+
 
 function handleErrorCreateRequest(response) {
     if (response?.errors === null) return;
@@ -318,6 +269,7 @@ function handleErrorCreateRequest(response) {
         "price": document.querySelector("#priceInput"),
         "quantity": document.querySelector("#quantityInput"),
         "slug": document.querySelector("#slugInput"),
+        "categoryId": document.querySelector("#categorySelect"),
     }
 
     feedbacks = {
@@ -326,6 +278,7 @@ function handleErrorCreateRequest(response) {
         "price": document.querySelector("#priceInvalidFeedback"),
         "quantity": document.querySelector("#quantityInvalidFeedback"),
         "slug": document.querySelector("#slugInvalidFeedback"),
+        "categoryId": document.querySelector("#categoryInvalidFeedback"),
     }
 
     Object.keys(inputs).forEach(key => {
@@ -354,10 +307,6 @@ function onCreateSubmit(event) {
     event.preventDefault();
     const form = new FormData(event.target);
 
-    // const checkbox = document.querySelectorAll("#modalForm #categorySelect .option input")
-    // const categories = [...checkbox].filter(checkbox => checkbox.checked).map(checkbox => checkbox.dataset.value);
-    // form.append("categories", categories);
-
     for (var pair of form.entries()) {
         console.log(pair[0] + ': ' + pair[1]);  // Log field name and value
     }
@@ -371,6 +320,7 @@ function onCreateSubmit(event) {
             handleSuccessCreateRequest(response);
         },
         error: function (xhr, status, error) {
+            // console.log(xhr.responseText);
             handleErrorCreateRequest(JSON.parse(xhr.responseText));
         }
     });
@@ -389,7 +339,7 @@ function showDetailModal(event) {
         return;
     };
 
-    modalTitle.innerHTML = `Detail Product ID: ${product.id}`;
+    modalTitle.innerHTML = `Detail Product ID: ${product.id} `;
     modalBody.innerHTML = `
             <div class="input-group mb-3 has-validation">
                 <span class="input-group-text">Name</span>
@@ -426,7 +376,7 @@ function showDetailModal(event) {
 
             <div class="mb-3 has-validation input-group">
                 <span class="input-group-text">Category</span>
-                <input type="text" class="form-control" value="${product.category ?? "NULL"}" required disabled>
+                <input type="text" class="form-control" value="${product.category?.name ?? "NULL"}" required disabled>
             </div>
 
             <div class="mb-3 has-validation input-group">
@@ -442,7 +392,7 @@ function showDetailModal(event) {
                             value=${product.isDeleted ? "Inactive" : "Active"} 
                     disabled>
             </div>
-    `;
+                `;
     updateModalSubmitButton("", false);
 }
 //#endregion
@@ -477,7 +427,8 @@ function handleErrorEditRequest(response) {
         "description": document.querySelector("#descriptionInput"),
         "price": document.querySelector("#priceInput"),
         "quantity": document.querySelector("#quantityInput"),
-        "slug": document.querySelector("#slugInput")
+        "slug": document.querySelector("#slugInput"),
+        "categoryId": document.querySelector("#categorySelect"),
     }
 
     const feedbacks = {
@@ -486,6 +437,7 @@ function handleErrorEditRequest(response) {
         "price": document.querySelector("#priceInvalidFeedback"),
         "quantity": document.querySelector("#quantityInvalidFeedback"),
         "slug": document.querySelector("#slugInvalidFeedback"),
+        "categoryId": document.querySelector("#categoryInvalidFeedback"),
     }
 
     Object.keys(inputs).forEach(key => {
@@ -537,87 +489,84 @@ function showEditModal(event) {
     };
     state.autoGenerate = true;
     state.isDeleted = product.isDeleted;
-    modalTitle.innerHTML = `Edit Product ID: ${product.id}`;
+    modalTitle.innerHTML = `Edit Product ID: ${product.id} `;
     modalBody.innerHTML = `
-        <form id="modalForm" class="g-3 needs-validation" novalidate onsubmit="onEditSubmit(event)">
-            <input type="hidden" name="id" value="${product.id}">
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text">Name</span>
-                <input id="nameInput" type="text" placeholder="Name's product" class="form-control" 
-                    name="name" value="${product.name}" onchange="onChangeName(event, '#slugInput')">
-                <div id="nameInvalidFeedback" class="invalid-feedback d-flex">
-                </div>
-            </div>
+                    <form id = "modalForm" class="g-3 needs-validation" novalidate onsubmit = "onEditSubmit(event)">
+                        <input type="hidden" name="id" value="${product.id}">
+                            <div class="input-group mb-3 has-validation">
+                                <span class="input-group-text">Name</span>
+                                <input id="nameInput" type="text" placeholder="Name's product" class="form-control"
+                                    name="name" value="${product.name}" onchange="onChangeName(event, '#slugInput')">
+                                    <div id="nameInvalidFeedback" class="invalid-feedback d-flex">
+                                    </div>
+                            </div>
 
-            <div class="input-group has-validation mb-3">
-                <span class="input-group-text">Description</span>
-                <textarea class="form-control" id="descriptionInput" rows="4" name="description">${product.description}</textarea>
-                <div id="descriptionInvalidFeedback" class="invalid-feedback"></div>
-            </div>
+                            <div class="input-group has-validation mb-3">
+                                <span class="input-group-text">Description</span>
+                                <textarea class="form-control" id="descriptionInput" rows="4" name="description">${product.description}</textarea>
+                                <div id="descriptionInvalidFeedback" class="invalid-feedback"></div>
+                            </div>
 
-            <div class="mb-3 has-validation input-group">
-                <span class="input-group-text">Price</span>
-                <input type="text" class="form-control" id="priceInput" name="price" value="${product.price}" placeholder="987..." required>
-                <span class="input-group-text">VND</span>
-                <div id="priceInvalidFeedback" class="invalid-feedback"></div>
-            </div>
+                            <div class="mb-3 has-validation input-group">
+                                <span class="input-group-text">Price</span>
+                                <input type="text" class="form-control" id="priceInput" name="price" value="${product.price}" placeholder="987..." required>
+                                    <span class="input-group-text">VND</span>
+                                    <div id="priceInvalidFeedback" class="invalid-feedback"></div>
+                            </div>
 
-            <div class="mb-3 has-validation input-group">
-                <span class="input-group-text">Quantity</span>
-                <input type="text" class="form-control" id="quantityInput" name="quantity" placeholder="987..." value="${product.quantity}" required>
-                <div id="quantityInvalidFeedback" class="invalid-feedback"></div>
-            </div>
+                            <div class="mb-3 has-validation input-group">
+                                <span class="input-group-text">Quantity</span>
+                                <input type="text" class="form-control" id="quantityInput" name="quantity" placeholder="987..." value="${product.quantity}" required>
+                                    <div id="quantityInvalidFeedback" class="invalid-feedback"></div>
+                            </div>
 
-            <div class="mb-3 has-validation input-group">
-                <span class="input-group-text">Slug</span>
-                <input type="text" class="form-control" id="slugInput" name="slug" placeholder="/t-shirt-fashion" value="${product.slug}" required>
-                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                    <input type="checkbox" class="btn-check" id="btncheck1" checked onchange="(() => state.autoGenerate = !state.autoGenerate)()">
-                    <label class="btn btn-outline-primary" for="btncheck1">Auto generate</label>
-                </div>
-                <div id="slugInvalidFeedback" class="invalid-feedback"></div>
-            </div>
+                            <div class="mb-3 has-validation input-group">
+                                <span class="input-group-text">Slug</span>
+                                <input type="text" class="form-control" id="slugInput" name="slug" placeholder="/t-shirt-fashion" value="${product.slug}" required>
+                                    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                                        <input type="checkbox" class="btn-check" id="btncheck1" checked onchange="(() => state.autoGenerate = !state.autoGenerate)()">
+                                            <label class="btn btn-outline-primary" for="btncheck1">Auto generate</label>
+                                    </div>
+                                    <div id="slugInvalidFeedback" class="invalid-feedback"></div>
+                            </div>
 
-            <div class="mb-3 has-validation input-group">
-                    <span class="input-group-text">Categories</span>
-                    <div id="categorySelect" class="select-menu form-control">
-                        <div class="chosen-item">Nothing selected!</div>
-                        <i class="bi bi-caret-down-fill select-caret"></i>
-                        <ul class="option-list" name="categories">
-                            
-                        </ul>
-                    </div>
-                    
-                    <div id="slugInvalidFeedback" class="invalid-feedback"></div>
-                </div>
+                            <div class="mb-3 has-validation input-group">
+                                <span class="input-group-text">Categories</span>
+                                <select id="categorySelect" class="form-select" name="categoryId" data-value="${product.category.id}">
+                                    
+                                </select>
+                                <div id="categoryInvalidFeedback" class="invalid-feedback"></div>
+                            </div>
 
-            <div class="mb-3 has-validation input-group">
-                <span class="input-group-text">Rate</span>
-                <input type="text" class="form-control" value="${product.rate}" required disabled>
-            </div>
+                            <div class="mb-3 has-validation input-group">
+                                <span class="input-group-text">Rate</span>
+                                <input type="text" class="form-control" value="${product.rate}" required disabled>
+                            </div>
 
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text">Status</span>
-                <input type="text" class="form-control" 
-                    style="font-weight: 700; 
+                            <div class="input-group mb-3 has-validation">
+                                <span class="input-group-text">Status</span>
+                                <input type="text" class="form-control"
+                                    style="font-weight: 700; 
                             color: ${product.isDeleted ? redColor : darkGreenColor};"
-                            value=${product.isDeleted ? "Inactive" : "Active"} 
-                    disabled>
-                <button class="btn ${!product.isDeleted ? "btn-danger" : "btn-success"}" onclick="toggleIsDeleted(event)">${!product.isDeleted ? "Inactive" : "Active"}</button>
-            </div>
+                                    value=${product.isDeleted ? "Inactive" : "Active"}
+                                    disabled>
+                                    <button class="btn ${!product.isDeleted ? " btn-danger" : "btn-success"}" onclick="toggleIsDeleted(event)">${!product.isDeleted ? "Inactive" : "Active"}</button>
+                            </div>
 
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text">Updated At</span>
-                <input type="text" class="form-control" value=${product.updatedAt.date} disabled>
-            </div>
+                            <div class="input-group mb-3 has-validation">
+                                <span class="input-group-text">Updated At</span>
+                                <input type="text" class="form-control" value=${product.updatedAt.date} disabled>
+                            </div>
 
-        </form>
-    `;
+                        </form>
+                `;
     updateModalSubmitButton("Edit", false);
     submitModalButton.onclick = () => {
         const form = $("#modalForm")[0];
         $(form).trigger("submit");
     }
+
+    refreshCategorySelect("categorySelect");
 }
 //#endregion
 
@@ -661,20 +610,20 @@ function showDeleteModal(event) {
         showErrorToast("Error!", "Non-expected error. Reload page!");
         return;
     };
-    modalTitle.innerHTML = `Delete Product ID: ${product.id}`;
+    modalTitle.innerHTML = `Delete Product ID: ${product.id} `;
     modalBody.innerHTML = `
-        <form id="modalForm" class="g-3 needs-validation" novalidate onsubmit="onDeleteSubmit(event)">
-            <input type="hidden" name="id" value="${product.id}">
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text" id="basic-addon1">Name</span>
-                <input type="text" class="form-control" value="${product.name}" disabled>
-            </div>
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text">Quantity</span>
-                <input type="text" class="form-control" value=${product.quantity} disabled>
-            </div>
-        </form> 
-    `;
+                    <form id = "modalForm" class="g-3 needs-validation" novalidate onsubmit = "onDeleteSubmit(event)">
+                        <input type="hidden" name="id" value="${product.id}">
+                            <div class="input-group mb-3 has-validation">
+                                <span class="input-group-text" id="basic-addon1">Name</span>
+                                <input type="text" class="form-control" value="${product.name}" disabled>
+                            </div>
+                            <div class="input-group mb-3 has-validation">
+                                <span class="input-group-text">Quantity</span>
+                                <input type="text" class="form-control" value=${product.quantity} disabled>
+                            </div>
+                        </form>
+                `;
     updateModalSubmitButton("Delete", true);
     submitModalButton.onclick = () => {
         const form = $("#modalForm")[0];

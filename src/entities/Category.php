@@ -30,6 +30,9 @@ class Category
     #[Column(name: "parent_id", nullable: true)]
     public ?int $parentId;
 
+    #[OneToMany(targetEntity: Product::class, mappedBy: "category")]
+    public Collection $products;
+
     #[ManyToOne(targetEntity: Category::class, inversedBy: "subcategories")]
     #[JoinColumn(name: "parent_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
     public ?Category $parentCategory = null;

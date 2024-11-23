@@ -1,10 +1,12 @@
 const dropdownMenuBtn = document.querySelectorAll(".dropdown-menu-btn");
 const dropdownMenu = document.querySelectorAll(".dropdown .menu");
-const documentOnClickCallback = [];
+const documentOnClickCallback = {};
 
 
 
-document.onclick = (event) => documentOnClickCallback.forEach(c => c(event));
+document.onclick = (event) => Object.values(documentOnClickCallback).forEach(c => c(event));
+
+
 document.onreadystatechange = () => {
     setActiveForNav();
     setClickDropdown();
@@ -13,15 +15,12 @@ document.onreadystatechange = () => {
     logoutButton.onclick = sendLogoutRequest;
 }
 
-
-
-documentOnClickCallback.push(closeDropdownWhenClickOutside);
-function closeDropdownWhenClickOutside(event) {
+documentOnClickCallback["closeDropdown"] = (event) => {
     const dropdown = event.target.closest(".dropdown");
     if (!dropdown) {
         dropdownMenu.forEach(menu => menu.classList.remove("active"))
     }
-}
+};
 
 
 function setClickDropdown() {

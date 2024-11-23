@@ -9,7 +9,7 @@ use PgSql\Lob;
 
 class ProductManager
 {
-    public function __construct(private EntityManager $entityManager) {}
+    public function __construct(private EntityManager $entityManager, private CategoryManager $categoryManager) {}
 
     public function getProductsWithNumPage(int $page, int $limit): array
     {
@@ -17,7 +17,17 @@ class ProductManager
         $totalPages = ceil($count / $limit);
         $page = ($page < 1) ? 1 : $page;
         $offset = ($page - 1) * $limit;
-        $products = $this->entityManager->getRepository(Product::class)->findBy(criteria: [], limit: $limit, offset: $offset);
+        // $products = $this->entityManager->getRepository(Product::class)->findBy(criteria: [], limit: $limit, offset: $offset);
+
+        $products = $this->entityManager->getRepository(Product::class)
+            ->createQueryBuilder('p')
+            ->leftJoin('p.category', 'c')
+            ->addSelect('c')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+
         return [
             "products" => $products,
             "totalPages" => $totalPages,
@@ -96,7 +106,7 @@ class ProductManager
         return $this->findProductById($id) !== null;
     }
 
-    public function createProduct(string $name, string $description, string $price, int $quantity, string $slug): void
+    public function createProduct(string $name, string $description, string $price, int $quantity, string $slug, string $categoryId): void
     {
         $product = new Product;
         $product->name = $name;
@@ -109,11 +119,14 @@ class ProductManager
         $now = new DateTime;
         $product->createdAt = $product->updatedAt = $now;
 
+        $product->category = $this->categoryManager->findById($categoryId);
+        $product->categoryId = $categoryId;
+
         $this->entityManager->persist($product);
         $this->entityManager->flush();
     }
 
-    public function editProduct(mixed $id, string $name, string $description, string $price, string $quantity, string $slug, bool $isDeleted)
+    public function editProduct(mixed $id, string $name, string $description, string $price, string $quantity, string $slug, bool $isDeleted, string $categoryId)
     {
         $product = $this->findProductById($id);
         $product->name = $name;
@@ -122,6 +135,9 @@ class ProductManager
         $product->quantity = $quantity;
         $product->slug = $slug;
         $product->isDeleted = $isDeleted;
+
+        $product->category = $this->categoryManager->findById($categoryId);
+        $product->categoryId = $categoryId;
 
         $this->entityManager->flush();
     }

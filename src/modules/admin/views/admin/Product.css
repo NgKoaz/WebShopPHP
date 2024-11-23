@@ -56,7 +56,9 @@
 }
 
 .option-list.show {
-    height: 156px;
+    height: auto;
+    max-height: 156px;
+
     opacity: 1;
     pointer-events: all;
     overflow-y: scroll;

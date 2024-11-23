@@ -26,4 +26,8 @@ class CreateProductModel extends Model
     #[Required()]
     #[Slug()]
     public ?string $slug = null;
+
+    #[Required()]
+    #[Number()]
+    public ?string $categoryId = null;
 }

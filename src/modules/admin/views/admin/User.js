@@ -180,6 +180,19 @@ function showCreateModal() {
                 <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Password" value="" autocomplete="current-password" required>
                 <div id="passwordInvalidFeedback" class="invalid-feedback"></div>
             </div>
+
+            <div class="mb-3 has-validation input-group">
+                <span class="input-group-text">Roles</span>
+                <div id="roleSelect" class="select-menu form-control">
+                    <div class="chosen-item">Nothing selected!</div>
+                    <i class="bi bi-caret-down-fill select-caret"></i>
+                    <ul class="option-list">
+                        
+                    </ul>
+                </div>
+                
+                <div id="roleInvalidFeedback" class="invalid-feedback"></div>
+            </div>
         </form>
     `;
     updateModalSubmitButton('Create', false);
@@ -187,6 +200,73 @@ function showCreateModal() {
         const form = $("#modalForm")[0];
         $(form).trigger("submit");
     }
+
+    refreshRoleSelect("roleSelect")
+}
+
+function refreshDataRoleSelect(selectorId) {
+    const optionList = document.querySelector(`#${selectorId} .option-list`);
+    optionList.innerHTML = ``;
+
+    $.ajax({
+        url: "/api/admin/roles",
+        method: "GET",
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            const content = response.reduce((content, role) => {
+                return content + `
+                    <li class="option">
+                        <input type="checkbox" class="checkbox" name="role[]" value="${role.id}" data-name="${role.name}">
+                        ${role.name}
+                    </li>`
+            }, "");
+            optionList.innerHTML = content;
+        },
+        error: function (xhr, status, error) {
+            console.log(xhr.responseText)
+        }
+    });
+}
+
+function refreshRoleSelect(categoryId) {
+    const select = document.querySelector(`#${categoryId}`);
+    select.onclick = (event) => {
+        const target = event.target;
+
+        if (target.tagName === "DIV") {
+            const optionList = select.querySelector(".option-list");
+            optionList.classList.toggle("show");
+        } else if (target.tagName === "LI") {
+            const checkbox = target.querySelector("input");
+            if (target.type !== "checkbox")
+                checkbox.click()
+            if (checkbox.checked) target.classList.add("active")
+            else target.classList.remove("active")
+
+            // RELOAD CHOSEN FIELD
+            const chosenItem = select.querySelector(".chosen-item");
+            const checkboxes = select.querySelectorAll(".option input");
+            chosenItem.innerHTML = "";
+
+            const content = [...checkboxes]
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.dataset.name)
+                .join(", ");
+
+            chosenItem.innerHTML = (content ? content : "Nothing selected!")
+        }
+    }
+
+    documentOnClickCallback[categoryId] = (event) => {
+        const selectMenu = event.target.closest(".select-menu");
+        if (!selectMenu) {
+            const optionList = document.querySelector(".select-menu .option-list");
+            optionList?.classList.remove("show");
+        }
+    }
+
+    refreshDataRoleSelect(categoryId);
 }
 
 function handleErrorCreateRequest(response) {

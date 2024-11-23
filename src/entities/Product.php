@@ -38,7 +38,10 @@ class Product
     #[Column]
     public string $slug;
 
-    #[ManyToOne()]
+    #[Column(name: "category_id", nullable: true)]
+    public int $categoryId;
+
+    #[ManyToOne(targetEntity: Category::class, inversedBy: "products")]
     #[JoinColumn(name: "category_id", referencedColumnName: "id", nullable: true)]
     public Category $category;
 
