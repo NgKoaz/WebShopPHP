@@ -18,6 +18,21 @@ class RoleManager
         return null;
     }
 
+    public function hasRoles(array $ids)
+    {
+        if (count($ids) <= 0) return true;
+
+        $count = $this->entityManager->createQueryBuilder()
+            ->select('COUNT(r.id)')
+            ->from(Role::class, 'r')
+            ->where('r.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return +$count === count($ids);
+    }
+
     public function findById(mixed $id): ?Role
     {
         return $this->entityManager->getRepository(Role::class)->findOneBy(["id" => $id]);
@@ -68,6 +83,7 @@ class RoleManager
     public function deleteRole(mixed $id): void
     {
         $role = $this->findById($id);
+
         $this->entityManager->remove($role);
         $this->entityManager->flush();
     }

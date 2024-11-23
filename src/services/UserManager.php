@@ -10,7 +10,7 @@ class UserManager
 {
     public function __construct(private EntityManager $entityManager) {}
 
-    public function register(string $firstname, string $lastname, string $username, string $email, string $phone, string $password): void
+    public function register(string $firstname, string $lastname, string $username, string $email, string $phone, string $password, array $roles): void
     {
         $user = new User;
         $user->username = $username;
@@ -21,6 +21,8 @@ class UserManager
         $user->lastName = $lastname;
         $user->isDeleted = false;
         $user->createdAt = new DateTime;
+
+        $user->roles = json_encode($roles);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -75,7 +77,7 @@ class UserManager
         ];
     }
 
-    public function editUserById(int $id, string $firstname, string $lastname, string $phone, bool $isDeleted, string $password = ""): bool
+    public function editUserById(int $id, string $firstname, string $lastname, string $phone, bool $isDeleted, string $password = "", array $roles): bool
     {
         $user = $this->findById($id);
         if ($user === null) return false;
@@ -92,6 +94,9 @@ class UserManager
         if (strlen($password) > 0) {
             $user->passwordHash = $this->passwordHash($password);
         }
+
+        $user->roles = json_encode($roles);
+
         $this->entityManager->flush();
         return true;
     }
@@ -104,5 +109,24 @@ class UserManager
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['id' => $id]);
         $this->entityManager->remove($user);
         $this->entityManager->flush();
+    }
+
+    public function hasRoleInUser(int $id)
+    {
+        $results = $this->entityManager
+            ->createQueryBuilder()
+            ->select('u.roles')
+            ->from(User::class, 'u')
+            ->getQuery()
+            ->getResult();
+
+        foreach ($results as $result) {
+            if (isset($result["roles"])) {
+                $roles = json_decode($result["roles"]);
+                if (in_array($id, $roles)) return true;
+            }
+        }
+
+        return false;
     }
 }

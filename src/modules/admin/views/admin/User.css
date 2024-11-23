@@ -85,3 +85,9 @@
     background-color: #1e90ff;
     color: white;
 }
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 5px;
+}

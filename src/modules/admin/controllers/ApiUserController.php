@@ -8,16 +8,19 @@ use App\core\Controller;
 use App\modules\admin\models\CreateUserModel;
 use App\modules\admin\models\DeleteUserModel;
 use App\modules\admin\models\EditUserModel;
+use App\services\RoleManager;
 use App\services\UserManager;
 
 class ApiUserController extends Controller
 {
-    public function __construct(private UserManager $userManager) {}
+    public function __construct(private UserManager $userManager, private RoleManager $roleManager) {}
 
     #[HttpGet("/api/admin/users")]
     public function getUsers(int $page = 1, int $limit = 12)
     {
-        return $this->json($this->userManager->getUsersWithNumPage($page, $limit));
+        $result = $this->userManager->getUsersWithNumPage($page, $limit);
+        $result["roles"] = $this->roleManager->getRoles();
+        return $this->json($result);
     }
 
     #[HttpPost("/api/admin/users/create")]
@@ -31,8 +34,14 @@ class ApiUserController extends Controller
             } else if ($this->userManager->hasEmail($model->username)) {
                 $model->setError("username", "This Username [$model->username] have already existed!");
                 $isError = true;
-            } else if ($this->userManager->hasEmail($model->email)) {
+            }
+            if ($this->userManager->hasEmail($model->email)) {
                 $model->setError("email", "This Email [$model->username] have already existed!");
+                $isError = true;
+            }
+
+            if (!$this->roleManager->hasRoles($model->roles)) {
+                $model->setError("roles", "Some role is not exist!");
                 $isError = true;
             }
 
@@ -43,7 +52,8 @@ class ApiUserController extends Controller
                     $model->username,
                     $model->email,
                     $model->phone,
-                    $model->password
+                    $model->password,
+                    $model->roles
                 );
                 $user = $this->userManager->findByUsername($model->username);
                 return $this->json($user);
@@ -62,6 +72,11 @@ class ApiUserController extends Controller
                 $isError = true;
             }
 
+            if (!$this->roleManager->hasRoles($model->roles)) {
+                $model->setError("roles", "Some role is not exist!");
+                $isError = true;
+            }
+
             if (!$isError) {
                 $this->userManager->editUserById(
                     $model->id,
@@ -69,7 +84,8 @@ class ApiUserController extends Controller
                     $model->lastname,
                     $model->phone,
                     $model->isDeleted,
-                    $model->password
+                    $model->password,
+                    $model->roles
                 );
                 $user = $this->userManager->findById($model->id);
                 return $this->json($user);

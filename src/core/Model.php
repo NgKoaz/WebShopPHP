@@ -15,7 +15,7 @@ class Model implements ArrayAccess
     {
         foreach ($assocArr as $key => $value) {
             if (property_exists($this, $key)) {
-                $this->$key = htmlspecialchars($value);
+                $this->$key = !is_array($value) ? htmlspecialchars($value) : $value;
             }
         }
     }

@@ -25,4 +25,6 @@ class EditUserModel extends Model
 
     #[Required()]
     public ?bool $isDeleted = null;
+
+    public array $roles = [];
 }

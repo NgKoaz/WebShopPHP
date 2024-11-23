@@ -20,10 +20,11 @@ const darkGreenColor = "#3ae374";
 const redColor = "#ff3838";
 
 
-tempUsers = [];
-isDeletedState = false;
-currentPageState = 1;
-totalPagesState = 1;
+let tempUsers = [];
+let tempRoles = [];
+let isDeletedState = false;
+let currentPageState = 1;
+let totalPagesState = 1;
 
 
 // START OF TOAST
@@ -46,9 +47,23 @@ function showSuccessToast(title, message) {
 
 
 // START TABLE
+function findRoleNames(user, roles) {
+    console.log(user, roles);
+
+    if (user?.roles == null) return null;
+
+    const userRoleIds = JSON.parse(user.roles);
+
+    const names = userRoleIds.map(id => roles.filter(role => +role.id === +id)[0].name);
+    if (names.length <= 0) return null;
+    return names.join(", ");
+}
+
 function updateTable(data) {
-    users = data["users"] ?? [];
+    const users = data["users"] ?? [];
+    const roles = data["roles"] ?? [];
     tempUsers = users;
+    tempRoles = roles;
 
     tbody.innerHTML = ""
     users.forEach(user => {
@@ -59,7 +74,7 @@ function updateTable(data) {
             <td>${user.email}</td>
             <td>${user.phoneNumber}</td>
             <th style="color: ${user.isDeleted ? redColor : darkGreenColor}">${user.isDeleted ? "Deactive" : "Active"}</th>
-            <td data-id="${user.id}">
+            <td class="buttons" data-id="${user.id}">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal" onclick="showDetailModal(event)">
                     Detail
                 </button>
@@ -170,18 +185,6 @@ function showCreateModal() {
             </div>
 
             <div class="mb-3 has-validation input-group">
-                <span class="input-group-text">Phone</span>
-                <input type="text" class="form-control" id="phoneInput" name="phone" placeholder="0987654321" value="" required>
-                <div id="phoneInvalidFeedback" class="invalid-feedback"></div>
-            </div>
-
-            <div class="mb-3 has-validation input-group">
-                <span class="input-group-text">Password</span>
-                <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Password" value="" autocomplete="current-password" required>
-                <div id="passwordInvalidFeedback" class="invalid-feedback"></div>
-            </div>
-
-            <div class="mb-3 has-validation input-group">
                 <span class="input-group-text">Roles</span>
                 <div id="roleSelect" class="select-menu form-control">
                     <div class="chosen-item">Nothing selected!</div>
@@ -192,6 +195,19 @@ function showCreateModal() {
                 </div>
                 
                 <div id="roleInvalidFeedback" class="invalid-feedback"></div>
+            </div>
+
+
+            <div class="mb-3 has-validation input-group">
+                <span class="input-group-text">Phone</span>
+                <input type="text" class="form-control" id="phoneInput" name="phone" placeholder="0987654321" value="" required>
+                <div id="phoneInvalidFeedback" class="invalid-feedback"></div>
+            </div>
+
+            <div class="mb-3 has-validation input-group">
+                <span class="input-group-text">Password</span>
+                <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Password" value="" autocomplete="current-password" required>
+                <div id="passwordInvalidFeedback" class="invalid-feedback"></div>
             </div>
         </form>
     `;
@@ -204,7 +220,7 @@ function showCreateModal() {
     refreshRoleSelect("roleSelect")
 }
 
-function refreshDataRoleSelect(selectorId) {
+function refreshDataRoleSelect(selectorId, user) {
     const optionList = document.querySelector(`#${selectorId} .option-list`);
     optionList.innerHTML = ``;
 
@@ -214,14 +230,18 @@ function refreshDataRoleSelect(selectorId) {
         processData: false,
         contentType: false,
         success: function (response) {
+            tempRoles = response;
+
             const content = response.reduce((content, role) => {
                 return content + `
                     <li class="option">
-                        <input type="checkbox" class="checkbox" name="role[]" value="${role.id}" data-name="${role.name}">
+                        <input type="checkbox" class="checkbox" name="roles[]" value="${role.id}" data-name="${role.name}">
                         ${role.name}
                     </li>`
             }, "");
             optionList.innerHTML = content;
+
+            if (user) loadEditSelect(user);
         },
         error: function (xhr, status, error) {
             console.log(xhr.responseText)
@@ -229,7 +249,15 @@ function refreshDataRoleSelect(selectorId) {
     });
 }
 
-function refreshRoleSelect(categoryId) {
+function loadEditSelect(user) {
+    if (!user?.roles) return;
+    const userRoles = JSON.parse(user.roles);
+    userRoles.forEach(userRole => {
+        document.querySelector(`li:has(input[type='checkbox'][value='${userRole}'])`)?.click();
+    });
+}
+
+function refreshRoleSelect(categoryId, user) {
     const select = document.querySelector(`#${categoryId}`);
     select.onclick = (event) => {
         const target = event.target;
@@ -266,7 +294,7 @@ function refreshRoleSelect(categoryId) {
         }
     }
 
-    refreshDataRoleSelect(categoryId);
+    refreshDataRoleSelect(categoryId, user);
 }
 
 function handleErrorCreateRequest(response) {
@@ -278,7 +306,8 @@ function handleErrorCreateRequest(response) {
         "username": document.querySelector("#usernameInput"),
         "email": document.querySelector("#emailInput"),
         "phone": document.querySelector("#phoneInput"),
-        "password": document.querySelector("#passwordInput")
+        "password": document.querySelector("#passwordInput"),
+        "roles": document.querySelector("#roleSelect")
     }
 
     feedbacks = {
@@ -287,7 +316,8 @@ function handleErrorCreateRequest(response) {
         "username": document.querySelector("#usernameInvalidFeedback"),
         "email": document.querySelector("#emailInvalidFeedback"),
         "phone": document.querySelector("#phoneInvalidFeedback"),
-        "password": document.querySelector("#passwordInvalidFeedback")
+        "password": document.querySelector("#passwordInvalidFeedback"),
+        "roles": document.querySelector("#roleInvalidFeedback"),
     }
 
     Object.keys(inputs).forEach(key => {
@@ -325,9 +355,11 @@ function onCreateSubmit(event) {
         processData: false,
         contentType: false,
         success: function (response) {
+            // console.log(response);
             handleSuccessCreateRequest(response);
         },
         error: function (xhr, status, error) {
+            // console.log(xhr.responseText);
             handleErrorCreateRequest(JSON.parse(xhr.responseText));
         }
     });
@@ -365,6 +397,10 @@ function showDetailModal(event) {
         <div class="input-group mb-3">
             <span class="input-group-text">Phone</span>
             <input type="text" class="form-control" value=${user.phoneNumber} disabled>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">Roles</span>
+            <input type="text" class="form-control" value="${findRoleNames(user, tempRoles) ?? "NULL"}" disabled>
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text">Status</span>
@@ -408,14 +444,16 @@ function handleErrorEditRequest(response) {
         "firstname": document.querySelector("#firstnameInput"),
         "lastname": document.querySelector("#lastnameInput"),
         "phone": document.querySelector("#phoneInput"),
-        "password": document.querySelector("#passwordInput")
+        "password": document.querySelector("#passwordInput"),
+        "roles": document.querySelector("#roleSelect")
     }
 
     feedbacks = {
         "firstname": document.querySelector("#firstnameInvalidFeedback"),
         "lastname": document.querySelector("#lastnameInvalidFeedback"),
         "phone": document.querySelector("#phoneInvalidFeedback"),
-        "password": document.querySelector("#passwordInvalidFeedback")
+        "password": document.querySelector("#passwordInvalidFeedback"),
+        "roles": document.querySelector("#roleInvalidFeedback"),
     }
 
     Object.keys(inputs).forEach(key => {
@@ -439,6 +477,10 @@ function onEditSubmit(event) {
 
     form = new FormData(event.target)
     form.append("isDeleted", isDeletedState ? 1 : 0);
+
+    // for (var pair of form.entries()) {
+    //     console.log(pair[0] + ': ' + pair[1]);  // Log field name and value
+    // }
     $.ajax({
         url: "/api/admin/users/edit",
         method: "POST",
@@ -466,7 +508,7 @@ function showEditModal(event) {
     modalTitle.innerHTML = `Edit User ID: ${user.id}`;
     modalBody.innerHTML = `
         <form id="modalForm" class="g-3 needs-validation" novalidate onsubmit="onEditSubmit(event)">
-            <input type="hidden" name="id" value="  ${user.id}">
+            <input type="hidden" name="id" value="${user.id}">
             <div class="input-group mb-3 has-validation">
                 <span class="input-group-text">Fistname</span>
                 <input id="firstnameInput" type="text" class="form-control" value="${user.firstName}" placeholder="Firstname" name="firstname">
@@ -497,6 +539,20 @@ function showEditModal(event) {
                 <input type="text" id="phoneInput" class="form-control" value=${user.phoneNumber} placeholder="Phone" name="phone">
                 <div id="phoneInvalidFeedback" class="invalid-feedback"></div>
             </div>
+
+            <div class="mb-3 has-validation input-group">
+                <span class="input-group-text">Roles</span>
+                <div id="roleSelect" class="select-menu form-control">
+                    <div class="chosen-item">Nothing selected!</div>
+                    <i class="bi bi-caret-down-fill select-caret"></i>
+                    <ul class="option-list">
+                        
+                    </ul>
+                </div>
+                
+                <div id="roleInvalidFeedback" class="invalid-feedback"></div>
+            </div>
+
             <div class="input-group mb-3 has-validation">
                 <span class="input-group-text" name="status">Status</span>
                 <input type="text" class="form-control" 
@@ -517,6 +573,8 @@ function showEditModal(event) {
         const form = $("#modalForm")[0];
         $(form).trigger("submit");
     }
+
+    refreshRoleSelect("roleSelect", user);
 }
 // END OF EDIT MODAL
 

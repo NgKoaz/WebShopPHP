@@ -88,11 +88,12 @@ function onDelete(roleId) {
         processData: false,
         contentType: false,
         success: function (response) {
+            console.log(response);
             handleSuccessDeleteRequest(response);
         },
         error: function (xhr, status, error) {
-            console.log(JSON.parse(xhr.responseText));
-            showErrorToast("Error!", "Non-expected error. Please, reload page!");
+            const response = JSON.parse(xhr.responseText);
+            showErrorToast("Error!", (response?.errors?.message) ? response.errors.message : "Non-expected error. Please, reload page!");
         }
     });
 }

@@ -9,10 +9,11 @@ use App\modules\admin\models\CreateRoleModel;
 use App\modules\admin\models\DeleteRoleModel;
 use App\modules\admin\models\UpdateRoleModel;
 use App\services\RoleManager;
+use App\services\UserManager;
 
 class ApiRoleController extends Controller
 {
-    public function __construct(private RoleManager $roleManager) {}
+    public function __construct(private RoleManager $roleManager, private UserManager $userManager) {}
 
     #[HttpGet("/api/admin/roles")]
     public function getRoles()
@@ -72,6 +73,10 @@ class ApiRoleController extends Controller
 
             if (!$this->roleManager->hasId($model->id)) {
                 $model->setError("id", "This role id is not found!");
+                $isError = true;
+            }
+            if ($this->userManager->hasRoleInUser($model->id)) {
+                $model->setError("message", "There are users have this role!");
                 $isError = true;
             }
 

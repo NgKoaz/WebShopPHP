@@ -28,4 +28,6 @@ class CreateUserModel extends Model
 
     #[Required()]
     public ?string $password = null;
+
+    public array $roles = [];
 }
