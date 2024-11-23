@@ -18,6 +18,11 @@ class CategoryManager
         return $query->getResult();
     }
 
+    public function getObjectCategories(): array
+    {
+        return $this->entityManager->getRepository(Category::class)->findBy([]);
+    }
+
     public function findBySlug(string $slug): ?Category
     {
         return $this->entityManager->getRepository(Category::class)->findOneBy(["slug" => $slug]);
@@ -97,5 +102,24 @@ class CategoryManager
         }
         $this->entityManager->remove($category);
         $this->entityManager->flush();
+    }
+
+    public function getAncestors(int $categoryId): array
+    {
+        $categories = $this->getCategories();
+        return array_reverse($this->backtrackGetAncestors($categories, $categoryId));
+    }
+
+    private function backtrackGetAncestors(array $categories, int $categoryId, array &$path = []): array
+    {
+        // var_dump($categories);
+        foreach ($categories as $category) {
+            if ($category['id'] == +$categoryId) {
+                $path[] = $category;
+                if (isset($category['parentId'])) return $this->backtrackGetAncestors($categories, $category['parentId'], $path);
+                break;
+            }
+        }
+        return $path;
     }
 }

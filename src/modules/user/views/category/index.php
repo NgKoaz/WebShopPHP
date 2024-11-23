@@ -7,12 +7,23 @@ $this
     ->addScript("index.js")
     ->addStylesheet("index.css");
 
+
+$products = $viewData["products"] ?? [];
+$ancestorCategories = $viewData["ancestorCategories"] ?? [];
+
 ob_start();
 ?>
 
 <div class="app-container">
     <div class="breadcrumb">
-        <span>Home > Shop > Men > T-shirt</span>
+        <span>
+            <a href="/">Home</a> > <a href="/categories">Shop</a>
+            <?php
+            foreach ($ancestorCategories as $category) {
+                echo " > <a href=/categories/" . $category["slug"] . ">" . $category['name'] . "</a>";
+            }
+            ?>
+        </span>
     </div>
     <div class="main-content">
         <div class="sidebar">
@@ -105,7 +116,12 @@ ob_start();
             </div>
 
             <div class="items">
-                <!-- <div class="card">
+                <?php
+                foreach ($products as $product) {
+                    var_dump($product);
+                }
+                ?>
+                <div class="card">
                     <img src="/public/images/newarrivals/cloth1.png">
                     <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
                     <div class="stars">
@@ -119,7 +135,7 @@ ob_start();
                     <div class="price">
                         $140
                     </div>
-                </div> -->
+                </div>
 
 
             </div>

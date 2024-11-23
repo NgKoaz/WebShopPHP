@@ -132,6 +132,7 @@ function refreshDataForTable(page = 1, limit = 12) {
         url: `/api/admin/products?page=${page}&limit=${limit}`,
         method: 'GET',
         success: function (response) {
+            console.log(response);
             updateTable(response);
             updatePagination(response);
         },

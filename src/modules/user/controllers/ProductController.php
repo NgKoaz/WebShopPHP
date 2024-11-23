@@ -6,12 +6,13 @@ use App\core\ArrayList;
 use App\core\Attributes\Http\HttpGet;
 use App\core\Controller;
 use App\Middleware\Auth;
+use App\services\CategoryManager;
 use App\services\LoginManager;
 use App\services\ProductManager;
 
 class ProductController extends Controller
 {
-    public function __construct(private LoginManager $loginManager, private ProductManager $productManager) {}
+    public function __construct(private LoginManager $loginManager, private ProductManager $productManager, private CategoryManager $categoryManager) {}
 
     #[HttpGet("/products/:slug")]
     public function getDetail(string $slug)
@@ -21,6 +22,9 @@ class ProductController extends Controller
         $product = $this->productManager->getProductBySlug($slug);
         if ($product === null) return $this->loadSharedView("404");
         $viewData["product"] = $product;
+
+        $viewData["ancestorCategories"] = $this->categoryManager->getAncestors($product->categoryId);
+
         return $this->view(viewData: $viewData);
     }
 }

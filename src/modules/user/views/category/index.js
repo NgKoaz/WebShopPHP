@@ -1,22 +1,12 @@
 const itemsContainer = document.querySelector(".items");
 
 
-const onStart = () => {
-    const closeFilterBtn = document.querySelector(".filter-modal .top .close-btn");
-    closeFilterBtn.onclick = () => {
-        document.querySelectorAll(".filter-modal, .overlay").forEach((e) => {
-            e.style.display = "none";
-        })
-    }
-}
-
-
-documentReadyCallback.push(() => {
-    let params = new URLSearchParams(window.location.search);
-    let name = params.get('name') ?? "";
-    let options = params.get('options') ?? "";
-    refreshItems(1, name, options);
-});
+// documentReadyCallback.push(() => {
+//     let params = new URLSearchParams(window.location.search);
+//     let name = params.get('name') ?? "";
+//     let options = params.get('options') ?? "";
+//     refreshItems(1, name, options);
+// });
 
 
 function refreshItems(page = 1, name = "", options = "") {
@@ -67,8 +57,3 @@ function refreshItems(page = 1, name = "", options = "") {
     });
 }
 
-
-
-
-
-// document.onre = onStart;

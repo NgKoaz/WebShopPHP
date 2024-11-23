@@ -2,6 +2,7 @@
 
 namespace App\services;
 
+use App\Entities\Category;
 use App\Entities\Product;
 use DateTime;
 use Doctrine\ORM\EntityManager;
@@ -17,22 +18,37 @@ class ProductManager
         $totalPages = ceil($count / $limit);
         $page = ($page < 1) ? 1 : $page;
         $offset = ($page - 1) * $limit;
-        // $products = $this->entityManager->getRepository(Product::class)->findBy(criteria: [], limit: $limit, offset: $offset);
+        $products = $this->entityManager->getRepository(Product::class)->findBy(criteria: [], limit: $limit, offset: $offset);
 
-        $products = $this->entityManager->getRepository(Product::class)
-            ->createQueryBuilder('p')
-            ->leftJoin('p.category', 'c')
-            ->addSelect('c')
-            ->setFirstResult($offset)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
+        $categories = $this->categoryManager->getObjectCategories() ?? [];
+        // var_dump($products);
+        foreach ($products as $product) {
+            if (isset($product->categoryId)) {
+                foreach ($categories as $category) {
+                    if ($product->categoryId == $category->id) {
+                        $product->category = $category;
+                    }
+                }
+            }
+        }
 
         return [
             "products" => $products,
             "totalPages" => $totalPages,
             "currentPage" => $page
         ];
+    }
+
+    public function findAllByCategoryId(int $categoryId): array
+    {
+        $products = $this->entityManager->createQueryBuilder()
+            ->select('p')
+            ->from(Product::class, 'p')
+            ->where('p.categoryId = :categoryId')
+            ->setParameter('categoryId', $categoryId)
+            ->getQuery()
+            ->getResult();
+        return $products;
     }
 
     public function getProductsComplex(int $page, int $limit, string $query, array $options): array

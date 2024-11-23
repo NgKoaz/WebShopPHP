@@ -13,13 +13,20 @@ $this
  * @var Product
  */
 $product = $viewData["product"];
-
+$ancestorCategories = $viewData["ancestorCategories"] ?? [];
 ob_start();
 ?>
 
 <div class="app-container">
     <div class="breadcrumb">
-        <span>Home > Shop > Men > T-shirt</span>
+        <span>
+            <a href="/">Home</a> > <a href="    /categories">Shop</a>
+            <?php
+            foreach ($ancestorCategories as $category) {
+                echo " > <a href=/categories/" . $category["slug"] . " >" . $category['name'] . "</a>";
+            }
+            ?>
+        </span>
     </div>
     <div class="main-content">
         <div class="product">
