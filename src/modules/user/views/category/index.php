@@ -9,6 +9,8 @@ $this
 
 
 $products = $viewData["products"] ?? [];
+$totalPages = $viewData["totalPages"] ?? 1;
+$currentPage = $viewData["currentPage"] ?? 1;
 $ancestorCategories = $viewData["ancestorCategories"] ?? [];
 
 ob_start();
@@ -64,19 +66,19 @@ ob_start();
 
 
                     <!-- <div class="colors">
-                    <h4 class="title">Colors</h4>
-                    <div>Color Picker</div>
-                </div>
-
-
-                <div class="sizes">
-                    <h4 class="title">Size</h4>
-                    <div class="size-options">
-                        <button>123</button>
-                        <button>123</button>
-                        <button>123</button>
+                        <h4 class="title">Colors</h4>
+                        <div>Color Picker</div>
                     </div>
-                </div> -->
+
+
+                    <div class="sizes">
+                        <h4 class="title">Size</h4>
+                        <div class="size-options">
+                            <button>123</button>
+                            <button>123</button>
+                            <button>123</button>
+                        </div>
+                    </div> -->
 
                     <div class="styles">
                         <h4 class="title">Dress Style</h4>
@@ -118,26 +120,25 @@ ob_start();
             <div class="items">
                 <?php
                 foreach ($products as $product) {
-                    var_dump($product);
+                    echo '
+                    <a class="card" href="/products/' . $product["slug"] . '"> 
+                        <img src="/public/images/newarrivals/cloth1.png">
+                        <h3 class="title">' . $product["name"] . '</h3>
+                        <div class="stars">
+                            <i class="bi bi-star-fill star-ic"></i>
+                            <i class="bi bi-star-fill star-ic"></i>
+                            <i class="bi bi-star-fill star-ic"></i>
+                            <i class="bi bi-star-half star-ic"></i>
+                            <i class="bi bi-star star-ic"></i>
+                            <span>5/5</span>
+                        </div>
+                        <div class="price">
+                            $' . $product["price"] . '
+                    </div>
+                    </a>
+                    ';
                 }
                 ?>
-                <div class="card">
-                    <img src="/public/images/newarrivals/cloth1.png">
-                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                        <span>5/5</span>
-                    </div>
-                    <div class="price">
-                        $140
-                    </div>
-                </div>
-
-
             </div>
 
             <hr>

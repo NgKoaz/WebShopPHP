@@ -88,7 +88,7 @@ function updateTable(data) {
             <td>${product.quantity}</td>
             <td>${formatCurrency(product.price)}</td>
             <td>${product.rate}</td>
-            <td>${product.category?.name ?? "NULL"}</td>
+            <td>${product.category_name ?? "NULL"}</td>
             <td>${product.slug}</td>
             <th style="color: ${product.isDeleted ? redColor : darkGreenColor}">${product.isDeleted ? "Deactive" : "Active"}</th>
             <td data-id="${product.id}">

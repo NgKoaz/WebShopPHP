@@ -6,6 +6,7 @@ use App\Entities\Category;
 use App\Entities\Product;
 use DateTime;
 use Doctrine\ORM\EntityManager;
+use PDO;
 use PgSql\Lob;
 
 class ProductManager
@@ -18,19 +19,25 @@ class ProductManager
         $totalPages = ceil($count / $limit);
         $page = ($page < 1) ? 1 : $page;
         $offset = ($page - 1) * $limit;
-        $products = $this->entityManager->getRepository(Product::class)->findBy(criteria: [], limit: $limit, offset: $offset);
+        // $products = $this->entityManager->getRepository(Product::class)->findBy(criteria: [], limit: $limit, offset: $offset);
 
         $categories = $this->categoryManager->getObjectCategories() ?? [];
+
+        // The SQL query to fetch the product and category
+        $sql = '
+            SELECT p.*, c.name as category_name
+            FROM products p
+            JOIN categories c ON p.category_id = c.id
+        ';
+
+        $query = $this->entityManager->getConnection()->prepare($sql);
+        $stmt = $query->executeQuery();
+        $products = $stmt->fetchAllAssociative();
+
+        // echo "<pre>";
         // var_dump($products);
-        foreach ($products as $product) {
-            if (isset($product->categoryId)) {
-                foreach ($categories as $category) {
-                    if ($product->categoryId == $category->id) {
-                        $product->category = $category;
-                    }
-                }
-            }
-        }
+        // echo "</pre>";
+
 
         return [
             "products" => $products,
@@ -51,43 +58,84 @@ class ProductManager
         return $products;
     }
 
-    public function getProductsComplex(int $page, int $limit, string $query, array $options): array
+    public function getProductsComplex(int $page, int $limit, string $query, string $categorySlug, array $options): array
     {
-        $count = $this->entityManager
+        // var_dump($page, $limit, $query, $categorySlug, $options);
+
+        // START GET COUNT 
+        $queryBuilder = $this->entityManager
             ->getRepository(Product::class)
             ->createQueryBuilder('p')
-            ->select('COUNT(p.id)')
-            ->where('LOWER(p.name) LIKE :name')
-            ->setParameter('name', '%' . strtolower($query) . '%')
-            ->getQuery()
-            ->getSingleScalarResult();
+            ->leftJoin('p.category', 'c')
+            ->select('COUNT(p.id)');
+        if (!empty($query)) {
+            $queryBuilder
+                ->where('LOWER(p.name) LIKE :name')
+                ->setParameter('name', '%' . strtolower($query) . '%');
+        }
+        if (!empty($categorySlug)) {
+            $queryBuilder
+                ->andWhere('c.slug = :categorySlug')
+                ->setParameter('categorySlug', $categorySlug);
+        }
+        $count = $queryBuilder->getQuery()->getSingleScalarResult();
+        // END GET COUNT 
 
-        $totalPages = ceil($count / $limit);
+
+        $totalPages = (int) ceil($count / $limit);
         $page = ($page < 1) ? 1 : $page;
         $page = ($page > $totalPages) ? $totalPages : $page;
         $offset = ($page - 1) * $limit;
+        $offset = $offset < 0 ? 0 : $offset;
 
+        $where = "";
+        if (!empty($query)) {
+            $condition = "LOWER(p.name) LIKE  '%" . strtolower($query) . "%'";
+            if (strlen($where) > 0) {
+                $where = $where . " AND " . $condition;
+            } else {
+                $where = $where .  "WHERE " . $condition;
+            }
+        }
+        if (!empty($categorySlug)) {
+            $condition = "c.slug = '$categorySlug'";
+            if (strlen($where) > 0) {
+                $where = $where . " AND " . $condition;
+            } else {
+                $where = $where .  "WHERE " . $condition;
+            }
+        }
 
-        $productsQuery = $this->entityManager
-            ->getRepository(Product::class)
-            ->createQueryBuilder('p')
-            ->where('LOWER(p.name) LIKE :name')
-            ->setParameter('name', '%' . strtolower($query) . '%')
-            ->setFirstResult($offset)
-            ->setMaxResults($limit);
-
-        $order = isset($options["order"]) ? $options["order"] : null;
-        if ($order !== null) {
-            switch ($order) {
-                case "createdAt":
-                    $productsQuery->orderBy("p.$order", 'DESC');
+        $order = "";
+        if (isset($options["order"])) {
+            switch ($options["order"]) {
+                case "created_at":
+                case "sold_number":
+                    $order = "ORDER BY " . $options["order"] . " DESC";
                     break;
             }
         }
 
-        $products = $productsQuery
-            ->getQuery()
-            ->getResult();
+        $sql = "
+            SELECT p.*, c.name as category_name
+            FROM products p
+            JOIN categories c ON p.category_id = c.id
+            " .  $where  . "
+            $order
+            LIMIT " . intval($limit) . "
+            OFFSET " . intval($offset) . "
+            
+        ";
+
+        $productQuery = $this->entityManager->getConnection()->prepare($sql);
+        $stmt = $productQuery->executeQuery();
+        $products = $stmt->fetchAllAssociative();
+
+        // echo "$sql";
+        // echo "<pre>";
+        // var_dump($count, $products);
+        // echo "</pre>";
+
 
         return [
             "products" => $products,
@@ -130,6 +178,7 @@ class ProductManager
         $product->price = $price;
         $product->quantity = $quantity;
         $product->rate = 0;
+        $product->soldNumber = 0;
         $product->slug = $slug;
         $product->isDeleted = false;
         $now = new DateTime;
@@ -137,6 +186,7 @@ class ProductManager
 
         $product->category = $this->categoryManager->findById($categoryId);
         $product->categoryId = $categoryId;
+
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();

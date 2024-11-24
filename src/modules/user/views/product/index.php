@@ -30,16 +30,14 @@ ob_start();
     </div>
     <div class="main-content">
         <div class="product">
-            <div class="left">
-                <div class="product-images">
-                    <div class="large-image">
-                        <img src="/public/images/product/lg.png">
-                    </div>
-                    <div class="small-images">
-                        <div class=""><img src="/public/images/product/sm2.png"></div>
-                        <div class=""><img src="/public/images/product/sm2.png"></div>
-                        <div class=""><img src="/public/images/product/sm3.png"></div>
-                    </div>
+            <div class="left product-images">
+                <div class="large-image">
+                    <img src="/public/images/product/lg.png">
+                </div>
+                <div class="small-images">
+                    <div class="small-image-container"><img src="/public/images/product/sm2.png"></div>
+                    <div class="small-image-container"><img src="/public/images/product/sm2.png"></div>
+                    <div class="small-image-container"><img src="/public/images/product/sm3.png"></div>
                 </div>
             </div>
 
@@ -95,8 +93,6 @@ ob_start();
 
         <hr>
 
-
-
         <div class="tabs">
             <div class="top">
                 <div class="active">Product Details</div>
@@ -109,88 +105,57 @@ ob_start();
 
             <div class="review-tab">
                 <div class="top">
-                    <h4 class="title">Reviews <span>(123)</span></h4>
+                    <h4 class="title">Reviews <span id="numReview">(0)</span></h4>
                     <div class="btns">
                         <button class="filter-btn">
                             <i class="bi bi-sliders2-vertical"></i>
                         </button>
-                        <button class="write-btn">Write a Review</button>
+                        <button class="write-btn" onclick="showReviewModal(event, '<?= $product->id ?>')">Write a Review</button>
                     </div>
                 </div>
 
 
                 <div class="review-container">
-                    <div class="reviews">
-                        <div class="review-card">
-                            <div class="stars">
-                                <i class="bi bi-star-fill star-ic"></i>
-                                <i class="bi bi-star-fill star-ic"></i>
-                                <i class="bi bi-star-fill star-ic"></i>
-                                <i class="bi bi-star-half star-ic"></i>
-                                <i class="bi bi-star star-ic"></i>
+                    <div class="reviews" data-product-id="<?= $product->id ?>">
+                        <!-- <div class="review-card">
+                            <div class="card">
+                                <div class="stars">
+                                    <i class="bi bi-star-fill star-ic"></i>
+                                    <i class="bi bi-star-fill star-ic"></i>
+                                    <i class="bi bi-star-fill star-ic"></i>
+                                    <i class="bi bi-star-half star-ic"></i>
+                                    <i class="bi bi-star star-ic"></i>
+                                </div>
+                                <div class="author-name">
+                                    Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
+                                </div>
+                                <p class="comment">
+                                    "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
+                                </p>
+                                <small class="date">Post On</small>
                             </div>
-                            <div class="author-name">
-                                Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
-                            </div>
-                            <p class="comment">
-                                "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                            </p>
-                            <small class="date">Post On</small>
                         </div>
 
 
                         <div class="review-card">
-                            <div class="stars">
-                                <i class="bi bi-star-fill star-ic"></i>
-                                <i class="bi bi-star-fill star-ic"></i>
-                                <i class="bi bi-star-fill star-ic"></i>
-                                <i class="bi bi-star-half star-ic"></i>
-                                <i class="bi bi-star star-ic"></i>
+                            <div class="card">
+                                <div class="stars">
+                                    <i class="bi bi-star-fill star-ic"></i>
+                                    <i class="bi bi-star-fill star-ic"></i>
+                                    <i class="bi bi-star-fill star-ic"></i>
+                                    <i class="bi bi-star-half star-ic"></i>
+                                    <i class="bi bi-star star-ic"></i>
+                                </div>
+                                <div class="author-name">
+                                    Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
+                                </div>
+                                <p class="comment">
+                                    "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
+                                </p>
+                                <small class="date">Post On</small>
                             </div>
-                            <div class="author-name">
-                                Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
-                            </div>
-                            <p class="comment">
-                                "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectat ions.ad as ujdkha jdkhas kjdh jksah jkdh asjkhdjk askjhj khjkd shakjfh jhjkkkja shdkjf hakjsdhfjkhsd jfhjkdshkjfh akshkjdhj sahkjhhs kja hsf dhfd”
-                            </p>
-                            <small class="date">On Post</small>
-                        </div>
+                        </div> -->
 
-
-                        <div class="review-card">
-                            <div class="stars">
-                                <i class="bi bi-star-fill star-ic"></i>
-                                <i class="bi bi-star-fill star-ic"></i>
-                                <i class="bi bi-star-fill star-ic"></i>
-                                <i class="bi bi-star-half star-ic"></i>
-                                <i class="bi bi-star star-ic"></i>
-                            </div>
-                            <div class="author-name">
-                                Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
-                            </div>
-                            <p class="comment">
-                                "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                            </p>
-                            <small class="date">On Post</small>
-                        </div>
-
-
-                        <div class="review-card">
-                            <div class="stars">
-                                <i class="bi bi-star-fill star-ic"></i>
-                                <i class="bi bi-star-fill star-ic"></i>
-                                <i class="bi bi-star-fill star-ic"></i>
-                                <i class="bi bi-star-half star-ic"></i>
-                                <i class="bi bi-star star-ic"></i>
-                            </div>
-                            <div class="author-name">
-                                Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
-                            </div>
-                            <p class="comment">
-                                "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                            </p>
-                            <small class="date">On Post</small>
-                        </div>
                     </div>
                 </div>
 

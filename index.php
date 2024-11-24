@@ -11,6 +11,7 @@ use App\services\CartManager;
 use App\services\CategoryManager;
 use App\services\LoginManager;
 use App\services\ProductManager;
+use App\services\ReviewManager;
 use App\services\RoleManager;
 use App\services\SessionManager;
 use App\services\UserManager;
@@ -46,7 +47,8 @@ Container::getInstance()
     ->addSingleton(RoleManager::class, RoleManager::class)
     ->addSingleton(ProductManager::class, ProductManager::class)
     ->addSingleton(CategoryManager::class, CategoryManager::class)
-    ->addSingleton(CartManager::class, CartManager::class);
+    ->addSingleton(CartManager::class, CartManager::class)
+    ->addSingleton(ReviewManager::class, ReviewManager::class);
 
 $app = new App();
 

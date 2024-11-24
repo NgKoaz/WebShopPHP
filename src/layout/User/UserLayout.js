@@ -14,8 +14,11 @@ selector.searchContainerPc = document.querySelector("#searchFormPc .search-resul
 
 selector.searchResList = document.querySelectorAll(".search-results");
 
+selector.toastContainer = document.querySelector("#toastContainer");
+let toastTimer = null;
 
-const documentReadyCallback = [updateResizing];
+
+const documentReadyCallback = [];
 
 document.onclick = (event) => {
     closeSearchWhenClickOutside(event);
@@ -30,7 +33,6 @@ const closeSearchWhenClickOutside = (event) => {
     }
 }
 
-
 function closeDropdownWhenClickOutside(event) {
     const dropdown = event.target.closest(".dropdown");
     if (!dropdown) {
@@ -40,25 +42,45 @@ function closeDropdownWhenClickOutside(event) {
 }
 
 
-function updateResizing() {
-    footerContainer.style.marginTop = (-subscription.offsetHeight / 2 + 32) + "px";
-    const indentValue = (window.innerWidth - 1240) / 2;
-    if (window.innerWidth > 1240) {
-        document.documentElement.style.setProperty('--indent-default', `${indentValue}px`);
-        selector.searchFormMb.style.display = "none";
-    }
-    else {
-        selector.searchContainerMb.style.display = "none";
-        selector.searchFormMb.style.display = "block";
-        selector.searchContainerPc.style.display = "none";
-        document.documentElement.style.removeProperty('--indent-default')
+
+
+function openToast(message) {
+    selector.toastContainer.innerHTML = `
+    <div id="toast" class="toast">
+        <div class="toast-icon"><i class="bi bi-check-circle-fill"></i></div>
+        <div class="toast-content">
+            <div class="toast-title">Success!</div>
+            <div class="toast-message">${message}</div>
+        </div>
+        <div class="toast-close" data-close-toast="#toast">
+            <i class=" bi bi-x-lg" onclick="closeToast(event)"></i>
+        </div>
+    </div>`;
+
+    const toast = document.querySelector(`#toast`);
+    setTimeout(() => {
+        toast.classList.add("show");
+    }, 100);
+    toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000);
+}
+
+function closeToast(event) {
+    const toastClose = event.target.closest(".toast-close");
+    if (toastClose) {
+        const toastId = toastClose.dataset.closeToast;
+        const toast = document.querySelector(`${toastId}`);
+        clearTimeout(toastTimer);
+        toast.classList.remove("show");
     }
 }
 
-document.onreadystatechange = () => {
-    documentReadyCallback.forEach(cb => cb())
-};
-window.addEventListener('resize', updateResizing);
+
+
+
+
+
 
 
 
@@ -213,17 +235,4 @@ function onChangeSearchInputMb(event) {
 }
 //#endregion
 
-
-function onClickNavLink(event, number) {
-    event.preventDefault();
-    switch (number) {
-        case 0:
-            window.location.href = "/categories?options=%7B%0A%22order%22%3A%20%22createdAt%22%0A%7D";
-            break;
-        case 1:
-            window.location.href = "/categories?option=topSelling";
-            break;
-        default:
-    }
-}
 

@@ -29,6 +29,12 @@ class LoginManager
         return $userId !== null ? $this->userManager->findById($userId) : null;
     }
 
+    public function getCurrentUserId(): ?int
+    {
+        return $this->sessionManager->getPersistentEntry($this->USER_ID);
+    }
+
+
     public function isLoggedIn(): bool
     {
         $userId = $this->sessionManager->getPersistentEntry($this->USER_ID);

@@ -10,35 +10,45 @@ use App\services\CategoryManager;
 use App\services\LoginManager;
 use App\services\ProductManager;
 
-#[Auth("/login")]
 class CategoryController extends Controller
 {
     public function __construct(private LoginManager $loginManager, private ProductManager $productManager, private CategoryManager $categoryManager) {}
 
     #[HttpGet("/categories")]
-    public function getShop()
+    public function getShop(int $page = 1, int $limit = 12, string $query = "", string $options = "")
     {
         $viewData = new ArrayList;
         $viewData["IS_LOGGED_IN"] = $this->loginManager->isLoggedIn();
+
+        $options = (strlen($options) > 0) ? json_decode($options, true) : [];
+        $result = $this->productManager->getProductsComplex($page, $limit, $query, "", $options);
+
+        $viewData["products"] = $result["products"];
+        $viewData["totalPages"] = $result["totalPages"];
+        $viewData["currentPage"] = $result["currentPage"];
+
         $this->view(viewData: $viewData);
     }
 
     #[HttpGet("/categories/:slug")]
-    public function getProductByCategory(?string $slug)
+    public function getProductByCategory(int $page = 1, int $limit = 12, string $query = "", string $slug = "", string $options = "")
     {
-        // echo "HELLO";
-        // var_dump($slug);
         $viewData = new ArrayList;
         $viewData["IS_LOGGED_IN"] = $this->loginManager->isLoggedIn();
+
         if (strlen($slug) > 0) {
             $category = $this->categoryManager->findBySlug($slug);
-
             if ($category === null) return $this->loadSharedView("404");
 
-            $products = $this->productManager->findAllByCategoryId($category->id);
+            $options = (strlen($options) > 0) ? json_decode($options, true) : [];
+            $result = $this->productManager->getProductsComplex($page, $limit, $query, $slug, $options);
+
             $ancestorCategories = $this->categoryManager->getAncestors($category->id);
             $viewData["ancestorCategories"] = $ancestorCategories;
-            $viewData["products"] = $products;
+
+            $viewData["products"] = $result["products"];
+            $viewData["totalPages"] = $result["totalPages"];
+            $viewData["currentPage"] = $result["currentPage"];
         }
         $this->view(viewData: $viewData);
     }

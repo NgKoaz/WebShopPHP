@@ -19,11 +19,12 @@ function onClickBrowseCard(event) {
 
 function refreshNewArrivalList() {
     $.ajax({
-        url: `/api/products?limit=4&options=%7B%0A%22order%22%3A%20%22createdAt%22%0A%7D`,
+        url: `/api/products?limit=4&options=%7B%0A%22order%22%3A%20%22created_at%22%0A%7D`,
         method: "GET",
         processData: false,
         contentType: false,
         success: function (response) {
+            console.log(response);
             const products = response.products;
             const content = products.reduce((content, product) => {
                 return content + `

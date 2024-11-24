@@ -1,17 +1,12 @@
-.app-container {
-    /* display: none; */
-}
+/* .app-container {
+} */
 
 .welcome {
-    /* padding: 0px 100px; */
     display: grid;
     background-color: #F2F0F1;
 }
 
 .welcome .left {
-    /* display: flex; */
-    /* justify-content: center;
-    flex-direction: column; */
     padding-inline: var(--indent-default);
 }
 
@@ -20,8 +15,6 @@
     font-size: var(--h1-font-size);
     font-weight: 900;
     line-height: 32px;
-    /* font-size: 64px;
-    font-weight: 900; */
 }
 
 .welcome .left .welcome-description {
@@ -29,8 +22,6 @@
     font-size: var(--md-font-size);
     line-height: 20px;
     color: rgb(0, 0, 0, 0.6);
-    /* font-size: 16px; */
-
 }
 
 .welcome .left .shopnow-btn {
@@ -58,11 +49,7 @@
 }
 
 .welcome .left .figure-list {
-    /* height: 74px; */
 
-    /* grid-template-columns: 1fr 1fr 1fr;
-    display: grid;
-    gap: 32px; */
     margin-top: 20px;
     padding-inline: 20px;
 
@@ -100,27 +87,20 @@
 .figure-title {
     font-size: var(--h4-font-size);
     font-weight: 600;
-    /* font-size: 40px;
-    font-weight: 600; */
 }
 
 .figure-description {
     font-size: var(--sm-font-size);
     color: rgb(0, 0, 0, 0.6);
-    /* font-size: 16px; */
 }
 
 .welcome .right {
     height: 448px;
-    /* width: 100%; */
-    /* display: none; */
 }
 
 .brand-list {
-    /* height: 122px; */
     width: 100%;
     padding: 40px var(--indent-default);
-    /* padding: 0px 100px; */
 
     display: flex;
     justify-content: space-around;
@@ -137,14 +117,9 @@
 
 .new-arrival {
     padding-inline: var(--indent-default);
-    /* padding: 0px 100px; */
 }
 
 .new-arrival .section-title {
-    /* height: 185px;
-    padding-top: 72px;
-    font-size: 48px; */
-
     padding-top: 50px;
     padding-bottom: 32px;
     font-size: var(--h2-font-size);
@@ -153,19 +128,17 @@
 }
 
 .btn-view-all-container {
-    /* padding-top: 36px;
-    padding-bottom: 72px; */
     padding-top: 24px;
 
     display: flex;
     justify-content: center;
 }
 
-.btn-view-all-container button {
+.btn-view-all-container a {
     width: 100%;
     padding: 16px 80px;
-    /* margin-inline: auto; */
-    /* padding: 16px 80px; */
+
+    text-align: center;
     font-size: var(--md-font-size);
 
     border: 1px solid rgb(0, 0, 0, 0.1);
@@ -175,7 +148,7 @@
     transition: 0.3s ease;
 }
 
-.btn-view-all-container button:hover, .btn-view-all-container button:active {
+.btn-view-all-container a:hover, .btn-view-all-container a:active {
     text-decoration: underline;
     border: 1px solid rgb(0, 0, 0, 0.5);
 }

@@ -91,7 +91,7 @@ ob_start();
         </div>
 
         <div class="btn-view-all-container">
-            <button onclick="onClickNavLink(event, 0)">View All</button>
+            <a href="/categories?options=%7B%0A%22order%22%3A%20%22created_at%22%0A%7D">View All</a>
         </div>
     </div>
     <!-- New arrival end -->
@@ -173,7 +173,7 @@ ob_start();
         </div>
 
         <div class="btn-view-all-container">
-            <button onclick="onClickNavLink(event, 1)">View All</button>
+            <a href="/categories?options=%7B%0A%22order%22%3A%20%22sold_number%22%0A%7D">View All</a>
         </div>
     </div>
     <!-- Top selling end -->

@@ -35,8 +35,8 @@
 
             <div class="nav-tab-list">
                 <a href="/categories">Shop</a>
-                <a onclick="onClickNavLink(event, 0)">New Arrivals</a>
-                <a onclick="onClickNavLink(event, 1)">Top Selling</a>
+                <a href="/categories?options=%7B%0A%22order%22%3A%20%22created_at%22%0A%7D">New Arrivals</a>
+                <a href="/categories?options=%7B%0A%22order%22%3A%20%22sold_number%22%0A%7D">Top Selling</a>
             </div>
 
             <form id="searchFormPc" class="search-bar">
@@ -122,95 +122,143 @@
 
         <!-- Footer begin -->
         <footer>
-            <div class="subscription">
-                <h1>STAY UPTO DATE ABOUT OUR LATEST OFFERS</h1>
-                <div class="subscription-form-container">
-                    <form>
-                        <i class="bi bi-envelope-at-fill"></i>
-
-                        <input type="text" name="email" placeholder="Enter your email address">
-                        <button>Subscribe to Newsletter</button>
-                    </form>
-                </div>
-            </div>
             <div class="footer-container">
-                <div class="left">
-                    <div class="logo"><a href="/">BK.CO</a></div>
-                    <p>We have clothes that suits your style and which you’re proud to wear. From women to men.</p>
-                    <div class="social-media-icons">
-                        <a class=" facebook-ic" href="https://www.facebook.com">
-                            <img src="\public\images\homepage\icons\fb.png" alt="facebook" style="width:auto; height:auto;">
-                        </a>
-                        <a class="" href="https://www.x.com">
-                            <img src="\public\images\homepage\icons\twitter.png" alt="x" style="width:auto; height:auto;">
-                        </a>
-                        <a class="" href="https://www.instagram.com">
-                            <img src="\public\images\homepage\icons\ins.png" alt="twitter" style="width:auto; height:auto;">
-                        </a>
-                    </div>
-                </div>
-                <div class="right">
-                    <div class="info-container">
-                        <div class="info-list">
-                            <div class="info-title">Company</div>
-                            <div class="link">
-                                <a>About</a><br>
-                                <a>Features</a><br>
-                                <a>Works</a><br>
-                                <a>Career</a>
-                            </div>
-                        </div>
-                        <div class="info-list">
-                            <div class="info-title">HELP</div>
-                            <div class="link">
-                                <a>Customer Support</a><br>
-                                <a>Delivery Details</a><br>
-                                <a>Terms & Conditions</a><br>
-                                <a>Privacy Policy</a>
-                            </div>
-                        </div>
-                        <div class="info-list">
-                            <div class="info-title">FAQ</div>
-                            <div class="link">
-                                <a>Account</a><br>
-                                <a>Manage Deliveries</a><br>
-                                <a>Orders</a><br>
-                                <a>Payment</a>
-                            </div>
-                        </div>
-                        <div class="info-list">
-                            <div class="info-title">RESOURCES</div>
-                            <div class="link">
-                                <a>Free eBook</a><br>
-                                <a>Development Tutorial</a><br>
-                                <a>How to - Blog</a><br>
-                                <a>Youtube Playlist</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="more-description">
-                <hr class="footer-delimeter">
-                <div class="rights-description"> Shop.co © 2000-2023, All Rights Reserved</div>
+                <div class="subscription">
+                    <h1>STAY UPTO DATE ABOUT OUR LATEST OFFERS</h1>
+                    <div class="subscription-form-container">
+                        <form>
+                            <i class="bi bi-envelope-at-fill"></i>
 
-                <div class="payment-badges">
-                    <div class="badge">
-                        <img src="\public\images\homepage\icons\visa.png" alt="twitter" style="width:100%; height:100%;">
+                            <input type="text" name="email" placeholder="Enter your email address">
+                            <button>Subscribe to Newsletter</button>
+                        </form>
                     </div>
-                    <div class="badge">
-                        <img src="\public\images\homepage\icons\msc.png" alt="twitter" style="width:100%; height:100%;">
+                </div>
+                <div class="footer-infomation">
+                    <div class="left">
+                        <div class="logo"><a href="/">BK.CO</a></div>
+                        <p>We have clothes that suits your style and which you’re proud to wear. From women to men.</p>
+                        <div class="social-media-icons">
+                            <a class=" facebook-ic" href="https://www.facebook.com">
+                                <img src="\public\images\homepage\icons\fb.png" alt="facebook" style="width:auto; height:auto;">
+                            </a>
+                            <a class="" href="https://www.x.com">
+                                <img src="\public\images\homepage\icons\twitter.png" alt="x" style="width:auto; height:auto;">
+                            </a>
+                            <a class="" href="https://www.instagram.com">
+                                <img src="\public\images\homepage\icons\ins.png" alt="twitter" style="width:auto; height:auto;">
+                            </a>
+                        </div>
                     </div>
-                    <div class="badge">
-                        <img src="\public\images\homepage\icons\pp.png" alt="twitter" style="width:100%; height:100%;">
+                    <div class="right">
+                        <div class="info-container">
+                            <div class="info-list">
+                                <div class="info-title">Company</div>
+                                <div class="link">
+                                    <a>About</a><br>
+                                    <a>Features</a><br>
+                                    <a>Works</a><br>
+                                    <a>Career</a>
+                                </div>
+                            </div>
+                            <div class="info-list">
+                                <div class="info-title">HELP</div>
+                                <div class="link">
+                                    <a>Customer Support</a><br>
+                                    <a>Delivery Details</a><br>
+                                    <a>Terms & Conditions</a><br>
+                                    <a>Privacy Policy</a>
+                                </div>
+                            </div>
+                            <div class="info-list">
+                                <div class="info-title">FAQ</div>
+                                <div class="link">
+                                    <a>Account</a><br>
+                                    <a>Manage Deliveries</a><br>
+                                    <a>Orders</a><br>
+                                    <a>Payment</a>
+                                </div>
+                            </div>
+                            <div class="info-list">
+                                <div class="info-title">RESOURCES</div>
+                                <div class="link">
+                                    <a>Free eBook</a><br>
+                                    <a>Development Tutorial</a><br>
+                                    <a>How to - Blog</a><br>
+                                    <a>Youtube Playlist</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="badge">
-                        <img src="\public\images\homepage\icons\gpay.png" alt="twitter" style="width:100%; height:100%;">
+                </div>
+                <div class="more-description">
+                    <hr class="footer-delimeter">
+                    <div class="rights-description"> Shop.co © 2000-2023, All Rights Reserved</div>
+
+                    <div class="payment-badges">
+                        <div class="badge">
+                            <img src="\public\images\homepage\icons\visa.png" alt="twitter" style="width:100%; height:100%;">
+                        </div>
+                        <div class="badge">
+                            <img src="\public\images\homepage\icons\msc.png" alt="twitter" style="width:100%; height:100%;">
+                        </div>
+                        <div class="badge">
+                            <img src="\public\images\homepage\icons\pp.png" alt="twitter" style="width:100%; height:100%;">
+                        </div>
+                        <div class="badge">
+                            <img src="\public\images\homepage\icons\gpay.png" alt="twitter" style="width:100%; height:100%;">
+                        </div>
                     </div>
                 </div>
             </div>
         </footer>
         <!-- Footer end -->
+
+        <!-- Toast begin -->
+        <div id="toastContainer">
+            <!-- <div id="toast" class="toast">
+                <div class="toast-icon"><i class="bi bi-check-circle-fill"></i></div>
+                <div class="toast-content">
+                    <div class="toast-title">Success!</div>
+                    <div class="toast-message">Get Your work</div>
+                </div>
+                <div class="toast-close" data-close-toast="#toast">
+                    <i class=" bi bi-x-lg"></i>
+                </div>
+            </div> -->
+        </div>
+        <!-- Toast end -->
+
+        <!-- Modal begin -->
+        <div id="modalContainer">
+            <!-- <div id="reviewModal" class="modal show">
+                <div class="modal-content">
+                    <form>
+                        <div class="rating">
+                            <input type="radio" name="rate" id="rate-5s">
+                            <label for="rate-5s" class="bi bi-star-fill"></label>
+                            <input type="radio" name="rate" id="rate-4s">
+                            <label for="rate-4s" class="bi bi-star-fill"></label>
+                            <input type="radio" name="rate" id="rate-3s">
+                            <label for="rate-3s" class="bi bi-star-fill"></label>
+                            <input type="radio" name="rate" id="rate-2s">
+                            <label for="rate-2s" class="bi bi-star-fill"></label>
+                            <input type="radio" name="rate" id="rate-1s">
+                            <label for="rate-1s" class="bi bi-star-fill"></label>
+                        </div>
+                        <textarea placeholder="Write your review"></textarea>
+                    </form>
+                </div>
+                <div class="modal-action">
+                    <button class="w-50 btn btn-secondary btn-close" data-close-modal="#reviewModal" onclick="closeReviewModal(event)">Cancel</button>
+                    <button class="w-50 btn btn-primary btn-submit">Send</button>
+                </div>
+                <div class="modal-close">
+                    <i class=" bi bi-x-lg" data-close-modal="#reviewModal" onclick="closeReviewModal(event)"></i>
+                </div>
+            </div> -->
+        </div>
+        <!-- Modal end -->
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous" defer></script>
