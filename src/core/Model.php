@@ -2,6 +2,7 @@
 
 namespace App\core;
 
+use App\core\Types\HTMLString;
 use ArrayAccess;
 use Exception;
 use ReflectionClass;
@@ -15,7 +16,17 @@ class Model implements ArrayAccess
     {
         foreach ($assocArr as $key => $value) {
             if (property_exists($this, $key)) {
-                $this->$key = !is_array($value) ? htmlspecialchars($value) : $value;
+                switch (true) {
+                    case is_a($this->$key, HTMLString::class):
+                        $this->$key = new HTMLString($value);
+                        break;
+                    case is_array($value):
+                        $this->$key = $value;
+                        break;
+                    default:
+                        $this->$key = htmlspecialchars($value);
+                        break;
+                }
             }
         }
     }

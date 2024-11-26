@@ -38,6 +38,12 @@ class Product
     #[Column]
     public string $slug;
 
+    #[Column(nullable: true)]
+    public ?string $details;
+
+    #[Column(nullable: true)]
+    public ?string $images;
+
     #[Column(name: "category_id", nullable: true)]
     public int $categoryId;
 

@@ -1,4 +1,4 @@
-const tbody = document.querySelector("table tbody");
+const tbody = document.querySelector("#productTable tbody");
 const modal = document.querySelector("#modal");
 const modalTitle = document.querySelector("#modal .modal-title")
 const modalBody = document.querySelector("#modal .modal-body")
@@ -13,6 +13,11 @@ const toastTitle = document.querySelector(".toast .toast-title");
 const toastBody = document.querySelector(".toast .toast-body");
 const toastRect = document.querySelector(".toast rect");
 
+const tbodyFoundProductTable = document.querySelector("#foundProductTable tbody");
+const productDetailsPreview = document.querySelector("#productDetailsPreview");
+
+const saveProductDetailBtn = document.querySelector("#saveProductDetailBtn");
+
 
 const greenColor = "#32ff7e";
 const darkGreenColor = "#3ae374";
@@ -25,6 +30,47 @@ state = {
     totalPages: 1,
     autoGenerate: true
 }
+
+
+initTinyMCE("#productDetails");
+
+//#region TinyMCE
+function initTinyMCE(selector) {
+    tinymce.init({
+        selector: selector,
+        setup: function (editor) {
+            editor.on('input', function () {
+                saveProductDetailBtn.classList.remove("disabled");
+                updatePreview(editor.getContent());
+            });
+            editor.on('change', function () {
+                saveProductDetailBtn.classList.remove("disabled");
+                updatePreview(editor.getContent());
+            });;
+        },
+        plugins: [
+            // Core editing features
+            'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+            // Your account includes a free trial of TinyMCE premium features
+            // Try the most popular premium features until Dec 9, 2024:
+            'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown',
+            // Early access to document converters
+            'importword', 'exportword', 'exportpdf'
+        ],
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name',
+        mergetags_list: [
+            { value: 'First.Name', title: 'First Name' },
+            { value: 'Email', title: 'Email' },
+        ],
+        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+        exportpdf_converter_options: { 'format': 'Letter', 'margin_top': '1in', 'margin_right': '1in', 'margin_bottom': '1in', 'margin_left': '1in' },
+        exportword_converter_options: { 'document': { 'size': 'Letter' } },
+        importword_converter_options: { 'formatting': { 'styles': 'inline', 'resets': 'inline', 'defaults': 'inline', } },
+    });
+}
+//#endregion
 
 //#region Utility
 function formatCurrency(price) {
@@ -633,5 +679,139 @@ function showDeleteModal(event) {
 }
 //#endregion
 
+
+
+//#region Product detail and iamges.
+function updatePreview(content) {
+    productDetailsPreview.innerHTML = content;
+}
+
+function saveProductDetailsHTML(event) {
+    const form = new FormData();
+    const editor = tinymce.get("productDetails");
+
+    form.append("id", event.target.dataset.productId);
+    form.append("details", editor.getContent());
+
+    $.ajax({
+        url: "/api/admin/products/detail/edit",
+        method: "POST",
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log(response);
+            showSuccessToast("Success!", "Saved");
+            saveProductDetailBtn.classList.add("disabled");
+        },
+        error: function (xhr, status, error) {
+            console.log(xhr.responseText);
+            showErrorToast("Error!", "Perhaps, you need to select product first!");
+            // handleErrorEditRequest(JSON.parse(xhr.responseText));
+        }
+    });
+}
+
+function handleFindingSuccess(product) {
+    // Clear Error
+    const inputs = {
+        "id": document.querySelector("#idProductInput"),
+        "slug": document.querySelector("#slugProductInput"),
+    }
+    const feedbacks = {
+        "id": document.querySelector("#idProductFeedback"),
+        "slug": document.querySelector("#slugProductFeedback"),
+    }
+    Object.keys(inputs).forEach(key => {
+        inputs[key].classList.remove("is-invalid");
+        feedbacks[key].innerHTML = "";
+    })
+
+    // Import data
+    tbodyFoundProductTable.innerHTML = `
+        <tr>
+            <th>${product.id}</th>
+            <td>${product.name}</td>
+            <td>${product.quantity}</td>
+            <td>${formatCurrency(product.price)}</td>
+            <td>${product.rate}</td>
+            <td>${product.slug}</td>
+        </tr>
+    `;
+
+    if (!product.details) product.details = "";
+
+    const editor = tinymce.get("productDetails");
+    editor.setContent(product.details);
+    productDetailsPreview.innerHTML = product.details;
+
+    saveProductDetailBtn.setAttribute("data-product-id", product.id);
+}
+
+function handleFindingProductError(response) {
+    if (response?.errors === null) return;
+
+    const inputs = {
+        "id": document.querySelector("#idProductInput"),
+        "slug": document.querySelector("#slugProductInput"),
+    }
+
+    const feedbacks = {
+        "id": document.querySelector("#idProductFeedback"),
+        "slug": document.querySelector("#slugProductFeedback"),
+    }
+
+    Object.keys(inputs).forEach(key => {
+        inputs[key].classList.remove("is-invalid");
+        feedbacks[key].innerHTML = "";
+    })
+
+    errors = response.errors;
+    Object.keys(errors).forEach(errKey => {
+        // console.log(errKey, errors[errKey]);
+        if (inputs[errKey]) {
+            inputs[errKey].classList.add("is-invalid");
+            feedbacks[errKey].innerHTML = errors[errKey].join("<br>");
+        }
+    })
+    showErrorToast("Error!", "Check your error message!");
+}
+
+function findProductById(event) {
+    const idProductInput = document.querySelector("#idProductInput");
+    const id = idProductInput.value;
+
+    $.ajax({
+        url: `/api/admin/product?id=${id}`,
+        method: 'GET',
+        success: function (response) {
+            console.log(response);
+            handleFindingSuccess(response);
+        },
+        error: function (xhr, status, error) {
+            console.log(xhr.responseText);
+            handleFindingProductError(JSON.parse(xhr.responseText));
+        }
+    });
+}
+
+function findProductBySlug(event) {
+    const slugProductInput = document.querySelector("#slugProductInput");
+    const slug = slugProductInput.value;
+
+    $.ajax({
+        url: `/api/admin/product?slug=${slug}`,
+        method: 'GET',
+        success: function (response) {
+            console.log(response);
+            handleFindingSuccess(response);
+        },
+        error: function (xhr, status, error) {
+            console.log(xhr.responseText);
+            handleFindingProductError(JSON.parse(xhr.responseText));
+        }
+    });
+}
+//#endregion 
 
 

@@ -225,4 +225,11 @@ class ProductManager
             ->getQuery()
             ->getResult();
     }
+
+    public function editProductDetails(mixed $id, string $details): void
+    {
+        $product = $this->findProductById($id);
+        $product->details = $details;
+        $this->entityManager->flush();
+    }
 }
