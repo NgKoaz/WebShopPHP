@@ -2,9 +2,9 @@ img {
     width: 100%;
 }
 
-
 .app-container {
-    padding-inline: var(--indent-default);
+    max-width: 1240px;
+    margin-inline: auto;
 }
 
 .breadcrumb {
@@ -56,8 +56,6 @@ img {
     border-bottom: 1px solid rgb(0, 0, 0, 0.1);
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    /* align-items: center; */
 }
 
 .card {
@@ -81,7 +79,6 @@ img {
 
 .pagination {
     margin-top: 20px;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -90,6 +87,15 @@ img {
 
 .pagination a {
     display: inline-block;
+    cursor: pointer;
+}
+
+.pagination a:hover {
+    background-color: rgb(0, 0, 0, 0.05);
+}
+
+.pagination a.active {
+    background-color: rgb(0, 0, 0, 0.15) !important;
 }
 
 .pagination span {
@@ -101,26 +107,17 @@ img {
     width: 40px;
     height: 40px;
 
-
     text-align: center;
-
     padding: 10px 18px;
     border-radius: 9px;
-
     position: relative;
 }
 
 .pagination .page-num span {
     position: absolute;
-
     top: 50%;
     left: 50%;
-
     transform: translate(-50%, -50%);
-}
-
-.pagination a:hover {
-    background-color: rgb(0, 0, 0, 0.1);
 }
 
 .pagination .prev, .pagination .next {

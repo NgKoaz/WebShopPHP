@@ -144,8 +144,14 @@ ob_start();
             <hr>
 
             <div class="pagination">
-                <a class="prev">-Previous</a>
+                <a class="prev">Previous</a>
                 <div>
+                    <?php
+
+                    if ($totalPages > 0) {
+                    }
+
+                    ?>
                     <a class="page-num"><span>1</span></a>
                     <a class="page-num"><span>2</span></a>
                     <a class="page-num"><span>3</span></a>

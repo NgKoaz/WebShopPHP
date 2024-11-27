@@ -47,12 +47,15 @@ class Product
     #[Column(name: "category_id", nullable: true)]
     public int $categoryId;
 
+    #[Column(name: "total_rates")]
+    public int $totalRates;
+
+    #[Column(name: "total_reviews")]
+    public int $totalReviews;
+
     #[ManyToOne(targetEntity: Category::class, inversedBy: "products")]
     #[JoinColumn(name: "category_id", referencedColumnName: "id", nullable: true)]
     public Category $category;
-
-    // #[OneToMany(targetEntity: Review::class, mappedBy: "product")]
-    // public Collection $reviews;
 
     #[Column(name: "sold_number", nullable: false)]
     public int $soldNumber;

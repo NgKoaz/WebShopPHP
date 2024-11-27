@@ -1,29 +1,46 @@
 const quantityContainer = document.querySelector(".quantity-modifier .quantity");
-state.quantity = 1;
-
 const modalContainer = document.querySelector("#modalContainer");
 const reviewsSelector = document.querySelector(".review-container .reviews");
-state.reviews = [];
-
 const numReviewSelector = document.querySelector("#numReview");
+const moreReviewBtn = document.querySelector("#moreReviewBtn");
+const tabs = document.querySelectorAll("[data-tab]");
 
-function setHeightReviewContainer() {
-    const reviewContainer = $('.review-container');
-    const elements = $('.reviews');
-    let maxHeight = 0;
-    elements.each(function () {
-        maxHeight = Math.max(maxHeight, $(this).outerHeight());
-        console.log(maxHeight);
-        reviewContainer.width("100%").height(maxHeight + "px");
+state.currentPage = 0;
+state.totalPages = 0;
+state.quantity = 1;
+state.reviews = [];
+state.tabIndex = 0;
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    moreReviewBtn.addEventListener("click", (event) => {
+        if (state.currentPage >= state.totalPages) {
+            moreReviewBtn.classList.add("disabled");
+            return;
+        }
+        getReviews(state.currentPage + 1);
     });
-}
+
+    [...tabs].forEach(tab => {
+        tab.addEventListener("click", (event) => {
+            const target = event.target;
+            if (state.tabIndex === +target.dataset.tab) return;
+            state.tabIndex = +target.dataset.tab;
+            [...tabs].forEach(t => {
+                t.classList.remove("active");
+                const content = document.querySelector(t.dataset.idToggle);
+                content.classList.add("disabled");
+            });
+            tab.classList.add("active");
+            const tabContent = document.querySelector(tab.dataset.idToggle);
+            tabContent.classList.remove("disabled");
+        });
+    });
+})
 
 
 
-
-documentReadyCallback.push(setHeightReviewContainer);
-
-
+//#region Add Product Into Cart
 function addProductIntoCart(event) {
     const productId = event.target.dataset.productId;
     const quantity = state.quantity;
@@ -49,12 +66,12 @@ function addProductIntoCart(event) {
     });
 }
 
-
 function changeQuantity(productId, changeValue) {
     if (state.quantity + changeValue <= 0) return;
     state.quantity += changeValue;
     quantityContainer.innerHTML = state.quantity;
 }
+//#endregion
 
 
 function showReviewModal(event, productId) {
@@ -93,35 +110,31 @@ function showReviewModal(event, productId) {
     }, 100);
 }
 
-function closeReviewModal(event) {
-    const modal = event.target.closest(".modal");
+function closeReviewModal() {
+    const modal = document.querySelector("#reviewModal");
     modal.classList.remove("show");
     setTimeout(() => {
-        modal?.remove();
+        modal.remove();
     }, 300);
 }
 
 function submitReviewForm(event) {
-    const form = $("#reviewForm")[0];
-    $(form).trigger("submit");
-}
+    const form = document.querySelector("#reviewForm");
 
-function sendReview(event) {
-    event.preventDefault();
-
-    const form = new FormData(event.target);
-    for (var pair of form.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);  // Log field name and value
-    }
+    const formData = new FormData(form);
+    // for (var pair of form.entries()) {
+    //     console.log(pair[0] + ': ' + pair[1]);  // Log field name and value
+    // }
 
     $.ajax({
         url: `/api/reviews`,
         method: "POST",
-        data: form,
+        data: formData,
         processData: false,
         contentType: false,
         success: function (response) {
             console.log(response);
+            closeReviewModal();
         },
         error: function (xhr, status, error) {
             const errors = JSON.parse(xhr.responseText).errors;
@@ -129,8 +142,6 @@ function sendReview(event) {
         }
     });
 }
-
-
 
 function loadReviews(response) {
     const reviews = response.reviews;
@@ -160,8 +171,15 @@ function loadReviews(response) {
         `;
     }, "");
 
-    reviewsSelector.innerHTML = content;
+    if (response.currentPage == 1) {
+        reviewsSelector.innerHTML = content;
+    } else {
+        reviewsSelector.innerHTML += content;
+    }
 
+    if (response.currentPage == response.totalPages) {
+        moreReviewBtn.classList.add("disabled");
+    }
 }
 
 function getReviews(page = 1) {
@@ -173,6 +191,8 @@ function getReviews(page = 1) {
         contentType: false,
         success: function (response) {
             console.log(response);
+            state.totalPages = response.totalPages;
+            state.currentPage = response.currentPage;
             loadReviews(response);
         },
         error: function (xhr, status, error) {

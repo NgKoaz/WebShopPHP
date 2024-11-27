@@ -20,7 +20,7 @@ ob_start();
 <div class="app-container">
     <div class="breadcrumb">
         <span>
-            <a href="/">Home</a> > <a href="    /categories">Shop</a>
+            <a href="/">Home</a> > <a href="/categories">Shop</a>
             <?php
             foreach ($ancestorCategories as $category) {
                 echo " > <a href=/categories/" . $category["slug"] . " >" . $category['name'] . "</a>";
@@ -69,41 +69,21 @@ ob_start();
             </div>
         </div>
 
-
-
-        <!-- <hr>
-
-        <div class="color-options">
-            <label>Select Colors</label>
-            <select>
-                <option>1</option>
-                <option>2</option>
-            </select>
-        </div> -->
-        <!-- 
-        <hr>
-
-        <div class="size-options">
-            <label>Choose Size</label>
-            <button>Small</button>
-            <button>Medium</button>
-            <button>Large</button>
-            <button>X-Large</button>
-        </div> -->
-
         <hr>
 
         <div class="tabs">
             <div class="top">
-                <div class="active">Product Details</div>
-                <div>Rating & Reviews</div>
+                <div class="active" data-id-toggle="#detailTab" data-tab="0">Product Details</div>
+                <div data-id-toggle="#reviewTab" data-tab="1">Rating & Reviews</div>
             </div>
 
-            <div class="product-tab" hidden>
-                content;
+
+            <div class="product-tab" id="detailTab">
+                <?= $product->details ?>
             </div>
 
-            <div class="review-tab">
+
+            <div class="review-tab disabled" id="reviewTab">
                 <div class="top">
                     <h4 class="title">Reviews <span id="numReview">(0)</span></h4>
                     <div class="btns">
@@ -113,96 +93,14 @@ ob_start();
                         <button class="write-btn" onclick="showReviewModal(event, '<?= $product->id ?>')">Write a Review</button>
                     </div>
                 </div>
-
-
                 <div class="review-container">
-                    <div class="reviews" data-product-id="<?= $product->id ?>">
-                        <!-- <div class="review-card">
-                            <div class="card">
-                                <div class="stars">
-                                    <i class="bi bi-star-fill star-ic"></i>
-                                    <i class="bi bi-star-fill star-ic"></i>
-                                    <i class="bi bi-star-fill star-ic"></i>
-                                    <i class="bi bi-star-half star-ic"></i>
-                                    <i class="bi bi-star star-ic"></i>
-                                </div>
-                                <div class="author-name">
-                                    Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
-                                </div>
-                                <p class="comment">
-                                    "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                                </p>
-                                <small class="date">Post On</small>
-                            </div>
-                        </div>
-
-
-                        <div class="review-card">
-                            <div class="card">
-                                <div class="stars">
-                                    <i class="bi bi-star-fill star-ic"></i>
-                                    <i class="bi bi-star-fill star-ic"></i>
-                                    <i class="bi bi-star-fill star-ic"></i>
-                                    <i class="bi bi-star-half star-ic"></i>
-                                    <i class="bi bi-star star-ic"></i>
-                                </div>
-                                <div class="author-name">
-                                    Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
-                                </div>
-                                <p class="comment">
-                                    "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                                </p>
-                                <small class="date">Post On</small>
-                            </div>
-                        </div> -->
-
-                    </div>
+                    <div class="reviews" data-product-id="<?= $product->id ?>"></div>
                 </div>
-
-
-                <div class="load-more-btn-container">
-                    <button class="load-more-btn">Load More Reviews</button>
+                <div class="more-review-btn-container">
+                    <button id="moreReviewBtn">Load More Reviews</button>
                 </div>
             </div>
         </div>
-
-        <!-- <div class="other-products">
-            <h2 class="title-section">YOU MIGHT ALSO LIKE</h2>
-            <div class="products">
-                <div class="card">
-                    <img src="/public/images/newarrivals/cloth3.png">
-                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                        <span>5/5</span>
-                    </div>
-                    <div class="price">
-                        $140
-                    </div>
-                </div>
-
-
-                <div class="card">
-                    <img src="/public/images/newarrivals/cloth3.png">
-                    <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                        <span>5/5</span>
-                    </div>
-                    <div class="price">
-                        $140
-                    </div>
-                </div>
-            </div>
-        </div> -->
     </div>
 
 
