@@ -56,6 +56,7 @@ class RouteHandler
             // Pass model param.
             $model = $reflectionClass->newInstance();
             $model->parse($_POST);
+            $model->parse($_FILES);
             $params[$varName] = $model;
         }
 

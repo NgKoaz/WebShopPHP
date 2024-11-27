@@ -18,6 +18,11 @@ const productDetailsPreview = document.querySelector("#productDetailsPreview");
 
 const saveProductDetailBtn = document.querySelector("#saveProductDetailBtn");
 
+const imageTable = document.querySelector("#imageTable tbody");
+const uploadImageForm = document.querySelector("#uploadImageForm");
+const imageInput = uploadImageForm.querySelector("input[type='file']");
+const imageDisplayer = uploadImageForm.querySelector(".image-displayer");
+const uploadImageButton = document.querySelector("#uploadImageButton");
 
 const greenColor = "#32ff7e";
 const darkGreenColor = "#3ae374";
@@ -28,7 +33,8 @@ state = {
     isDeleted: false,
     currentPage: 1,
     totalPages: 1,
-    autoGenerate: true
+    autoGenerate: true,
+    detailEditProduct: null
 }
 
 
@@ -694,7 +700,7 @@ function saveProductDetailsHTML(event) {
     form.append("details", editor.getContent());
 
     $.ajax({
-        url: "/api/admin/products/detail/edit",
+        url: "/api/admin/products/details/edit",
         method: "POST",
         data: form,
         processData: false,
@@ -712,7 +718,56 @@ function saveProductDetailsHTML(event) {
     });
 }
 
+
+function changeOrderImage(event, productId, index, tend) {
+    const images = state.detailEditProduct.images;
+
+    if (tend > 0) {
+        if (+index <= 0) {
+            showErrorToast("Error!", "Cannot go up anymore");
+            return;
+        }
+
+        const temp = images[+index - 1];
+        images[+index - 1] = images[+index];
+        images[+index] = temp;
+    } else {
+        if (+index >= images.length - 1) {
+            showErrorToast("Error!", "Cannot go down anymore");
+            return;
+        }
+
+        const temp = images[+index + 1];
+        images[+index + 1] = images[+index];
+        images[+index] = temp;
+    }
+
+    const form = new FormData();
+    form.append("productId", productId);
+    form.append("images", JSON.stringify(images));
+    console.log(JSON.stringify(images));
+
+    $.ajax({
+        url: `/api/admin/products/images/order`,
+        method: 'POST',
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log(response);
+            handleFindingSuccess(response);
+        },
+        error: function (xhr, status, error) {
+            console.log(xhr.responseText);
+            showErrorToast("Error!", "Select product first!");
+        }
+    });
+}
+
+
 function handleFindingSuccess(product) {
+    state.detailEditProduct = product;
+    console.log(product);
     // Clear Error
     const inputs = {
         "id": document.querySelector("#idProductInput"),
@@ -744,8 +799,42 @@ function handleFindingSuccess(product) {
     const editor = tinymce.get("productDetails");
     editor.setContent(product.details);
     productDetailsPreview.innerHTML = product.details;
-
     saveProductDetailBtn.setAttribute("data-product-id", product.id);
+
+
+    uploadImageForm.querySelector("input[type='hidden']")?.remove();
+    const productIdHiddenInput = document.createElement("input");
+    productIdHiddenInput.type = "hidden";
+    productIdHiddenInput.name = "productId";
+    productIdHiddenInput.value = product.id;
+
+    uploadImageForm.insertAdjacentElement("afterbegin", productIdHiddenInput);
+
+
+    product.images = JSON.parse(product.images ?? "[]");
+    if (product.images.length <= 0) {
+        imageTable.innerHTML = `
+            <td colspan="4" style="text-align: center; font-size: 16px;">No image uploaded!</td>
+        `;
+    } else {
+        const images = product.images;
+        const content = images.reduce((content, { lg: lgImg, sm: smImg }, index) => {
+            return content + `
+                <tr>
+                    <th scope="col">${index}</th>
+                    <td scope="col"><img src="${lgImg}" style="max-width: 300px; max-height: 300px; object-fit:cover"></td>
+                    <td scope="col"><img src="${smImg}" style="max-width: 100px; max-height: 100px;"></td>
+                    <td scope="col">
+                        <button class="btn btn-primary" onclick="changeOrderImage(event, '${product.id}', ${index}, 1)">Up</button>
+                        <button class="btn btn-success" onclick="changeOrderImage(event, '${product.id}', ${index}, -1)">Down</button>
+                        <button class="btn btn-danger" onclick="deleteProductImage(event, '${product.id}', '${lgImg}')">Delete</button>
+                    </td>
+                </tr>
+            `
+        }, "");
+        imageTable.innerHTML = content;
+
+    }
 }
 
 function handleFindingProductError(response) {
@@ -812,6 +901,92 @@ function findProductBySlug(event) {
         }
     });
 }
+
+
 //#endregion 
 
 
+//#region Upload Image
+function handleUploadSuccess(response) {
+
+}
+
+imageInput.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) {
+        imageDisplayer.classList.remove("show");
+        imageDisplayer.innerHTML = `
+            <i class="bi bi-cloud-arrow-up-fill"></i>
+            <p>Upload File!</p>
+        `;
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+        const url = reader.result;
+        imageDisplayer.classList.add("show");
+        imageDisplayer.innerHTML = `
+            <img src="${url}" style="height: 100%;">
+        `;
+    }
+    reader.readAsDataURL(file);
+})
+
+uploadImageForm.onclick = (event) => {
+    const fileInput = event.target.querySelector("input[type='file']");
+    fileInput?.click();
+}
+
+uploadImageButton.onclick = (event) => {
+    const fileInput = document.querySelector("#uploadImageForm input[type='file']");
+    if (fileInput.files.length <= 0) {
+        showErrorToast("Error!", "Select image!");
+        return;
+    }
+
+    const form = new FormData(uploadImageForm);
+    for (const pair of form.entries()) console.log(pair);
+
+    $.ajax({
+        url: `/api/admin/products/image/edit`,
+        method: 'POST',
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log(response);
+            handleFindingSuccess(response);
+
+            fileInput.value = "";
+            fileInput.dispatchEvent(new Event("change"));
+        },
+        error: function (xhr, status, error) {
+            console.log(xhr.responseText);
+            showErrorToast("Error!", "Select product first!");
+        }
+    });
+}
+
+
+function deleteProductImage(event, productId, lgImg) {
+    const form = new FormData();
+    form.append("productId", productId);
+    form.append("image", lgImg);
+
+    $.ajax({
+        url: `/api/admin/products/image/delete`,
+        method: 'POST',
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log(response);
+            handleFindingSuccess(response);
+        },
+        error: function (xhr, status, error) {
+            console.log(xhr.responseText);
+        }
+    });
+}
+
+//#endregion

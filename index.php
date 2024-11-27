@@ -21,6 +21,8 @@ use Doctrine\DBAL\DriverManager;
 use Dotenv\Dotenv;
 
 
+define("ROOT_DIR", __DIR__);
+
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 $entitiesPath = [__DIR__ . '/src/Entities'];
@@ -55,7 +57,5 @@ $app = new App();
 $app->importModule(new UserModule);
 $app->importModule(new AuthModule);
 $app->importModule(new AdminModule);
-
-
 
 $app->run();

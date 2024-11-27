@@ -23,7 +23,7 @@ class Product
     #[Column()]
     public string $name;
 
-    #[Column()]
+    #[Column(type: "text")]
     public string $description;
 
     #[Column(type: "decimal", precision: 10, scale: 2)]
@@ -38,10 +38,10 @@ class Product
     #[Column]
     public string $slug;
 
-    #[Column(nullable: true)]
+    #[Column(nullable: true, type: "text")]
     public ?string $details;
 
-    #[Column(nullable: true)]
+    #[Column(nullable: true, type: "text")]
     public ?string $images;
 
     #[Column(name: "category_id", nullable: true)]

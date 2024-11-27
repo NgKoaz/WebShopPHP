@@ -87,3 +87,60 @@
     background-color: #1e90ff;
     color: white;
 }
+
+.image-uploader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 150px;
+    border: 3px dashed #1e90ff;
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+.image-uploader:hover {
+    border: 3px dashed #006cd9;
+}
+
+.image-displayer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    pointer-events: none;
+}
+
+.bi-cloud-arrow-up-fill {
+    font-size: 45px;
+    color: #1e90ff;
+}
+
+.image-uploader p {
+    margin: 0px;
+
+    font-size: 18px;
+    font-weight: 500;
+    color: #1e90ff;
+}
+
+.image-uploader:hover .bi-cloud-arrow-up-fill {
+    font-size: 45px;
+    color: #006cd9;
+}
+
+.image-uploader:hover p {
+    color: #006cd9;
+}
+
+.image-displayer.show {
+    border: 1px dashed #ffaf40;
+}
+
+.accordion-body:has(#uploadImageForm) {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}

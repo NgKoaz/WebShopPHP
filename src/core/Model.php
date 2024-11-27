@@ -3,6 +3,7 @@
 namespace App\core;
 
 use App\core\Types\HTMLString;
+use App\core\Types\Image;
 use ArrayAccess;
 use Exception;
 use ReflectionClass;
@@ -20,7 +21,13 @@ class Model implements ArrayAccess
                     case is_a($this->$key, HTMLString::class):
                         $this->$key = new HTMLString($value);
                         break;
+                    case is_a($this->$key, Image::class):
+                        $this->$key = new Image($value);
+                        break;
                     case is_array($value):
+                        $this->$key = $value;
+                        break;
+                    case $this->json_validate($value):
                         $this->$key = $value;
                         break;
                     default:
@@ -45,6 +52,7 @@ class Model implements ArrayAccess
                 $attrInstance = $attribute->newInstance();
                 if ($attrInstance->isValid($propValue)) continue;
 
+                if ($propValue !== null && $property->getType()->getName() === Image::class) $propValue->removeImage();
                 $this->errors[$property->getName()][] = $attrInstance->getErrorMessage();
             }
         }
@@ -87,5 +95,14 @@ class Model implements ArrayAccess
     public function offsetUnset(mixed $offset): void
     {
         throw new Exception("Not implement!");
+    }
+
+    public function json_validate($value)
+    {
+        if (is_string($value)) {
+            json_decode($value);
+            return (json_last_error() == JSON_ERROR_NONE);
+        }
+        return false;
     }
 }

@@ -232,4 +232,48 @@ class ProductManager
         $product->details = $details;
         $this->entityManager->flush();
     }
+
+    public function editImages(mixed $id, string $lgImagePath, string $smImagePath): void
+    {
+        $product = $this->findProductById($id);
+
+        $imageArr = ["lg" => $lgImagePath, "sm" => $smImagePath];
+        if (!isset($product->images)) $product->images = json_encode([$imageArr]);
+        else {
+            $productImages = json_decode($product->images, true);
+            $productImages[] = $imageArr;
+            $product->images = json_encode($productImages);
+        }
+
+        $this->entityManager->flush();
+    }
+
+    public function deleteImage(mixed $id, string $image)
+    {
+        $product = $this->findProductById($id);
+        if (isset($product->images)) {
+            $productImages = json_decode($product->images, true);
+            $filteredImages = [];
+            foreach ($productImages as $pImage) {
+                if ($pImage["lg"] == $image) {
+                    foreach ($pImage as $key => $path) if (file_exists(ROOT_DIR . $path)) unlink(ROOT_DIR . $path);
+                    continue;
+                }
+                $filteredImages[] = $pImage;
+            }
+
+            $product->images = json_encode($filteredImages);
+        } else {
+            $product->images = json_encode([]);
+        }
+
+        $this->entityManager->flush();
+    }
+
+    public function rewriteImages(mixed $id, string $images)
+    {
+        $product = $this->findProductById($id);
+        $product->images = $images;
+        $this->entityManager->flush();
+    }
 }

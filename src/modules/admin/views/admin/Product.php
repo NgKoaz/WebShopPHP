@@ -147,17 +147,46 @@ ob_start();
 
                         </div>
                         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+                            <!-- Upload Image begin -->
+                            <div class="accordion" id="accordionUpload">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUpload" aria-expanded="true" aria-controls="collapseUpload">
+                                            <b>Upload Images</b>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseUpload" class="accordion-collapse collapse" data-bs-parent="#accordionUpload">
+                                        <div class="accordion-body">
+                                            <!-- Upload Image Field begin -->
+                                            <form id="uploadImageForm" class="image-uploader" enctype="multipart/form-data">
+                                                <input type="file" name="image" hidden accept="image/*" required>
+                                                <div class="image-displayer">
+                                                    <i class="bi bi-cloud-arrow-up-fill"></i>
+                                                    <p>Upload File!</p>
+                                                </div>
+                                            </form>
+                                            <button class="btn btn-primary" id="uploadImageButton">Upload image</button>
+                                            <!-- Upload Image Field end -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Upload Image end -->
+
                             <!-- Images table begin -->
                             <table id="imageTable" class="table table-bordered mt-2">
                                 <thead>
                                     <tr>
+                                        <th scope="col">Id</th>
                                         <th scope="col">Large Image</th>
                                         <th scope="col">Small Image</th>
-                                        <th scope="col">Order</th>
                                         <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr>
+                                        <td colspan="4" style="text-align: center; font-size: 16px;">No image uploaded!</td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <!-- Images table end -->

@@ -6,7 +6,10 @@ use App\core\Attributes\Http\HttpGet;
 use App\core\Attributes\Http\HttpPost;
 use App\core\Controller;
 use App\modules\admin\models\CreateProductModel;
+use App\modules\admin\models\DeleteImageModel;
 use App\modules\admin\models\DeleteProductModel;
+use App\modules\admin\models\EditOrderImageModel;
+use App\modules\admin\models\UploadImageModel;
 use App\modules\admin\models\EditProductDetailsModel;
 use App\modules\admin\models\EditProductModel;
 use App\services\CategoryManager;
@@ -94,16 +97,13 @@ class ApiProductController extends Controller
     #[HttpGet("/api/admin/product")]
     public function getProduct(string $id = "", string $slug = "")
     {
-        $isId = strlen($id) > 0;
-        $isSlug = strlen($slug) > 0;
-
-        if ($isId) {
+        if (strlen($id) > 0 && is_numeric($id)) {
             $product = $this->productManager->findProductById($id);
             if ($product === null) return $this->json(["code" => 404, "errors" => ["id" => ["Product id is not found!"]]], 400);
             return $this->json($product);
         }
 
-        if ($isSlug) {
+        if (strlen($slug) > 0) {
             $product = $this->productManager->getProductBySlug($slug);
             if ($product === null) return $this->json(["code" => 404, "errors" => ["slug" => ["Product slug is not found!"]]], 400);
             return $this->json($product);
@@ -112,7 +112,7 @@ class ApiProductController extends Controller
         return $this->json(["code" => 404, "errors" => ["id" => ["Need product id or product slug!"], "slug" => ["Need product id or product slug!"]]], 400);
     }
 
-    #[HttpPost("/api/admin/products/detail/edit")]
+    #[HttpPost("/api/admin/products/details/edit")]
     public function editProductDetails(EditProductDetailsModel $model)
     {
         if ($model->isValid()) {
@@ -126,6 +126,65 @@ class ApiProductController extends Controller
             if (!$isError) {
                 $this->productManager->editProductDetails($model->id, $model->details);
                 return $this->json([]);
+            }
+        }
+        return $this->json(["code" => 404, "errors" => $model->getFullError()], 400);
+    }
+
+    #[HttpPost("/api/admin/products/image/edit")]
+    public function editImages(UploadImageModel $model)
+    {
+        if ($model->isValid()) {
+            $isError = false;
+
+            if (!$this->productManager->hasId($model->productId)) {
+                $model->setError("productId", "This product id is not found!");
+                $model->image->removeImages();
+                $isError = true;
+            }
+
+            if (!$isError) {
+                $smImagePath = $model->image->createAnotherVersion(100, 100);
+                $this->productManager->editImages($model->productId, $model->image->getRelativePath(), $smImagePath);
+                return $this->json($this->productManager->findProductById($model->productId));
+            }
+        }
+        return $this->json(["code" => 404, "errors" => $model->getFullError()], 400);
+    }
+
+    #[HttpPost("/api/admin/products/image/delete")]
+    public function deleteImage(DeleteImageModel $model)
+    {
+        if ($model->isValid()) {
+            $isError = false;
+
+            if (!$this->productManager->hasId($model->productId)) {
+                $model->setError("productId", "This product id is not found!");
+                $isError = true;
+            }
+
+            if (!$isError) {
+                $this->productManager->deleteImage($model->productId, $model->image);
+                return $this->json($this->productManager->findProductById($model->productId));
+            }
+        }
+        return $this->json(["code" => 404, "errors" => $model->getFullError()], 400);
+    }
+
+    #[HttpPost("/api/admin/products/images/order")]
+    public function editOrderImage(EditOrderImageModel $model)
+    {
+        if ($model->isValid()) {
+            $isError = false;
+
+            if (!$this->productManager->hasId($model->productId)) {
+                $model->setError("productId", "This product id is not found!");
+                $isError = true;
+            }
+
+            if (!$isError) {
+                $this->productManager->rewriteImages($model->productId, $model->images);
+                return $this->json($this->productManager->findProductById($model->productId));
             }
         }
         return $this->json(["code" => 404, "errors" => $model->getFullError()], 400);

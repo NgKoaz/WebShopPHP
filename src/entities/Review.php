@@ -19,7 +19,7 @@ class Review
     #[Column, GeneratedValue]
     public int $id;
 
-    #[Column]
+    #[Column(type: "text")]
     public string $comment;
 
     #[Column]
