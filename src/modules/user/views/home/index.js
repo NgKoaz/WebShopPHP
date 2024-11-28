@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener("resize", handleResize)
 
 function handleResize(event) {
-    console.log(window.innerWidth);
     const width = window.innerWidth;
     if (width >= 1240) {
         numCardDisplay = 3;

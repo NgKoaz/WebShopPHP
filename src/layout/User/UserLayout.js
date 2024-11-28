@@ -137,7 +137,7 @@ function onChangeSearchInputPc(event) {
 
 
 //#region Search Request
-function handleSuccessSearchRequest(response) {
+function handleSuccessSearchRequest(response, searchQuery) {
     const products = response.products;
     const moreNum = response.moreNum
     if (products?.length <= 0) {
@@ -172,7 +172,7 @@ function handleSuccessSearchRequest(response) {
         if (moreNum) {
             [...selector.searchResList].forEach(selector => selector.innerHTML = content + `
                 <li class="more-results">
-                    <button id="moreResultsBtn">More ${moreNum} results</button>
+                    <a id="moreResultsBtn" href="/categories?query=${searchQuery}">More ${moreNum} results</a>
                 </li>`
             );
         } else {
@@ -219,11 +219,10 @@ function sendSearchRequestMb(name) {
             contentType: false,
             success: function (response) {
                 console.log(response);
-                handleSuccessSearchRequest(response);
+                handleSuccessSearchRequest(response, name);
             },
             error: function (xhr, status, error) {
                 console.log(JSON.parse(xhr.responseText));
-
                 // handleErrorLogoutRequest(JSON.parse(xhr.responseText));
             }
         });

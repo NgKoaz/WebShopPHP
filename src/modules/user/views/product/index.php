@@ -79,9 +79,8 @@ ob_start();
 
 
             <div class="product-tab" id="detailTab">
-                <?= $product->details ?>
+                <?= ((isset($product->details) && strlen($product->details) > 0) ? $product->details : "No further details!")  ?>
             </div>
-
 
             <div class="review-tab disabled" id="reviewTab">
                 <div class="top">
@@ -96,6 +95,7 @@ ob_start();
                 <div class="review-container">
                     <div class="reviews" data-product-id="<?= $product->id ?>"></div>
                 </div>
+
                 <div class="more-review-btn-container">
                     <button id="moreReviewBtn">Load More Reviews</button>
                 </div>

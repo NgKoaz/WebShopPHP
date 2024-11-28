@@ -18,6 +18,7 @@ class CategoryController extends Controller
     public function getShop(int $page = 1, int $limit = 12, string $query = "", string $options = "")
     {
         $viewData = new ArrayList;
+        $viewData["blankPageUrl"] = $this->getBlankURI($page, $limit, $query, "", $options);;
         $viewData["IS_LOGGED_IN"] = $this->loginManager->isLoggedIn();
 
         $options = (strlen($options) > 0) ? json_decode($options, true) : [];
@@ -34,6 +35,7 @@ class CategoryController extends Controller
     public function getProductByCategory(int $page = 1, int $limit = 12, string $query = "", string $slug = "", string $options = "")
     {
         $viewData = new ArrayList;
+        $viewData["blankPageUrl"] = $this->getBlankURI($page, $limit, $query, $slug, $options);
         $viewData["IS_LOGGED_IN"] = $this->loginManager->isLoggedIn();
 
         if (strlen($slug) > 0) {
@@ -51,5 +53,19 @@ class CategoryController extends Controller
             $viewData["currentPage"] = $result["currentPage"];
         }
         $this->view(viewData: $viewData);
+    }
+
+    private function getBlankURI(int $page = 1, int $limit = 12, string $query = "", string $slug = "", string $options = ""): string
+    {
+        $url = "/categories";
+        if (strlen($slug) > 0)
+            $url .= "/$slug";
+        $url .= "?";
+        $url .= "page=:page";
+        if (strlen($query) > 0)
+            $url .= "&query=$query";
+        if (strlen($options) > 0)
+            $url .= "&options=$options";
+        return $url;
     }
 }

@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
             tabContent.classList.remove("disabled");
         });
     });
-})
+});
 
 
 
@@ -135,6 +135,7 @@ function submitReviewForm(event) {
         success: function (response) {
             console.log(response);
             closeReviewModal();
+            getReviews();
         },
         error: function (xhr, status, error) {
             const errors = JSON.parse(xhr.responseText).errors;
@@ -144,8 +145,13 @@ function submitReviewForm(event) {
 }
 
 function loadReviews(response) {
+    moreReviewBtn.classList.remove("disabled");
+
     const reviews = response.reviews;
-    if (!reviews || reviews.length <= 0) return;
+    if (!reviews || reviews.length <= 0) {
+        moreReviewBtn.classList.add("disabled");
+        return;
+    }
 
     numReviewSelector.innerHTML = ` (${response.count})`;
 
@@ -185,7 +191,7 @@ function loadReviews(response) {
 function getReviews(page = 1) {
     const productId = reviewsSelector.dataset.productId;
     $.ajax({
-        url: `/api/reviews?page=${page}&limit=4&productId=${productId}`,
+        url: `/api/reviews?page=${page}&limit=6&productId=${productId}`,
         method: "GET",
         processData: false,
         contentType: false,

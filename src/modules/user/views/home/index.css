@@ -168,33 +168,36 @@
 }
 
 .card-list {
-    display: grid;
-    /* grid-template-columns: 1fr 1fr; */
-    grid-template-columns:
-        repeat(auto-fit, minmax(150px, 1fr));
-    gap: 24px 14px;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 12px;
 }
 
-.card-list .card {
-    max-width: 290px;
+.card {
+    width: 50%;
+    padding: 3px;
     cursor: pointer;
 }
 
-.card-list .card img {
+.card img {
     width: 100%;
 }
 
-.card-list .card .title {
+.card .title {
     font-size: var(--md-font-size);
 }
 
-.card-list .card .stars {
+.card .stars {
     margin: 6px 0px;
 }
 
-.card-list .card .price {
+.card .price {
     font-size: var(--lg-font-size);
     font-weight: 800;
+}
+
+.card .stars {
+    font-size: var(--sm-font-size);
 }
 
 .top-selling {
@@ -373,11 +376,6 @@
         object-fit: contain;
     }
 
-    .card-list {
-        grid-template-columns:
-            repeat(auto-fit, minmax(150px, 1fr));
-    }
-
     .style-card img {
         object-fit: contain;
     }
@@ -385,6 +383,11 @@
 
 
 @media screen and (min-width: 768px) {
+    .card {
+        width: 25%;
+        padding: 4px;
+    }
+
     .welcome-container {
         min-height: 663px;
         grid-template-columns: 1fr 1fr;
@@ -432,6 +435,11 @@
 
 
 @media screen and (min-width: 1240px) {
+    .card {
+        width: 25%;
+        padding: 5px;
+    }
+
     .welcome-container {
         margin-inline: auto;
         max-width: 1240px;

@@ -1,5 +1,7 @@
 .app-container {
-    padding-inline: var(--indent-default);
+    max-width: 1240px;
+    padding-inline: 16px;
+    margin-inline: auto;
 }
 
 .breadcrumb {

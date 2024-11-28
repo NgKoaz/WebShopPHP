@@ -12,6 +12,9 @@ $products = $viewData["products"] ?? [];
 $totalPages = $viewData["totalPages"] ?? 1;
 $currentPage = $viewData["currentPage"] ?? 1;
 $ancestorCategories = $viewData["ancestorCategories"] ?? [];
+$lenCategories =  count($ancestorCategories);
+$categoryName = $lenCategories > 0 ? $ancestorCategories[$lenCategories - 1]['name'] : "Shop";
+$blankPageUrl = $viewData["blankPageUrl"];
 
 ob_start();
 ?>
@@ -35,85 +38,47 @@ ob_start();
                     <i class="bi bi-sliders2-vertical"></i>
                 </div>
                 <div class="bottom">
-                    <ul class="types">
-                        <li>
-                            <label for="t-shirts-type">T-shirts</label>
-                            <input id="t-shirts-type" type="checkbox">
-                        </li>
-                        <li>
-                            <label for="shorts-type">Shorts</label>
-                            <input id="shorts-type" type="checkbox">
-                        </li>
-                        <li>
-                            <label for="shirts-type">Shirts</label>
-                            <input id="shirts-type" type="checkbox">
-
-                        </li>
-                        <li>
-                            <label for="hoodie-type">Hoodie</label>
-                            <input id="hoodie-type" type="checkbox">
-                        </li>
-                        <li>
-                            <label for="jeans-type">Jeans</label>
-                            <input id="jeans-type" type="checkbox">
-                        </li>
-                    </ul>
-
                     <div class="price">
                         <h4 class="title">Price</h4>
-                        <div>Price Slide</div>
-                    </div>
-
-
-                    <!-- <div class="colors">
-                        <h4 class="title">Colors</h4>
-                        <div>Color Picker</div>
-                    </div>
-
-
-                    <div class="sizes">
-                        <h4 class="title">Size</h4>
-                        <div class="size-options">
-                            <button>123</button>
-                            <button>123</button>
-                            <button>123</button>
+                        <div id="priceSlider">
+                            <input id="minPrice" type="range" min="0" max="1500">
+                            <input id="maxPrice" type="range" min="0" max="1500">
                         </div>
-                    </div> -->
+                    </div>
 
                     <div class="styles">
                         <h4 class="title">Dress Style</h4>
-                        <ul>
+                        <ul class="style-selection">
                             <li>
                                 <label for="casual-style">Casual</label>
-                                <input id="casual-style" type="checkbox">
+                                <input id="casual-style" type="radio" name="category" value="casual">
                             </li>
                             <li>
                                 <label for="formal-style">Formal</label>
-                                <input id="formal-style" type="checkbox">
+                                <input id="formal-style" type="radio" name="category" value="formal">
                             </li>
                             <li>
                                 <label for="party-style">Party</label>
-                                <input id="party-style" type="checkbox">
+                                <input id="party-style" type="radio" name="category" value="party">
 
                             </li>
                             <li>
                                 <label for="gym-style">Gym</label>
-                                <input id="gym-style" type="checkbox">
+                                <input id="gym-style" type="radio" name="category" value="gym">
                             </li>
                         </ul>
                     </div>
-
-                    <button class="apply-btn">Apply</button>
+                    <button class="apply-btn" onclick="filterProducts(event)">Apply</button>
                 </div>
             </div>
 
         </div>
         <div class="search-area">
             <div class="top">
-                <h4 class="main-title left">Casual</h4>
+                <h4 class="main-title left"><?= $categoryName ?></h4>
                 <div class="right">
                     <div>Showing 1-10 of 100 <span>Sort by: Most Popular</span></div>
-                    <button class="filter-btn"><i class="bi bi-sliders2-vertical"></i></button>
+                    <button class="filter-btn" onclick="showFilterMobile(event)"><i class="bi bi-sliders2-vertical"></i></button>
                 </div>
             </div>
 
@@ -144,105 +109,80 @@ ob_start();
             <hr>
 
             <div class="pagination">
-                <a class="prev">Previous</a>
+                <?php
+                echo '<a class="prev" href="' . str_replace(":page", ($currentPage - 1) > 0 ? $currentPage - 1 : 1, $blankPageUrl) . '">Previous</a>';
+                ?>
+
                 <div>
                     <?php
 
-                    if ($totalPages > 0) {
+                    if ($currentPage >= 3) {
+                        echo '<a class="page-num" href="' . str_replace(":page", 1, $blankPageUrl) . '"><span>' . 1 . '</span></a>';
+                        if ($currentPage >= 4) {
+                            echo '<a class="page-num"><span>...</span></a>';
+                        }
                     }
 
+                    for ($i = 1; $i <= $totalPages; $i = $i + 1) {
+                        if ($i === $currentPage - 1 || $i === $currentPage || $i === $currentPage + 1) {
+                            echo '<a class="page-num ' . ($i == $currentPage ? "active" : "") . '" href="' . str_replace(":page", $i, $blankPageUrl) . '"><span>' . $i . '</span></a>';
+                        }
+                    }
+
+                    if ($currentPage <= $totalPages - 2) {
+                        if ($currentPage <= $totalPages - 3) {
+                            echo '<a class="page-num"><span>...</span></a>';
+                        }
+                        echo '<a class="page-num" href="' . str_replace(":page", $totalPages, $blankPageUrl) . '"><span>' . $totalPages . '</span></a>';
+                    }
                     ?>
-                    <a class="page-num"><span>1</span></a>
-                    <a class="page-num"><span>2</span></a>
-                    <a class="page-num"><span>3</span></a>
-                    <a class="page-num"><span>344</span></a>
+
                 </div>
-                <a class="next">Next </a>
+                <?php
+                echo '<a class="next" href="' . str_replace(":page", ($currentPage + 1) <= $totalPages ? $currentPage + 1 :  $totalPages, $blankPageUrl) . '">Next</a>';
+                ?>
             </div>
         </div>
     </div>
 
-    <div class="overlay"></div>
-    <div class="filter-modal">
+    <div id="filterModal" class="filter-modal">
         <div class="top">
             <h4 class="title">Filters</h4>
-            <button class="close-btn"><i class="bi bi-x"></i></button>
+            <button class="close-btn" onclick="closeFilterModal(event)"><i class="bi bi-x"></i></button>
         </div>
         <div class="bottom">
-            <div class="types">
-                <div>
-                    <div>T-shirts</div>
-                    <input type="checkbox">
-                </div>
-                <div>
-                    <div>Shorts</div>
-                    <input type="checkbox">
-                </div>
-                <div>
-                    <div>Shirts</div>
-                    <input type="checkbox">
-                </div>
-                <div>
-                    <div>Hoodie</div>
-                    <input type="checkbox">
-                </div>
-                <div>
-                    <div>Jeans</div>
-                    <input type="checkbox">
-                </div>
-            </div>
-
-            <!-- <hr> -->
 
             <div class="price">
                 <div class="title">Price</div>
                 <div>Price Slide</div>
             </div>
 
-            <!-- <hr>
-
-        <div class="droplist">
-            <h4 class="title">Colors</h4>
-            <div>Color Picker</div>
-        </div>
-
-        <hr>
-
-        <div class="droplist">
-            <h4 class="title">Size</h4>
-            <div class="size-options">
-                <button>123</button>
-                <button>123</button>
-                <button>123</button>
-            </div>
-        </div> -->
-
-            <!-- <hr> -->
-
             <div class="options">
                 <h4 class="title">Dress Style</h4>
                 <div class="styles">
-                    <div>
-                        <div>Casual</div>
-                        <input type="checkbox">
-                    </div>
-                    <div>
-                        <div>Formal</div>
-                        <input type="checkbox">
-                    </div>
-                    <div>
-                        <div>Party</div>
-                        <input type="checkbox">
-                    </div>
-                    <div>
-                        <div>Gym</div>
-                        <input type="checkbox">
-                    </div>
+                    <ul class="style-selection">
+                        <li>
+                            <label for="casual-style">Casual</label>
+                            <input id="casual-style" type="radio" name="category" value="casual">
+                        </li>
+                        <li>
+                            <label for="formal-style">Formal</label>
+                            <input id="formal-style" type="radio" name="category" value="formal">
+                        </li>
+                        <li>
+                            <label for="party-style">Party</label>
+                            <input id="party-style" type="radio" name="category" value="party">
+
+                        </li>
+                        <li>
+                            <label for="gym-style">Gym</label>
+                            <input id="gym-style" type="radio" name="category" value="gym">
+                        </li>
+                    </ul>
                 </div>
-                <button class="aplly-btn">Apply Filter</button>
             </div>
         </div>
-
+        <button class="aplly-btn" onclick=filterProducts(event)>Apply Filter</button>
     </div>
 </div>
 
