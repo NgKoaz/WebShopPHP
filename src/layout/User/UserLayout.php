@@ -45,20 +45,6 @@
 
                 <div class="search-result-container">
                     <ul class="search-results">
-                        <!-- <li class="itemResult">
-                            <a class="itemLink" href="#">
-                                <div class="image">
-                                    <img src="/public/images/cart/p1.png">
-                                </div>
-                                <div class="info">
-                                    <div class="title">Mu asdf dasda dasd sd dsah ksh kghs khdfk asd khsjh fks</div>
-                                    <div class="price">$1238</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="more-results">
-                            <button id="moreResultsBtn">More results</button>
-                        </li> -->
                     </ul>
                 </div>
             </form>
@@ -66,7 +52,7 @@
 
             <div class="icon-list">
                 <i id="icon-search" class="fa-solid fa-magnifying-glass icon-24" onclick="onSearchIconClick(event)"></i>
-                <a href="/cart"><i class="fa-solid fa-cart-shopping icon-24"></i></a>
+                <a id="cartIcon" href="/cart"><i class="fa-solid fa-cart-shopping icon-24"></i><span id="numInCart"></span></a>
                 <div class="dropdown">
                     <button class="dropdown-btn">
                         <i class="fa-regular fa-circle-user icon-24" onclick="onProfileIconClick(event)"></i>
@@ -90,20 +76,6 @@
             </div>
             <div class="search-result-container">
                 <ul class="search-results">
-                    <!-- <li class="itemResult">
-                        <a class="itemLink" href="#">
-                            <div class="image">
-                                <img src="/public/images/cart/p1.png">
-                            </div>
-                            <div class="info">
-                                <div class="title">Mu asdf dasda dasd sd dsah ksh kghs khdfk asd khsjh fks</div>
-                                <div class="price">$1238</div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="more-results">
-                        <button id="moreResultsBtn">More results</button>
-                    </li> -->
                 </ul>
             </div>
         </form>
@@ -216,16 +188,6 @@
 
         <!-- Toast begin -->
         <div id="toastContainer">
-            <!-- <div id="toast" class="toast">
-                <div class="toast-icon"><i class="bi bi-check-circle-fill"></i></div>
-                <div class="toast-content">
-                    <div class="toast-title">Success!</div>
-                    <div class="toast-message">Get Your work</div>
-                </div>
-                <div class="toast-close" data-close-toast="#toast">
-                    <i class=" bi bi-x-lg"></i>
-                </div>
-            </div> -->
         </div>
         <!-- Toast end -->
 

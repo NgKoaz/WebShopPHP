@@ -15,10 +15,13 @@ selector.searchContainerPc = document.querySelector("#searchFormPc .search-resul
 selector.searchResList = document.querySelectorAll(".search-results");
 
 selector.toastContainer = document.querySelector("#toastContainer");
+selector.numInCart = document.querySelector("#numInCart");
 let toastTimer = null;
 
 
-const documentReadyCallback = [];
+document.addEventListener("DOMContentLoaded", () => {
+    refreshNumInCart();
+})
 
 document.onclick = (event) => {
     closeSearchWhenClickOutside(event);
@@ -43,8 +46,8 @@ function closeDropdownWhenClickOutside(event) {
 
 
 
-
 function openToast(message) {
+    selector.toastContainer.style.pointerEvents = "all";
     selector.toastContainer.innerHTML = `
     <div id="toast" class="toast">
         <div class="toast-icon"><i class="bi bi-check-circle-fill"></i></div>
@@ -62,6 +65,7 @@ function openToast(message) {
         toast.classList.add("show");
     }, 100);
     toastTimer = setTimeout(() => {
+        selector.toastContainer.style.pointerEvents = "";
         toast.classList.remove("show");
     }, 3000);
 }
@@ -69,6 +73,8 @@ function openToast(message) {
 function closeToast(event) {
     const toastClose = event.target.closest(".toast-close");
     if (toastClose) {
+        selector.toastContainer.style.pointerEvents = "";
+
         const toastId = toastClose.dataset.closeToast;
         const toast = document.querySelector(`${toastId}`);
         clearTimeout(toastTimer);
@@ -76,17 +82,7 @@ function closeToast(event) {
     }
 }
 
-
-
-
-
-
-
-
-
-
 //#region Log Out Request
-
 function sendLogoutRequest(event) {
     $.ajax({
         url: `/api/logout`,
@@ -101,7 +97,6 @@ function sendLogoutRequest(event) {
         }
     });
 }
-
 //#endregion
 
 
@@ -233,5 +228,22 @@ function onChangeSearchInputMb(event) {
     sendSearchRequestMb(event.target.value)
 }
 //#endregion
+
+function refreshNumInCart() {
+    $.ajax({
+        url: `/api/cart`,
+        method: 'GET',
+        success: function (response) {
+            console.log(response);
+            const totalQuantity = response.reduce((quantity, product) => {
+                return quantity + product.quantity;
+            }, 0);
+            document.querySelector("#numInCart").innerHTML = `${totalQuantity}`;
+        },
+        error: function (xhr, status, error) {
+            console.error("Request failed:", xhr.responseText);
+        }
+    });
+}
 
 

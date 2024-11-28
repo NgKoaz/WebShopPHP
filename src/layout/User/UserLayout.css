@@ -502,6 +502,7 @@ footer {
     margin-right: 10px;
     top: 0px;
     right: 0px;
+    pointer-events: none;
 }
 
 .toast {
@@ -632,12 +633,32 @@ footer {
     background-color: white;
     color: #4F4F4F;
     border: 1px solid #4F4F4F;
-
 }
 
 .disabled {
     display: none;
 }
+
+#cartIcon {
+    position: relative;
+}
+
+#numInCart {
+    font-size: 10px;
+    position: absolute;
+    top: -40%;
+    right: -40%;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    color: white;
+    background-color: #ff3838;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
 
 
 @keyframes progress-animation {

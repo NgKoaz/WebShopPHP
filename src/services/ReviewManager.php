@@ -21,6 +21,8 @@ class ReviewManager
         $review->user = $user;
         $review->productId = $productId;
         $review->product = $this->productManager->findProductById($productId);
+        $review->product->totalRates += $rate;
+        $review->product->totalReviews += 1;
         $review->isDeleted = false;
         $now = new DateTime;
         $review->createdAt = $review->updatedAt = $now;

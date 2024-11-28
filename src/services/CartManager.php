@@ -14,7 +14,7 @@ class CartManager
     {
         $cartItems = $this->sessionManager->getEntry(CartManager::$CART);
         if (isset($cartItems[$productId])) {
-            $cartItems[$productId] += $quantity;
+            $this->sessionManager->setInEntry(CartManager::$CART, $productId, $cartItems[$productId] + $quantity);
             return;
         }
         $this->sessionManager->setInEntry(CartManager::$CART, $productId, $quantity);
@@ -22,11 +22,6 @@ class CartManager
 
     public function setItem(mixed $productId, int $quantity): void
     {
-        $cartItems = $this->sessionManager->getEntry(CartManager::$CART);
-        if (isset($cartItems[$productId])) {
-            $cartItems[$productId] = $quantity;
-            return;
-        }
         $this->sessionManager->setInEntry(CartManager::$CART, $productId, $quantity);
     }
 

@@ -59,6 +59,12 @@ function addProductIntoCart(event) {
             console.log(response);
             state.quantity = 1;
             quantityContainer.innerHTML = state.quantity;
+            openToast("Added!");
+
+            const totalQuantity = response.reduce((quantity, product) => {
+                return quantity + product.quantity;
+            }, 0);
+            document.querySelector("#numInCart").innerHTML = `${totalQuantity}`;
         },
         error: function (xhr, status, error) {
             console.log(xhr.responseText);
@@ -136,6 +142,7 @@ function submitReviewForm(event) {
             console.log(response);
             closeReviewModal();
             getReviews();
+            openToast("Review has been sent!");
         },
         error: function (xhr, status, error) {
             const errors = JSON.parse(xhr.responseText).errors;

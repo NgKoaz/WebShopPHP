@@ -368,6 +368,9 @@
     gap: 16px;
 }
 
+.testimonial-icon-list i {
+    cursor: pointer;
+}
 
 
 

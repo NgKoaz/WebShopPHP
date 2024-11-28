@@ -56,17 +56,20 @@ function refreshNewArrivalList() {
             console.log(response);
             const products = response.products;
             const content = products.reduce((content, product) => {
+                const numStar = (product.total_reviews) ? Math.round(product.total_rates / product.total_reviews * 10 / 20) / 10 : 0;
+                const fillStar = Math.floor(numStar);
+                const isHalf = (Math.round(numStar * 10) % 10 == 0 ? 0 : 1);
+                const noFillStar = 5 - fillStar - isHalf;
+
                 return content + `
                 <a class="card" href="/products/${product.slug}">
                     <img src="/public/images/newarrivals/cloth1.png">
                     <h3 class="title">${product.name}</h3>
                     <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                        <span>5/5</span>
+                        ${`<i class="bi bi-star-fill star-ic"></i> `.repeat(fillStar)}
+                        ${`<i class="bi bi-star-half star-ic"></i> `.repeat(isHalf)}
+                        ${`<i class="bi bi-star star-ic"></i> `.repeat(noFillStar)}
+                        <span>${numStar}/5</span>
                     </div>
                     <div class="price">
                         $${product.price}
@@ -92,17 +95,20 @@ function refreshTopSellingList() {
             console.log(response);
             const products = response.products;
             const content = products.reduce((content, product) => {
+                const numStar = (product.total_reviews) ? Math.round(product.total_rates / product.total_reviews * 10 / 20) / 10 : 0;
+                const fillStar = Math.floor(numStar);
+                const isHalf = (Math.round(numStar * 10) % 10 == 0 ? 0 : 1);
+                const noFillStar = 5 - fillStar - isHalf;
+
                 return content + `
                 <a class="card" href="/products/${product.slug}">
                     <img src="/public/images/newarrivals/cloth1.png">
                     <h3 class="title">${product.name}</h3>
                     <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                        <span>5/5</span>
+                        ${`<i class="bi bi-star-fill star-ic"></i> `.repeat(fillStar)}
+                        ${`<i class="bi bi-star-half star-ic"></i> `.repeat(isHalf)}
+                        ${`<i class="bi bi-star star-ic"></i> `.repeat(noFillStar)}
+                        <span>${numStar}/5</span>
                     </div>
                     <div class="price">
                         $${product.price}

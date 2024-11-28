@@ -64,7 +64,7 @@
     flex-direction: column;
     flex-grow: 1;
     justify-content: space-between;
-    gap: 10px;
+    gap: 5px;
 }
 
 .item .right .top .info {
@@ -92,10 +92,13 @@
 .item .right .bottom {
     display: flex;
     align-items: center;
+    flex-direction: column;
+    flex-grow: 1;
     justify-content: space-between;
 }
 
 .item .right .bottom .price {
+    align-self: flex-start;
     font-size: var(--lg-font-size);
     font-weight: 700;
 }
@@ -107,6 +110,8 @@
     border-radius: 62px;
 
     position: relative;
+
+    align-self: flex-end;
 }
 
 .item .right .bottom .quantity-modifier i {
@@ -169,6 +174,10 @@
     gap: 20px;
 }
 
+.sm-entry {
+    font-size: var(--lg-font-size);
+}
+
 .order-summary .bill-details .sm-entry div:first-child {
     color: rgb(0, 0, 0, 0.6);
 }
@@ -187,9 +196,15 @@
 }
 
 .order-summary .lg-entry {
-    padding-top: 20px;
     display: flex;
     justify-content: space-between;
+    padding-top: 20px;
+
+    font-size: var(--xl-font-size);
+}
+
+.order-summary .lg-entry div:first-child {
+    color: rgb(0, 0, 0, 0.8);
 }
 
 .order-summary .lg-entry div:last-child {

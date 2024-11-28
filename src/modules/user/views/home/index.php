@@ -72,27 +72,7 @@ ob_start();
     <!-- New arrival start -->
     <div class="new-arrival">
         <h2 class="section-title">NEW ARRIVALS</h2>
-        <div class="card-list">
-            <!-- <div class="card">
-                <img src="/public/images/newarrivals/cloth1.png">
-                <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                <div class="stars">
-
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-half star-ic"></i>
-                    <i class="bi bi-star star-ic"></i>
-
-
-                    <span>5/5</span>
-                </div>
-                <div class="price">
-                    $140
-                </div>
-            </div> -->
-
-        </div>
+        <div class="card-list"></div>
 
         <div class="btn-view-all-container">
             <a href="/categories?options=%7B%0A%22order%22%3A%20%22created_at%22%0A%7D">View All</a>
@@ -108,74 +88,7 @@ ob_start();
     <!-- Top selling start -->
     <div class="top-selling">
         <h2 class="section-title">TOP SELLING</h2>
-        <div class="card-list">
-            <div class="card">
-                <img src="/public/images/newarrivals/cloth1.png">
-                <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                <div class="stars">
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-half star-ic"></i>
-                    <i class="bi bi-star star-ic"></i>
-                    <span>5/5</span>
-                </div>
-                <div class="price">
-                    $140
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="/public/images/newarrivals/cloth2.png">
-                <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                <div class="stars">
-
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-half star-ic"></i>
-                    <i class="bi bi-star star-ic"></i>
-                    <span>5/5</span>
-                </div>
-                <div class="price">
-                    $140
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="/public/images/newarrivals/cloth3.png">
-                <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                <div class="stars">
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-half star-ic"></i>
-                    <i class="bi bi-star star-ic"></i>
-                    <span>5/5</span>
-                </div>
-                <div class="price">
-                    $140
-                </div>
-            </div>
-
-            <div class="card">
-                <img src="/public/images/newarrivals/cloth4.png">
-                <h3 class="title">T-SHIRT WITH TAPE DETAILS</h3>
-                <div class="stars">
-
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-fill star-ic"></i>
-                    <i class="bi bi-star-half star-ic"></i>
-                    <i class="bi bi-star star-ic"></i>
-                    <span>5/5</span>
-                </div>
-                <div class="price">
-                    $140
-                </div>
-            </div>
-        </div>
-
+        <div class="card-list"></div>
         <div class="btn-view-all-container">
             <a href="/categories?options=%7B%0A%22order%22%3A%20%22sold_number%22%0A%7D">View All</a>
         </div>
@@ -289,7 +202,6 @@ ob_start();
                 </div>
             </div>
 
-
             <div class="testimonial-card-container">
                 <div class="testimonial-card">
                     <div class="stars">
@@ -307,7 +219,6 @@ ob_start();
                     </p>
                 </div>
             </div>
-
 
             <div class="testimonial-card-container">
                 <div class="testimonial-card">
@@ -327,7 +238,6 @@ ob_start();
                 </div>
             </div>
 
-
             <div class="testimonial-card-container">
                 <div class="testimonial-card">
                     <div class="stars">
@@ -345,7 +255,6 @@ ob_start();
                     </p>
                 </div>
             </div>
-
 
             <div class="testimonial-card-container">
                 <div class="testimonial-card">
@@ -400,6 +309,7 @@ ob_start();
                     </p>
                 </div>
             </div>
+
             <div class="testimonial-card-container">
                 <div class="testimonial-card">
                     <div class="stars">
@@ -417,6 +327,7 @@ ob_start();
                     </p>
                 </div>
             </div>
+
             <div class="testimonial-card-container">
                 <div class="testimonial-card">
                     <div class="stars">
@@ -434,6 +345,7 @@ ob_start();
                     </p>
                 </div>
             </div>
+
             <div class="testimonial-card-container">
                 <div class="testimonial-card">
                     <div class="stars">
@@ -451,7 +363,6 @@ ob_start();
                     </p>
                 </div>
             </div>
-
 
             <div class="testimonial-card-container">
                 <div class="testimonial-card">

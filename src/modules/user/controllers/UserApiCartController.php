@@ -2,7 +2,6 @@
 
 namespace App\modules\user\controllers;
 
-use App\core\ArrayList;
 use App\core\Attributes\Http\HttpGet;
 use App\core\Attributes\Http\HttpPost;
 use App\core\Controller;
@@ -10,7 +9,6 @@ use App\modules\user\models\AddCartModel;
 use App\modules\user\models\DeleteCartModel;
 use App\modules\user\models\EditCartModel;
 use App\services\CartManager;
-use App\services\LoginManager;
 use App\services\ProductManager;
 
 class UserApiCartController extends Controller

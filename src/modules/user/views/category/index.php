@@ -85,17 +85,20 @@ ob_start();
             <div class="items">
                 <?php
                 foreach ($products as $product) {
+                    $numStar = ($product["total_reviews"] != 0) ? round($product["total_rates"] /  $product["total_reviews"] / 20, 1) : 0;
+                    $fillStar = floor($numStar);
+                    $isHalf = (round($numStar * 10) - $fillStar * 10) == 0 ? 0 : 1;
+                    $noFillStar = 5 - $fillStar - $isHalf;
+
                     echo '
                     <a class="card" href="/products/' . $product["slug"] . '"> 
                         <img src="/public/images/newarrivals/cloth1.png">
                         <h3 class="title">' . $product["name"] . '</h3>
                         <div class="stars">
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-fill star-ic"></i>
-                            <i class="bi bi-star-half star-ic"></i>
-                            <i class="bi bi-star star-ic"></i>
-                            <span>5/5</span>
+                            ' . ($fillStar > 0 ? str_repeat('<i class="bi bi-star-fill star-ic"></i> ', $fillStar) : '') . '
+                            ' . ($isHalf > 0 ? str_repeat('<i class="bi bi-star-half star-ic"></i> ', $isHalf) : '') . '
+                            ' . ($noFillStar > 0 ? str_repeat('<i class="bi bi-star star-ic"></i> ', $noFillStar) : '') . '
+                            <span>' .  $numStar . '/5</span>
                         </div>
                         <div class="price">
                             $' . $product["price"] . '
@@ -115,7 +118,6 @@ ob_start();
 
                 <div>
                     <?php
-
                     if ($currentPage >= 3) {
                         echo '<a class="page-num" href="' . str_replace(":page", 1, $blankPageUrl) . '"><span>' . 1 . '</span></a>';
                         if ($currentPage >= 4) {
