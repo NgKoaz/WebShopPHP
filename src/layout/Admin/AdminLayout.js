@@ -3,7 +3,6 @@ const dropdownMenu = document.querySelectorAll(".dropdown .menu");
 const documentOnClickCallback = {};
 
 
-
 document.onclick = (event) => Object.values(documentOnClickCallback).forEach(c => c(event));
 
 

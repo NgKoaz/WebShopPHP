@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\TransactionRequiredException;
 
 #[Entity]
 #[Table("users")]
@@ -47,6 +48,9 @@ class User
     #[Column(name: "is_deleted")]
     public bool $isDeleted;
 
+    #[Column(name: "used_promo_codes", nullable: true)]
+    public string $usedPromoCodes;
+
     #[Column(name: "deleted_at",  type: "datetime", nullable: True)]
     public DateTime $deleteAt;
 
@@ -58,4 +62,7 @@ class User
 
     #[OneToOne(targetEntity: UserLogin::class, mappedBy: "user")]
     public UserLogin $userLogin;
+
+    #[OneToOne(targetEntity: UserToken::class, mappedBy: "user")]
+    public UserLogin $userToken;
 }

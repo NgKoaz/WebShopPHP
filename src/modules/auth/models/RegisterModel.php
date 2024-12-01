@@ -12,25 +12,25 @@ class RegisterModel extends Model
 {
     #[Required()]
     #[StringLength(min: 2, max: 20)]
-    public string $firstname;
+    public ?string $firstname = null;
 
     #[Required()]
     #[StringLength(min: 2, max: 20)]
-    public string $lastname;
+    public ?string $lastname = null;
 
     #[Required()]
     #[StringLength(min: 6, max: 30)]
-    public string $username;
+    public ?string $username = null;
 
     #[Required()]
     #[Email]
-    public string $email;
+    public ?string $email = null;
 
     #[Required()]
     #[Phone()]
-    public string $phone;
+    public ?string $phone = null;
 
     #[Required()]
     #[StringLength(min: 6, max: 30)]
-    public string $password;
+    public ?string $password = null;
 }

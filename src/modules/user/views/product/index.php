@@ -14,6 +14,19 @@ $this
  */
 $product = $viewData["product"];
 $ancestorCategories = $viewData["ancestorCategories"] ?? [];
+
+$imgs = json_decode($product->images, true);
+$lgImage = "/public/images/no_image.webp";
+// $smImage = ;
+// if (count($imgs) > 0) {
+//     $lgImage = $imgs[0];
+
+
+
+// } else {
+//     $smImage[] = $lgImage;
+// }
+
 ob_start();
 ?>
 
@@ -45,11 +58,19 @@ ob_start();
                 <div class="product-info">
                     <h4 class="title"><?= $product->name ?></h4>
                     <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
+                        <?php
+                        $numStar = ($product->totalReviews != 0) ? round($product->totalRates /  $product->totalReviews / 20, 1) : 0;
+                        $fillStar = floor($numStar);
+                        $isHalf = (round($numStar * 10) - $fillStar * 10) == 0 ? 0 : 1;
+                        $noFillStar = 5 - $fillStar - $isHalf;
+
+                        echo '
+                            ' . ($fillStar > 0 ? str_repeat('<i class="bi bi-star-fill star-ic"></i> ', $fillStar) : '') . '
+                            ' . ($isHalf > 0 ? str_repeat('<i class="bi bi-star-half star-ic"></i> ', $isHalf) : '') . '
+                            ' . ($noFillStar > 0 ? str_repeat('<i class="bi bi-star star-ic"></i> ', $noFillStar) : '') . '
+                            <span>' .  $numStar . '/5</span>
+                            ';
+                        ?>
                     </div>
                     <div class="price">$<?= $product->price ?></div>
                     <p class="description"><?= $product->description ?></p>

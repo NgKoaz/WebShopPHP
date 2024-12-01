@@ -53,6 +53,13 @@ class Product
     #[Column(name: "total_reviews")]
     public int $totalReviews;
 
+    #[Column(name: "promotion_id", nullable: true)]
+    public int $promotionId;
+
+    #[ManyToOne(targetEntity: Promotion::class, inversedBy: "products")]
+    #[JoinColumn(name: "promotion_id", referencedColumnName: "id", nullable: true)]
+    public Promotion $promotion;
+
     #[ManyToOne(targetEntity: Category::class, inversedBy: "products")]
     #[JoinColumn(name: "category_id", referencedColumnName: "id", nullable: true)]
     public Category $category;

@@ -358,8 +358,8 @@ function handleSuccessCreateRequest(response) {
 
 function onCreateSubmit(event) {
     event.preventDefault();
-    const form = new FormData(event.target);
 
+    const form = new FormData(event.target);
     for (var pair of form.entries()) {
         console.log(pair[0] + ': ' + pair[1]);  // Log field name and value
     }
@@ -373,7 +373,7 @@ function onCreateSubmit(event) {
             handleSuccessCreateRequest(response);
         },
         error: function (xhr, status, error) {
-            // console.log(xhr.responseText);
+            console.log(xhr.responseText);
             handleErrorCreateRequest(JSON.parse(xhr.responseText));
         }
     });
@@ -561,9 +561,8 @@ function showEditModal(event) {
                             </div>
 
                             <div class="mb-3 has-validation input-group">
-                                <span class="input-group-text">Price</span>
+                                <span class="input-group-text">$</span>
                                 <input type="text" class="form-control" id="priceInput" name="price" value="${product.price}" placeholder="987..." required>
-                                    <span class="input-group-text">VND</span>
                                     <div id="priceInvalidFeedback" class="invalid-feedback"></div>
                             </div>
 

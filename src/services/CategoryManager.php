@@ -110,6 +110,24 @@ class CategoryManager
         return array_reverse($this->backtrackGetAncestors($categories, $categoryId));
     }
 
+    public function getSuccessors(int $categoryId): array
+    {
+        return $this->backtrackGetSuccessors($this->getCategories(), $categoryId);
+    }
+
+    private function backtrackGetSuccessors(array $categories, int $categoryId): array
+    {
+        $successors = [];
+        foreach ($categories as $category) {
+            if ($category['parentId'] == $categoryId) {
+                $successors[] = $category;
+                $successors = array_merge($successors, $this->backtrackGetSuccessors($categories, $category['id']));
+            }
+        }
+
+        return $successors;
+    }
+
     private function backtrackGetAncestors(array $categories, int $categoryId, array &$path = []): array
     {
         // var_dump($categories);

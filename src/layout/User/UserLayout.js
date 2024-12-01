@@ -126,6 +126,10 @@ function onChangeSearchInputPc(event) {
     sendSearchRequestMb(event.target.value);
 }
 
+function onSubmitSearchForm(event) {
+    event.preventDefault();
+    document.querySelector("#moreResultsBtn")?.click();
+}
 
 //#endregion
 
@@ -146,12 +150,14 @@ function handleSuccessSearchRequest(response, searchQuery) {
     }
 
     const content = products.reduce((content, product) => {
+        const images = JSON.parse(product.images ?? "[]");
+
         return content +
             `
             <li class="itemResult">
                 <a class="itemLink" href="/products/${product.slug}">
                     <div class="image">
-                        <img src="/public/images/cart/p1.png">
+                        <img src="${images.length !== 0 ? images[0]["sm"] : "/public/images/sm_no_image.webp"}">
                     </div>
                     <div class="info">
                         <div class="title">${product.name}</div>

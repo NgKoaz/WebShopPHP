@@ -15,24 +15,27 @@ class CategoryController extends Controller
     public function __construct(private LoginManager $loginManager, private ProductManager $productManager, private CategoryManager $categoryManager) {}
 
     #[HttpGet("/categories")]
-    public function getShop(int $page = 1, int $limit = 12, string $query = "", string $options = "")
+    public function getShop(int $page = 1, int $limit = 6, string $query = "", string $options = "")
     {
         $viewData = new ArrayList;
         $viewData["blankPageUrl"] = $this->getBlankURI($page, $limit, $query, "", $options);;
         $viewData["IS_LOGGED_IN"] = $this->loginManager->isLoggedIn();
 
         $options = (strlen($options) > 0) ? json_decode($options, true) : [];
-        $result = $this->productManager->getProductsComplex($page, $limit, $query, "", $options);
+        $result = $this->productManager->getProductsComplex($page, $limit, $query, 0, $options);
 
         $viewData["products"] = $result["products"];
         $viewData["totalPages"] = $result["totalPages"];
         $viewData["currentPage"] = $result["currentPage"];
+        $viewData["count"] = $result["count"];
+        $viewData["from"] = $result["from"];
+        $viewData["to"] = $result["to"];
 
         $this->view(viewData: $viewData);
     }
 
     #[HttpGet("/categories/:slug")]
-    public function getProductByCategory(int $page = 1, int $limit = 12, string $query = "", string $slug = "", string $options = "")
+    public function getProductByCategory(int $page = 1, int $limit = 6, string $query = "", string $slug = "", string $options = "")
     {
         $viewData = new ArrayList;
         $viewData["blankPageUrl"] = $this->getBlankURI($page, $limit, $query, $slug, $options);
@@ -43,7 +46,7 @@ class CategoryController extends Controller
             if ($category === null) return $this->loadSharedView("404");
 
             $options = (strlen($options) > 0) ? json_decode($options, true) : [];
-            $result = $this->productManager->getProductsComplex($page, $limit, $query, $slug, $options);
+            $result = $this->productManager->getProductsComplex($page, $limit, $query, $category->id, $options);
 
             $ancestorCategories = $this->categoryManager->getAncestors($category->id);
             $viewData["ancestorCategories"] = $ancestorCategories;
@@ -51,11 +54,14 @@ class CategoryController extends Controller
             $viewData["products"] = $result["products"];
             $viewData["totalPages"] = $result["totalPages"];
             $viewData["currentPage"] = $result["currentPage"];
+            $viewData["count"] = $result["count"];
+            $viewData["from"] = $result["from"];
+            $viewData["to"] = $result["to"];
         }
         $this->view(viewData: $viewData);
     }
 
-    private function getBlankURI(int $page = 1, int $limit = 12, string $query = "", string $slug = "", string $options = ""): string
+    private function getBlankURI(int $page = 1, int $limit = 6, string $query = "", string $slug = "", string $options = ""): string
     {
         $url = "/categories";
         if (strlen($slug) > 0)

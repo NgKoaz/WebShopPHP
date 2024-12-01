@@ -23,16 +23,16 @@ class HomeController extends Controller
         $this->view("index", viewData: $viewData);
     }
 
-    #[HttpPost("/")]
-    public function postIndex()
-    {
-        $loginValidator = new LoginValidator;
-        if (!$loginValidator->validate([])) {
-            var_dump($loginValidator->getErrors());
-            return;
-        }
-        echo "POST HEHE";
+    // #[HttpPost("/")]
+    // public function postIndex()
+    // {
+    //     $loginValidator = new LoginValidator;
+    //     if (!$loginValidator->validate([])) {
+    //         var_dump($loginValidator->getErrors());
+    //         return;
+    //     }
+    //     echo "POST HEHE";
 
-        $this->view("index");
-    }
+    //     $this->view("index");
+    // }
 }

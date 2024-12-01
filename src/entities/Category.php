@@ -32,6 +32,13 @@ class Category
     #[OneToMany(targetEntity: Product::class, mappedBy: "category")]
     public Collection $products;
 
+    #[Column(name: "promotion_id", nullable: true)]
+    public ?int $promotionId;
+
+    #[ManyToOne(targetEntity: Promotion::class, inversedBy: "categories")]
+    #[JoinColumn(name: "promotion_id", referencedColumnName: "id", nullable: true)]
+    public Promotion $promotion;
+
     #[ManyToOne(targetEntity: Category::class, inversedBy: "subcategories")]
     #[JoinColumn(name: "parent_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
     public ?Category $parentCategory = null;

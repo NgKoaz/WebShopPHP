@@ -15,7 +15,9 @@ $ancestorCategories = $viewData["ancestorCategories"] ?? [];
 $lenCategories =  count($ancestorCategories);
 $categoryName = $lenCategories > 0 ? $ancestorCategories[$lenCategories - 1]['name'] : "Shop";
 $blankPageUrl = $viewData["blankPageUrl"];
-
+$count = $viewData["count"];
+$from = $viewData["from"];
+$to = $viewData["to"];
 ob_start();
 ?>
 
@@ -77,7 +79,7 @@ ob_start();
             <div class="top">
                 <h4 class="main-title left"><?= $categoryName ?></h4>
                 <div class="right">
-                    <div>Showing 1-10 of 100 <span>Sort by: Most Popular</span></div>
+                    <div><?php echo "Showing $from-$to of $count" ?> <span>Sort by: Most Popular</span></div>
                     <button class="filter-btn" onclick="showFilterMobile(event)"><i class="bi bi-sliders2-vertical"></i></button>
                 </div>
             </div>
@@ -90,9 +92,15 @@ ob_start();
                     $isHalf = (round($numStar * 10) - $fillStar * 10) == 0 ? 0 : 1;
                     $noFillStar = 5 - $fillStar - $isHalf;
 
+                    $imgs = json_decode($product["images"], true);
+                    $lgImage = "/public/images/no_image.webp";
+                    if (count($imgs) > 0) {
+                        $lgImage = $imgs[0]["lg"];
+                    }
+
                     echo '
                     <a class="card" href="/products/' . $product["slug"] . '"> 
-                        <img src="/public/images/newarrivals/cloth1.png">
+                        <img src="' . $lgImage . '">
                         <h3 class="title">' . $product["name"] . '</h3>
                         <div class="stars">
                             ' . ($fillStar > 0 ? str_repeat('<i class="bi bi-star-fill star-ic"></i> ', $fillStar) : '') . '
@@ -113,7 +121,7 @@ ob_start();
 
             <div class="pagination">
                 <?php
-                echo '<a class="prev" href="' . str_replace(":page", ($currentPage - 1) > 0 ? $currentPage - 1 : 1, $blankPageUrl) . '">Previous</a>';
+                echo '<a class="prev ' . (+$currentPage <= 1 ? "disabled" : "") . '" href="' . str_replace(":page", ($currentPage - 1) > 0 ? $currentPage - 1 : 1, $blankPageUrl) . '">Previous</a>';
                 ?>
 
                 <div>
@@ -141,7 +149,7 @@ ob_start();
 
                 </div>
                 <?php
-                echo '<a class="next" href="' . str_replace(":page", ($currentPage + 1) <= $totalPages ? $currentPage + 1 :  $totalPages, $blankPageUrl) . '">Next</a>';
+                echo '<a class="next ' . (+$currentPage >= +$totalPages ? "disabled" : "") . '" href="' . str_replace(":page", ($currentPage + 1) <= $totalPages ? $currentPage + 1 :  $totalPages, $blankPageUrl) . '">Next</a>';
                 ?>
             </div>
         </div>

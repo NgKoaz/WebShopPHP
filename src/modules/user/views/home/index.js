@@ -61,9 +61,11 @@ function refreshNewArrivalList() {
                 const isHalf = (Math.round(numStar * 10) % 10 == 0 ? 0 : 1);
                 const noFillStar = 5 - fillStar - isHalf;
 
+                const images = JSON.parse(product.images ?? "[]");
+
                 return content + `
                 <a class="card" href="/products/${product.slug}">
-                    <img src="/public/images/newarrivals/cloth1.png">
+                    <img src="${(images.length !== 0) ? images[0]["lg"] : "/public/images/no_image.webp"}">
                     <h3 class="title">${product.name}</h3>
                     <div class="stars">
                         ${`<i class="bi bi-star-fill star-ic"></i> `.repeat(fillStar)}
@@ -94,15 +96,18 @@ function refreshTopSellingList() {
         success: function (response) {
             console.log(response);
             const products = response.products;
+
             const content = products.reduce((content, product) => {
                 const numStar = (product.total_reviews) ? Math.round(product.total_rates / product.total_reviews * 10 / 20) / 10 : 0;
                 const fillStar = Math.floor(numStar);
                 const isHalf = (Math.round(numStar * 10) % 10 == 0 ? 0 : 1);
                 const noFillStar = 5 - fillStar - isHalf;
 
+                const images = JSON.parse(product.images ?? "[]");
+
                 return content + `
                 <a class="card" href="/products/${product.slug}">
-                    <img src="/public/images/newarrivals/cloth1.png">
+                    <img src="${(images.length !== 0) ? images[0]["lg"] : "/public/images/no_image.webp"}">
                     <h3 class="title">${product.name}</h3>
                     <div class="stars">
                         ${`<i class="bi bi-star-fill star-ic"></i> `.repeat(fillStar)}

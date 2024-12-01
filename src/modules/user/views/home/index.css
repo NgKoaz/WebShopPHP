@@ -181,6 +181,10 @@
 
 .card img {
     width: 100%;
+    border-radius: 20px;
+    max-height: 252px;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
 }
 
 .card .title {

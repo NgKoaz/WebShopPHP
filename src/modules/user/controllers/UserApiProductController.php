@@ -32,15 +32,11 @@ class UserApiProductController extends Controller
     #[HttpGet("/api/products")]
     public function getProducts(int $page = 1, int $limit = 12, string $query = "", string $slug = "", string $options = "")
     {
-        if (strlen($slug) > 0) {
-            $category = $this->categoryManager->findBySlug($slug);
-            if ($category === null) return $this->loadSharedView("404");
-            return $this->json(["code" => 404, "errors" => ["message" => "Category slug is not found!"]], 400);
-        }
+        $category = (strlen($slug) > 0) ? $this->categoryManager->findBySlug($slug) : null;
+        if ($category === null && strlen($slug) > 0) return $this->loadSharedView("404");
 
         $options = (strlen($options) > 0) ? json_decode($options, true) : [];
-        $result = $this->productManager->getProductsComplex($page, $limit, $query, $slug, $options);
-
+        $result = $this->productManager->getProductsComplex($page, $limit, $query, ($category !== null ? $category->id : 0), $options);
         return $this->json($result);
     }
 }

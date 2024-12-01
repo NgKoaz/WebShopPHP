@@ -1,33 +1,38 @@
-function handleSuccessLogin(response) {
-    // console.log(response);
-    window.location.href = "/login";
+const inputs = {
+    "firstname": document.querySelector("#firstnameInput"),
+    "lastname": document.querySelector("#lastnameInput"),
+    "username": document.querySelector("#usernameInput"),
+    "email": document.querySelector("#emailInput"),
+    "phone": document.querySelector("#phoneInput"),
+    "password": document.querySelector("#passwordInput"),
+    "confirmPassword": document.querySelector("#confirmInput"),
 }
 
-function handleErrorLogin(response) {
-    inputs = {
-        "firstname": document.querySelector("#firstnameInput"),
-        "lastname": document.querySelector("#lastnameInput"),
-        "username": document.querySelector("#usernameInput"),
-        "email": document.querySelector("#emailInput"),
-        "phone": document.querySelector("#phoneInput"),
-        "password": document.querySelector("#passwordInput"),
-        "confirmPassword": document.querySelector("#confirmInput"),
-    }
+const feedbacks = {
+    "firstname": document.querySelector("#firstnameInvalidFeedback"),
+    "lastname": document.querySelector("#lastnameInvalidFeedback"),
+    "username": document.querySelector("#usernameInvalidFeedback"),
+    "email": document.querySelector("#emailInvalidFeedback"),
+    "phone": document.querySelector("#phoneInvalidFeedback"),
+    "password": document.querySelector("#passwordInvalidFeedback"),
+    "confirmPassword": document.querySelector("#confirmInvalidFeedback"),
+}
 
-    feedbacks = {
-        "firstname": document.querySelector("#firstnameInvalidFeedback"),
-        "lastname": document.querySelector("#lastnameInvalidFeedback"),
-        "username": document.querySelector("#usernameInvalidFeedback"),
-        "email": document.querySelector("#emailInvalidFeedback"),
-        "phone": document.querySelector("#phoneInvalidFeedback"),
-        "password": document.querySelector("#passwordInvalidFeedback"),
-        "confirmPassword": document.querySelector("#confirmInvalidFeedback"),
-    }
 
+function handleSuccessLogin(response) {
+    clearInputs();
+    openToast("Registered!");
+}
+
+function clearInputs() {
     Object.keys(inputs).forEach(key => {
         inputs[key].classList.remove("is-invalid");
         feedbacks[key].innerHTML = "";
-    })
+    });
+}
+
+function handleErrorLogin(response) {
+    clearInputs();
 
     if (response?.errors === null) return;
 
@@ -42,10 +47,10 @@ function handleErrorLogin(response) {
 }
 
 function checkBeforeSend() {
-    password = document.querySelector("#passwordInput").value
-    confirmPassword = document.querySelector("#confirmInput").value
+    const password = document.querySelector("#passwordInput").value
+    const confirmPassword = document.querySelector("#confirmInput").value
     if (password === confirmPassword) return true;
-    response = {
+    const response = {
         errors: {
             confirmPassword: ["Confirm password doesn't match!"]
         }
@@ -61,9 +66,9 @@ function onSubmitForm(event) {
 
     const form = new FormData(event.target);
 
-    for (var pair of form.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);  // Log field name and value
-    }
+    // for (var pair of form.entries()) {
+    //     console.log(pair[0] + ': ' + pair[1]);  // Log field name and value
+    // }
 
     $.ajax({
         url: "/api/register",
@@ -72,9 +77,11 @@ function onSubmitForm(event) {
         processData: false,
         contentType: false,
         success: function (response) {
+            console.log(response);
             handleSuccessLogin(response);
         },
         error: function (xhr, status, error) {
+            console.log(xhr.responseText);
             handleErrorLogin(JSON.parse(xhr.responseText));
         }
     });

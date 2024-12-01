@@ -54,7 +54,15 @@ class AuthController extends Controller
             $this->userManager->hasEmail($model->email) &&
             $this->userManager->hasUsername($model->username) &&
             $this->userManager->hasEmail($model->username);
-        $this->userManager->register($model->firstName, $model->lastName, $model->username, $model->email, $model->phone, $model->password);
+        $this->userManager->register(
+            $model->firstname,
+            $model->lastname,
+            $model->username,
+            $model->email,
+            $model->phone,
+            $model->password,
+            []
+        );
         return $isValid;
     }
 }

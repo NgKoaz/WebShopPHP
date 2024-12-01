@@ -164,6 +164,86 @@ input.is-invalid {
 }
 
 
+#toastContainer {
+    position: fixed;
+    margin-top: 10px;
+    margin-right: 10px;
+    top: 0px;
+    right: 0px;
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    justify-items: center;
+    background-color: white;
+
+    box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.2);
+    border-radius: 8px;
+    width: 300px;
+    height: 80px;
+
+    margin-bottom: 10px;
+
+    position: relative;
+    right: -110%;
+}
+
+.toast.show {
+    right: 0%;
+}
+
+.toast::after {
+    content: "";
+    height: 3px;
+    width: 100%;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    background-color: #3ae374;
+    border-radius: 20px;
+    display: block;
+    animation: progress-animation 3s linear forwards;
+}
+
+.toast-icon {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.toast-icon i {
+    color: #3ae374;
+    font-size: 30px;
+}
+
+.toast-content {
+    flex-grow: 1;
+    margin-left: 10px;
+    margin-top: 8px;
+}
+
+.toast-title {
+    font-size: var(--md-font-size);
+    font-weight: 500;
+}
+
+.toast-message {
+    font-size: var(--sm-font-size);
+}
+
+.toast-close {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+}
+
+@keyframes progress-animation {
+    to {
+        width: 0%;
+    }
+}
+
 @media screen and (min-width: 768px) {
     .root-container {
         background-color: #F2F0F1;

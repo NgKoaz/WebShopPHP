@@ -58,25 +58,27 @@ class ProductManager
         return $products;
     }
 
-    public function getProductsComplex(int $page, int $limit, string $query, string $categorySlug, array $options): array
+    public function getProductsComplex(int $page, int $limit, string $query, int $categoryId, array $options): array
     {
-        // var_dump($page, $limit, $query, $categorySlug, $options);
+        $ancestorCategoryIds = array_map(function ($c) {
+            return $c["id"];
+        }, $this->categoryManager->getSuccessors($categoryId));
+        $ancestorCategoryIds[] = $categoryId;
 
         // START GET COUNT 
         $queryBuilder = $this->entityManager
             ->getRepository(Product::class)
             ->createQueryBuilder('p')
-            ->leftJoin('p.category', 'c')
             ->select('COUNT(p.id)');
         if (!empty($query)) {
             $queryBuilder
                 ->where('LOWER(p.name) LIKE :name')
                 ->setParameter('name', '%' . strtolower($query) . '%');
         }
-        if (!empty($categorySlug)) {
+        if (!empty($categoryId)) {
             $queryBuilder
-                ->andWhere('c.slug = :categorySlug')
-                ->setParameter('categorySlug', $categorySlug);
+                ->andWhere('p.categoryId IN (:categoryIds)')
+                ->setParameter('categoryIds', $ancestorCategoryIds);
         }
         $count = $queryBuilder->getQuery()->getSingleScalarResult();
         // END GET COUNT 
@@ -97,8 +99,10 @@ class ProductManager
                 $where = $where .  "WHERE " . $condition;
             }
         }
-        if (!empty($categorySlug)) {
-            $condition = "c.slug = '$categorySlug'";
+        if (!empty($ancestorCategoryIds)) {
+            $ids = implode(",", array_map('intval', $ancestorCategoryIds));
+            $condition = "c.id IN ($ids)";
+
             if (strlen($where) > 0) {
                 $where = $where . " AND " . $condition;
             } else {
@@ -138,6 +142,9 @@ class ProductManager
 
 
         return [
+            "count" => $count,
+            "from" => $offset + 1,
+            "to" => $offset + count($products),
             "products" => $products,
             "totalPages" => $totalPages,
             "currentPage" => $page
@@ -187,6 +194,11 @@ class ProductManager
         $product->category = $this->categoryManager->findById($categoryId);
         $product->categoryId = $categoryId;
 
+        $product->totalRates = 0;
+        $product->totalReviews = 0;
+
+        $product->details = "";
+        $product->images = "[]";
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();

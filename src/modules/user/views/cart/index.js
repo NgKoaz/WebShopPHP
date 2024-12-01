@@ -110,9 +110,9 @@ function loadItems(response) {
     document.querySelector("#numInCart").innerHTML = `${totalQuantity}`;
 
 
-    const subtotal = response.reduce((totalPrice, obj) => {
+    const subtotal = Math.round(response.reduce((totalPrice, obj) => {
         return totalPrice + +obj.product.price * +obj.quantity;
-    }, 0);
+    }, 0) * 100) / 100;
     const subtotalText = document.querySelector("#subtotal");
     if (subtotalText) subtotalText.innerHTML = `$${subtotal}`;
 
