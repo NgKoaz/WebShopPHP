@@ -10,6 +10,9 @@ use App\modules\auth\models\RegisterModel;
 use App\services\LoginManager;
 use App\services\SessionManager;
 use App\services\UserManager;
+use Google\Client;
+use Google\Service\Oauth2;
+use Google_Client;
 
 // #[Anonymous]
 class ApiAuthController extends Controller
@@ -17,7 +20,8 @@ class ApiAuthController extends Controller
     public function __construct(
         private UserManager $userManager,
         private SessionManager $sessionManager,
-        private LoginManager $loginManager
+        private LoginManager $loginManager,
+        private Client $client
     ) {}
 
     #[HttpPost("/api/login")]
@@ -64,6 +68,19 @@ class ApiAuthController extends Controller
                 $isError = true;
             }
 
+            $isVeriedEmail = false;
+
+            $token = $this->sessionManager->getEntry(SessionManager::$GOOGLE_AUTH);
+            if (count($token) > 0) {
+                $this->client->setAccessToken($token["ACCESS_TOKEN"]);
+                if ($this->client->isAccessTokenExpired())
+                    $this->client->refreshToken($token["REFRESH_TOKEN"]);
+
+                $oauth2 = new Oauth2($this->client);
+                $userInfo = $oauth2->userinfo->get();
+                $isVeriedEmail = ($userInfo->getEmail() === $model->email);
+            }
+
             if (!$isError) {
                 $this->userManager->register(
                     $model->firstname,
@@ -72,7 +89,8 @@ class ApiAuthController extends Controller
                     $model->email,
                     $model->phone,
                     $model->password,
-                    []
+                    [],
+                    $isVeriedEmail
                 );
                 $user = $this->userManager->findByUsername($model->username);
                 return $this->json($user);

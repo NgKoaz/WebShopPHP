@@ -20,11 +20,20 @@ const feedbacks = {
 
 
 function handleSuccessLogin(response) {
+    clearErrors();
     clearInputs();
-    openToast("Registered!");
+    openToast("Registered! Moving to login page in 2 seconds");
+    setTimeout(() => window.location.href = "/login", 2000);
 }
 
 function clearInputs() {
+    Object.keys(inputs).forEach(key => {
+        inputs[key].value = "";
+        feedbacks[key].innerHTML = "";
+    });
+}
+
+function clearErrors() {
     Object.keys(inputs).forEach(key => {
         inputs[key].classList.remove("is-invalid");
         feedbacks[key].innerHTML = "";
@@ -32,7 +41,7 @@ function clearInputs() {
 }
 
 function handleErrorLogin(response) {
-    clearInputs();
+    clearErrors();
 
     if (response?.errors === null) return;
 

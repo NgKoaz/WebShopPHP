@@ -94,6 +94,11 @@ abstract class Controller
         echo json_encode($object);
     }
 
+    protected function content(string $content)
+    {
+        echo $content;
+    }
+
     protected function loadSharedView(string $view)
     {
         require_once App::getRootDirectory() . "/src/views/$view.php";

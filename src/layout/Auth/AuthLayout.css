@@ -56,10 +56,11 @@
 }
 
 .btn {
-    padding: 10px 36px;
+    display: inline-block;
+    padding: 10px 20px;
     border-radius: 62px;
-
     font-size: var(--md-font-size);
+    text-align: center;
 }
 
 .btn-black {

@@ -2,7 +2,7 @@
 
 use App\core\App;
 
-$title = "Bach Khoa Clothes";
+$title = "Your Cart";
 $this
     ->addScript("index.js")
     ->addStylesheet("index.css");

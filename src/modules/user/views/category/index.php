@@ -2,7 +2,7 @@
 
 use App\core\App;
 
-$title = "Bach Khoa Clothes";
+
 $this
     ->addScript("index.js")
     ->addStylesheet("index.css");
@@ -18,6 +18,9 @@ $blankPageUrl = $viewData["blankPageUrl"];
 $count = $viewData["count"];
 $from = $viewData["from"];
 $to = $viewData["to"];
+
+
+$title = $categoryName;
 ob_start();
 ?>
 

@@ -6,27 +6,37 @@ use App\core\ArrayList;
 
 class SessionManager
 {
-    private string $FLASH = "FLASH";
+    public static string $FLASH = "FLASH";
     private string $PERSISTENT = "PERSISTENT";
     private string $TEMP_MESSAGE = "TEMP_MESSAGE";
+    public static string $GOOGLE_AUTH = "GOOGLE_AUTH";
 
     public function __construct()
     {
         ini_set('session.gc_maxlifetime', 1800);
         ini_set('session.cookie_lifetime', 1800);
         session_start();
-        $_SESSION[$this->FLASH] = new ArrayList;
+
         if (!isset($_SESSION[$this->PERSISTENT])) $_SESSION[$this->PERSISTENT] = new ArrayList;
     }
 
     public function setTempMessage(string $message): void
     {
-        $_SESSION[$this->FLASH][$this->TEMP_MESSAGE] = $message;
+        $_SESSION[self::$FLASH][$this->TEMP_MESSAGE] = $message;
     }
 
-    public function getTempMessage(): ?string
+    public function setFlash(string $name, array $value): void
     {
-        return $_SESSION[$this->FLASH][$this->TEMP_MESSAGE];
+        if (!isset($_SESSION[self::$FLASH])) $_SESSION[self::$FLASH] = [];
+        $_SESSION[self::$FLASH][$name] = $value;
+    }
+
+    public function getFlash(string $name): array
+    {
+        if (!isset($_SESSION[self::$FLASH])) return [];
+        $result = $_SESSION[self::$FLASH][$name];
+        unset($_SESSION[self::$FLASH][$name]);
+        return $result;
     }
 
     private function checkEntry(string $entry): void
@@ -96,5 +106,14 @@ class SessionManager
     public function removePersistent(): void
     {
         $_SESSION[$this->PERSISTENT] = new ArrayList;
+    }
+
+    public function remove(): void
+    {
+        session_unset();
+        session_destroy();
+        if (isset($_COOKIE[session_name()])) {
+            setcookie(session_name(), '', time() - 3600, '/');
+        }
     }
 }

@@ -10,7 +10,7 @@ class UserManager
 {
     public function __construct(private EntityManager $entityManager) {}
 
-    public function register(string $firstname, string $lastname, string $username, string $email, string $phone, string $password, array $roles): void
+    public function register(string $firstname, string $lastname, string $username, string $email, string $phone, string $password, array $roles, bool $isVerifiedEmail = false): void
     {
         $user = new User;
         $user->username = $username;
@@ -23,6 +23,8 @@ class UserManager
         $user->createdAt = new DateTime;
 
         $user->roles = json_encode($roles);
+
+        $user->isVerifiedEmail =  $isVerifiedEmail;
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

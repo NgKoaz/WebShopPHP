@@ -2,10 +2,12 @@
 
 use App\core\App;
 
-$title = "Bach Khoa Clothes";
+$title = "Register";
 $this
     ->addScript("Register.js")
     ->addStylesheet("Register.css");
+
+$googleAuthURL = $viewData["GoogleAuthURL"];
 
 ob_start();
 ?>
@@ -17,12 +19,14 @@ ob_start();
             <div class="composite-input mb-4">
                 <div class="w-50">
                     <label>First name</label>
-                    <input type="text" class="input" id="firstnameInput" placeholder="First name" name="firstname">
+                    <input type="text" class="input" id="firstnameInput" placeholder="First name" name="firstname"
+                        value="<?= $viewData["firstname"] ?>">
                     <div id="firstnameInvalidFeedback" class="invalid-feedback"></div>
                 </div>
                 <div class="w-50">
                     <label>Last name</label>
-                    <input type="text" class="input" id="lastnameInput" placeholder="Last name" name="lastname">
+                    <input type="text" class="input" id="lastnameInput" placeholder="Last name" name="lastname"
+                        value="<?= $viewData["lastname"] ?>">
                     <div id="lastnameInvalidFeedback" class="invalid-feedback"></div>
                 </div>
             </div>
@@ -33,7 +37,8 @@ ob_start();
             </div>
             <div class="input-group mb-4">
                 <label>Email</label>
-                <input type="text" class="input" id="emailInput" placeholder="Email" name="email">
+                <input type="text" class="input" id="emailInput" placeholder="Email" name="email"
+                    value="<?= $viewData["email"] ?>">
                 <div id="emailInvalidFeedback" class="invalid-feedback"></div>
             </div>
             <div class="input-group mb-4">
@@ -57,8 +62,8 @@ ob_start();
     </div>
 
     <div class="third-party mb-4">
-        <button class="btn btn-google w-100 mb-3">Or sign in with Google</button>
-        <button class="btn btn-facebook w-100 ">Or sign in with Facebook</button>
+        <a class="btn btn-google w-100 mb-3" href="<?= $googleAuthURL ?>"><i class="bi bi-google"></i> Or sign in with Google</a>
+        <!-- <button class="btn btn-facebook w-100 ">Or sign in with Facebook</button> -->
     </div>
 
     <div class="other-actions">

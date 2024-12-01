@@ -3,7 +3,6 @@
 use App\core\App;
 use App\Entities\Product;
 
-$title = "Bach Khoa Clothes";
 $this
     ->addScript("index.js")
     ->addStylesheet("index.css");
@@ -19,6 +18,9 @@ $imgs = json_decode($product->images, true);
 $lgImage = "/public/images/no_image.webp";
 
 if (count($imgs) === 0) $imgs[] = ["lg" => "/public/images/no_image.webp", "sm" => "/public/images/sm_no_image.webp"];
+
+$title = $product->name;
+
 
 ob_start();
 ?>

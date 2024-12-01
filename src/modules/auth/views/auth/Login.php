@@ -2,10 +2,12 @@
 
 use App\core\App;
 
-$title = "Bach Khoa Clothes";
+$title = "Login";
 $this
     ->addScript("Login.js")
     ->addStylesheet("Login.css");
+
+$googleAuthURL = $viewData["GoogleAuthURL"];
 
 ob_start();
 ?>
@@ -41,8 +43,8 @@ ob_start();
     </div>
 
     <div class="third-party">
-        <button class="btn btn-google w-100 mb-3">Or sign in with Google</button>
-        <button class="btn btn-facebook w-100 ">Or sign in with Facebook</button>
+        <a class="btn btn-google w-100 mb-3" href="<?= $googleAuthURL ?>"><i class="bi bi-google"></i> Or sign in with Google</a>
+        <!-- <button class="btn btn-facebook w-100 ">Or sign in with Facebook</button> -->
     </div>
 
     <div class="other-actions">

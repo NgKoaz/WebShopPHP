@@ -21,9 +21,6 @@ class UserLogin
     #[Column(name: "provider_key")]
     public string $providerKey;
 
-    #[Column(name: "provider_display_name")]
-    public string $providerDisplayName;
-
     #[Column(name: "user_id")]
     public int $userId;
 

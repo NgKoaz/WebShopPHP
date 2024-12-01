@@ -46,10 +46,13 @@ class User
     public string $roles;
 
     #[Column(name: "is_deleted")]
-    public bool $isDeleted;
+    public bool $isDeleted = false;
 
     #[Column(name: "used_promo_codes", nullable: true)]
     public string $usedPromoCodes;
+
+    #[Column(name: "is_verified_email")]
+    public bool $isVerifiedEmail = false;
 
     #[Column(name: "deleted_at",  type: "datetime", nullable: True)]
     public DateTime $deleteAt;

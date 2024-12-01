@@ -19,7 +19,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\DBAL\DriverManager;
 use Dotenv\Dotenv;
-
+use Google\Client;
 
 define("ROOT_DIR", __DIR__);
 
@@ -34,6 +34,8 @@ $connectionConfig = [
     'driver' => $_ENV["DB_DRIVER"],
 ];
 
+
+
 Container::getInstance()
     ->addSingleton(
         EntityManager::class,
@@ -43,6 +45,18 @@ Container::getInstance()
             return new EntityManager($connection, $ORMConfig);
         }
     )
+    ->addSingleton(Client::class, function () {
+        $client = new Client();
+        $client->setClientId($_ENV["GOOGLE_CLIENT_ID"]);
+        $client->setClientSecret($_ENV["GOOGLE_CLIENT_SECRET"]);
+        $client->setRedirectUri('http://localhost:8080/api/auth/google');
+        $client->addScope('openid');
+        $client->addScope('email');
+        $client->addScope('profile');
+        $client->setAccessType('offline');
+        $client->setPrompt('consent');
+        return $client;
+    })
     ->addSingleton(SessionManager::class, SessionManager::class)
     ->addSingleton(UserManager::class, UserManager::class)
     ->addSingleton(LoginManager::class, LoginManager::class)

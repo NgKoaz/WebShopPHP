@@ -17,7 +17,8 @@
         "vlucas/phpdotenv": "^5.6",
         "symfony/cache": "^7.1",
         "psr/container": "^2.0",
-        "intervention/image": "^3.9"
+        "intervention/image": "^3.9",
+        "google/apiclient": "^2.18"
     },
     "scripts": {
         "migrate": "./vendor/bin/doctrine-migrations migrate",

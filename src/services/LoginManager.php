@@ -3,12 +3,13 @@
 namespace App\services;
 
 use App\Entities\User;
+use Doctrine\ORM\EntityManager;
 
 class LoginManager
 {
-    private string $USER_ID = "MY_USER_ID";
+    private string $USER_ID = "USER_ID";
 
-    public function __construct(private UserManager $userManager, private SessionManager $sessionManager) {}
+    public function __construct(private UserManager $userManager, private SessionManager $sessionManager, private EntityManager $entityManager) {}
 
     public function login(string $usernameOrEmail, string $password, bool $isRemember): ?User
     {
@@ -21,6 +22,19 @@ class LoginManager
             $this->sessionManager->setPersistentEntry($this->USER_ID, $user->id);
         }
         return $result;
+    }
+
+    public function externalLogin(string $email): ?User
+    {
+        $user = $this->userManager->findByEmail($email);
+        if ($user === null) return null;
+        if (!$user->isVerifiedEmail) {
+            $user->isVerifiedEmail = true;
+            $this->entityManager->flush();
+        }
+
+        $this->sessionManager->setPersistentEntry($this->USER_ID, $user->id);
+        return $user;
     }
 
     public function getCurrentUser(): ?User
@@ -43,6 +57,6 @@ class LoginManager
 
     public function logout(): void
     {
-        $this->sessionManager->removePersistent();
+        $this->sessionManager->remove();
     }
 }
