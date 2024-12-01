@@ -7,11 +7,11 @@ const next = document.querySelector("#nextTestimonial");
 const cardsContainer = document.querySelector(".testimonial-cards");
 const cards = document.querySelectorAll(".testimonial-card-container");
 
-const numberOfComment = cards.length;
+let numberOfComment = cards.length;
 let numCardDisplay = 3;
 let startIndex = numCardDisplay;
 let endIndex = numberOfComment - numCardDisplay * 2;
-let cardIndex = 3;
+let curCardIndex = 3;
 
 document.addEventListener('DOMContentLoaded', () => {
     refreshNewArrivalList();
@@ -28,20 +28,17 @@ function handleResize(event) {
     const width = window.innerWidth;
     if (width >= 1240) {
         numCardDisplay = 3;
-        startIndex = numCardDisplay;
         endIndex = numberOfComment - numCardDisplay * 2;
-        cardIndex = 3;
     } else if (width >= 768) {
         numCardDisplay = 2;
-        startIndex = numCardDisplay;
-        endIndex = numberOfComment - numCardDisplay * 2;
-        cardIndex = 2;
+        endIndex = numberOfComment - (3 - numCardDisplay) * 3 - 3;
     } else {
         numCardDisplay = 1;
-        startIndex = numCardDisplay;
-        endIndex = numberOfComment - numCardDisplay * 2;
-        cardIndex = 1;
+        endIndex = numberOfComment - (3 - numCardDisplay) * 3;
     }
+
+    startIndex = (3 - numCardDisplay) * 2 + numCardDisplay;
+    curCardIndex = 3;
 
     cardsContainer.style.width = `${100 * numberOfComment / numCardDisplay}%`;
 }
@@ -86,7 +83,6 @@ function refreshNewArrivalList() {
     });
 }
 
-
 function refreshTopSellingList() {
     $.ajax({
         url: `/api/products?limit=4&options=%7B%0A%22order%22%3A%20%22sold_number%22%0A%7D`,
@@ -129,31 +125,31 @@ function refreshTopSellingList() {
 }
 
 
-
 prev.addEventListener("click", (event) => {
-    cardIndex--;
+    curCardIndex--;
     reloadTestiCard(true);
-})
+});
 
 next.addEventListener("click", (event) => {
-    cardIndex++;
+    curCardIndex++;
     reloadTestiCard(true);
-})
+});
 
 
 cardsContainer.addEventListener('transitionend', () => {
-    const isTouchCeil = (cardIndex >= (numberOfComment - numCardDisplay));
-    const isTouchFloor = cardIndex <= 0;
+    const isTouchCeil = (curCardIndex >= (numberOfComment - numCardDisplay));
+    const isTouchFloor = curCardIndex <= 0;
     if (!isTouchCeil && !isTouchFloor) return;
-    cardIndex = (isTouchCeil) ? startIndex : endIndex;
+    curCardIndex = (isTouchCeil) ? startIndex : endIndex;
     reloadTestiCard(false);
 });
 
+
 function reloadTestiCard(isSmooth) {
     cardsContainer.style.transition = isSmooth ? "" : "none";
-    cardsContainer.style.transform = `translateX(-${100 / numberOfComment * cardIndex}%)`;
+    cardsContainer.style.transform = `translateX(-${100 / numberOfComment * curCardIndex}%)`;
     [...cards].forEach((card, index) => {
-        const isDisplay = cardIndex <= index && index < cardIndex + numCardDisplay;
+        const isDisplay = curCardIndex <= index && index < curCardIndex + numCardDisplay;
         card.style.transition = isSmooth ? "" : "none";
         card.style.filter = isDisplay ? "" : "blur(1.5px)";
         card.style.opacity = isDisplay ? "" : "0.2";

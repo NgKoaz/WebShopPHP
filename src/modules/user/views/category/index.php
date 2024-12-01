@@ -40,11 +40,24 @@ ob_start();
                     <i class="bi bi-sliders2-vertical"></i>
                 </div>
                 <div class="bottom">
-                    <div class="price">
+                    <div class="price" data-device="PC">
                         <h4 class="title">Price</h4>
-                        <div id="priceSlider">
-                            <input id="minPrice" type="range" min="0" max="1500">
-                            <input id="maxPrice" type="range" min="0" max="1500">
+                        <div class="price-slider">
+                            <div class="slider-range"></div>
+                            <span class="tooltip min-tooltip hide">$0</span>
+                            <input class="min-price-slider" type="range" min="0" max="300" value="0">
+                            <span class="tooltip max-tooltip hide">$300</span>
+                            <input class="max-price-slider" type="range" min="0" max="300" value="300">
+                        </div>
+                        <div class="price-input-container">
+                            <div class="price-input">
+                                <label class="addon">$</label>
+                                <input class="min-price-input" type="number" name="min" value="0">
+                            </div>
+                            <div class="price-input">
+                                <label class="addon">$</label>
+                                <input class="max-price-input" type="number" name="max" value="300">
+                            </div>
                         </div>
                     </div>
 
@@ -70,7 +83,7 @@ ob_start();
                             </li>
                         </ul>
                     </div>
-                    <button class="apply-btn" onclick="filterProducts(event)">Apply</button>
+                    <button class="apply-btn" onclick="filterProducts(event, true)">Apply</button>
                 </div>
             </div>
 
@@ -161,10 +174,25 @@ ob_start();
             <button class="close-btn" onclick="closeFilterModal(event)"><i class="bi bi-x"></i></button>
         </div>
         <div class="bottom">
-
-            <div class="price">
-                <div class="title">Price</div>
-                <div>Price Slide</div>
+            <div class="price" data-device="Mobile">
+                <h4 class="title">Price</h4>
+                <div class="price-slider">
+                    <div class="slider-range"></div>
+                    <span class="tooltip min-tooltip hide">$0</span>
+                    <input class="min-price-slider" type="range" min="0" max="300" value="0">
+                    <span class="tooltip max-tooltip hide">$300</span>
+                    <input class="max-price-slider" type="range" min="0" max="300" value="300">
+                </div>
+                <div class="price-input-container">
+                    <div class="price-input">
+                        <label class="addon">$</label>
+                        <input class="min-price-input" type="number" name="min" value="0">
+                    </div>
+                    <div class="price-input">
+                        <label class="addon">$</label>
+                        <input class="max-price-input" type="number" name="max" value="300">
+                    </div>
+                </div>
             </div>
 
             <div class="options">
@@ -192,7 +220,7 @@ ob_start();
                 </div>
             </div>
         </div>
-        <button class="aplly-btn" onclick=filterProducts(event)>Apply Filter</button>
+        <button class="aplly-btn" onclick="filterProducts(event, false)">Apply Filter</button>
     </div>
 </div>
 

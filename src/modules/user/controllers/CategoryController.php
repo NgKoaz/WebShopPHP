@@ -71,7 +71,8 @@ class CategoryController extends Controller
         if (strlen($query) > 0)
             $url .= "&query=$query";
         if (strlen($options) > 0)
-            $url .= "&options=$options";
+            $url .= "&options=" . urlencode($options);
+
         return $url;
     }
 }

@@ -80,6 +80,13 @@ class ProductManager
                 ->andWhere('p.categoryId IN (:categoryIds)')
                 ->setParameter('categoryIds', $ancestorCategoryIds);
         }
+        if (isset($options["price"])) {
+            $queryBuilder
+                ->andWhere('p.price BETWEEN :min AND :max')
+                ->setParameter('min', intval($options["price"]["min"]))
+                ->setParameter('max', intval($options["price"]["max"]));
+        }
+
         $count = $queryBuilder->getQuery()->getSingleScalarResult();
         // END GET COUNT 
 
@@ -93,21 +100,21 @@ class ProductManager
         $where = "";
         if (!empty($query)) {
             $condition = "LOWER(p.name) LIKE  '%" . strtolower($query) . "%'";
-            if (strlen($where) > 0) {
-                $where = $where . " AND " . $condition;
-            } else {
-                $where = $where .  "WHERE " . $condition;
-            }
+            if (strlen($where) > 0) $where = $where . " AND " . $condition;
+            else $where = $where .  "WHERE " . $condition;
         }
         if (!empty($ancestorCategoryIds)) {
             $ids = implode(",", array_map('intval', $ancestorCategoryIds));
             $condition = "c.id IN ($ids)";
 
-            if (strlen($where) > 0) {
-                $where = $where . " AND " . $condition;
-            } else {
-                $where = $where .  "WHERE " . $condition;
-            }
+            if (strlen($where) > 0) $where = $where . " AND " . $condition;
+            else $where = $where .  "WHERE " . $condition;
+        }
+
+        if (isset($options["price"])) {
+            $condition = 'p.price BETWEEN ' . intval($options["price"]["min"]) . ' AND ' . intval($options["price"]["max"]);
+            if (strlen($where) > 0) $where = $where . " AND " . $condition;
+            else $where = $where .  "WHERE " . $condition;
         }
 
         $order = "";

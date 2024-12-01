@@ -58,6 +58,10 @@
     color: #FF3333;
 }
 
+.item .left img {
+    width: 100px;
+    height: 100px;
+}
 
 .item .right {
     display: flex;

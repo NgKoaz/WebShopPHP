@@ -17,15 +17,8 @@ $ancestorCategories = $viewData["ancestorCategories"] ?? [];
 
 $imgs = json_decode($product->images, true);
 $lgImage = "/public/images/no_image.webp";
-// $smImage = ;
-// if (count($imgs) > 0) {
-//     $lgImage = $imgs[0];
 
-
-
-// } else {
-//     $smImage[] = $lgImage;
-// }
+if (count($imgs) === 0) $imgs[] = ["lg" => "/public/images/no_image.webp", "sm" => "/public/images/sm_no_image.webp"];
 
 ob_start();
 ?>
@@ -45,12 +38,15 @@ ob_start();
         <div class="product">
             <div class="left product-images">
                 <div class="large-image">
-                    <img src="/public/images/product/lg.png">
+                    <img src="<?= $imgs[0]["lg"] ?>">
                 </div>
                 <div class="small-images">
-                    <div class="small-image-container"><img src="/public/images/product/sm2.png"></div>
-                    <div class="small-image-container"><img src="/public/images/product/sm2.png"></div>
-                    <div class="small-image-container"><img src="/public/images/product/sm3.png"></div>
+                    <?php
+
+                    foreach ($imgs as $img) {
+                        echo '<div class="small-image-container"><img src="' . $img["sm"] . '"></div>';
+                    }
+                    ?>
                 </div>
             </div>
 

@@ -25,9 +25,13 @@ img {
 
 .product-images {
     display: grid;
-    gap: 8px;
+    gap: 3px;
     align-self: center;
     flex: 1;
+}
+
+.large-image img {
+    border-radius: 20px;
 }
 
 .product-images .small-images {
@@ -39,19 +43,17 @@ img {
     width: 25%;
     padding: 2px;
     border-radius: 5px;
-}
-
-.small-image-container:hover {
-    border: 1px solid rgb(0, 0, 0, 0.1);
+    cursor: pointer;
 }
 
 .small-image-container:active {
-    border: 1px solid rgb(0, 0, 0, 0.4);
+    border: 1px solid rgb(0, 0, 0, 0.2);
 }
 
 .small-image-container img {
     width: 100%;
     height: 100%;
+    border-radius: 8px;
 }
 
 .product-info {

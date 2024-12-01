@@ -74,10 +74,13 @@ function loadItems(response) {
     const content = response.reduce((content, obj) => {
         const product = obj.product;
         const quantity = obj.quantity;
+
+        const images = JSON.parse(product.images ?? "[]");
+
         return content + `
                 <div class="item">
                     <div class="left">
-                        <img src="/public/images/cart/p1.png">
+                        <img src="${images.length > 0 ? images[0]["sm"] : "/public/images/sm_no_image.webp"}">
                     </div>
 
                     <div class="right">

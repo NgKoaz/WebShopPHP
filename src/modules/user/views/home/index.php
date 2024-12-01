@@ -154,14 +154,33 @@ ob_start();
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
                     </div>
                     <div class="author-name">
-                        Sarah M.7 <i class="bi bi-check-circle-fill verify-ic"></i>
+                        Alex K. <i class="bi bi-check-circle-fill verify-ic"></i>
                     </div>
                     <p class="comment">
-                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
+                        "Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co. The range of options they offer is truly remarkable, catering to a variety of tastes and occasions."
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="testimonial-card-container">
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                    </div>
+                    <div class="author-name">
+                        James L. <i class="bi bi-check-circle-fill verify-ic"></i>
+                    </div>
+                    <p class="comment">
+                        "As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends."
                     </p>
                 </div>
             </div>
@@ -172,14 +191,14 @@ ob_start();
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
                     </div>
                     <div class="author-name">
-                        Sarah M.8 <i class="bi bi-check-circle-fill verify-ic"></i>
+                        Mooen <i class="bi bi-check-circle-fill verify-ic"></i>
                     </div>
                     <p class="comment">
-                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
+                        "As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends."
                     </p>
                 </div>
             </div>
@@ -190,14 +209,14 @@ ob_start();
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
                     </div>
                     <div class="author-name">
-                        Sarah M.9 <i class="bi bi-check-circle-fill verify-ic"></i>
+                        Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
                     </div>
                     <p class="comment">
-                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
+                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations."
                     </p>
                 </div>
             </div>
@@ -208,14 +227,33 @@ ob_start();
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
                     </div>
                     <div class="author-name">
-                        Sarah M.2 <i class="bi bi-check-circle-fill verify-ic"></i>
+                        Alex K. <i class="bi bi-check-circle-fill verify-ic"></i>
                     </div>
                     <p class="comment">
-                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
+                        "Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co. The range of options they offer is truly remarkable, catering to a variety of tastes and occasions."
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="testimonial-card-container">
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                    </div>
+                    <div class="author-name">
+                        James L. <i class="bi bi-check-circle-fill verify-ic"></i>
+                    </div>
+                    <p class="comment">
+                        "As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends."
                     </p>
                 </div>
             </div>
@@ -226,14 +264,14 @@ ob_start();
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
                     </div>
                     <div class="author-name">
-                        Sarah M.3 <i class="bi bi-check-circle-fill verify-ic"></i>
+                        Mooen <i class="bi bi-check-circle-fill verify-ic"></i>
                     </div>
                     <p class="comment">
-                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
+                        "As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends."
                     </p>
                 </div>
             </div>
@@ -244,14 +282,14 @@ ob_start();
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
                     </div>
                     <div class="author-name">
-                        Sarah M.4 <i class="bi bi-check-circle-fill verify-ic"></i>
+                        Sarah M. <i class="bi bi-check-circle-fill verify-ic"></i>
                     </div>
                     <p class="comment">
-                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
+                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations."
                     </p>
                 </div>
             </div>
@@ -262,14 +300,14 @@ ob_start();
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
                     </div>
                     <div class="author-name">
-                        Sarah M.5 <i class="bi bi-check-circle-fill verify-ic"></i>
+                        Alex K. <i class="bi bi-check-circle-fill verify-ic"></i>
                     </div>
                     <p class="comment">
-                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
+                        "Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co. The range of options they offer is truly remarkable, catering to a variety of tastes and occasions."
                     </p>
                 </div>
             </div>
@@ -280,122 +318,14 @@ ob_start();
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
                         <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
+                        <i class="bi bi-star-fill star-ic"></i>
                     </div>
                     <div class="author-name">
-                        Sarah M.6 <i class="bi bi-check-circle-fill verify-ic"></i>
+                        James L. <i class="bi bi-check-circle-fill verify-ic"></i>
                     </div>
                     <p class="comment">
-                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                    </p>
-                </div>
-            </div>
-
-            <div class="testimonial-card-container">
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                    </div>
-                    <div class="author-name">
-                        Sarah M.7 <i class="bi bi-check-circle-fill verify-ic"></i>
-                    </div>
-                    <p class="comment">
-                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                    </p>
-                </div>
-            </div>
-
-            <div class="testimonial-card-container">
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                    </div>
-                    <div class="author-name">
-                        Sarah M.8 <i class="bi bi-check-circle-fill verify-ic"></i>
-                    </div>
-                    <p class="comment">
-                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                    </p>
-                </div>
-            </div>
-
-            <div class="testimonial-card-container">
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                    </div>
-                    <div class="author-name">
-                        Sarah M.9 <i class="bi bi-check-circle-fill verify-ic"></i>
-                    </div>
-                    <p class="comment">
-                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                    </p>
-                </div>
-            </div>
-
-            <div class="testimonial-card-container">
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                    </div>
-                    <div class="author-name">
-                        Sarah M.2 <i class="bi bi-check-circle-fill verify-ic"></i>
-                    </div>
-                    <p class="comment">
-                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                    </p>
-                </div>
-            </div>
-
-            <div class="testimonial-card-container">
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                    </div>
-                    <div class="author-name">
-                        Sarah M.3 <i class="bi bi-check-circle-fill verify-ic"></i>
-                    </div>
-                    <p class="comment">
-                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
-                    </p>
-                </div>
-            </div>
-
-            <div class="testimonial-card-container">
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-fill star-ic"></i>
-                        <i class="bi bi-star-half star-ic"></i>
-                        <i class="bi bi-star star-ic"></i>
-                    </div>
-                    <div class="author-name">
-                        Sarah M.4 <i class="bi bi-check-circle-fill verify-ic"></i>
-                    </div>
-                    <p class="comment">
-                        "I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”
+                        "As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends."
                     </p>
                 </div>
             </div>
