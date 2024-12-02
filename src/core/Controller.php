@@ -99,6 +99,11 @@ abstract class Controller
         echo $content;
     }
 
+    protected function code(int $httpCode)
+    {
+        http_response_code($httpCode);
+    }
+
     protected function loadSharedView(string $view)
     {
         require_once App::getRootDirectory() . "/src/views/$view.php";

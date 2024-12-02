@@ -7,6 +7,7 @@ use App\modules\user\UserModule;
 use App\modules\auth\AuthModule;
 use App\core\Container;
 use App\modules\admin\AdminModule;
+use App\modules\error\ErrorModule;
 use App\services\CartManager;
 use App\services\CategoryManager;
 use App\services\LoginManager;
@@ -71,5 +72,6 @@ $app = new App();
 $app->importModule(new UserModule);
 $app->importModule(new AuthModule);
 $app->importModule(new AdminModule);
+$app->importModule(new ErrorModule);
 
 $app->run();

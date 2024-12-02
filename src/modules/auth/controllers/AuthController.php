@@ -14,7 +14,7 @@ use App\services\UserManager;
 use Google\Client;
 use Google\Service\Oauth2;
 
-#[Anonymous]
+#[Anonymous("/")]
 class AuthController extends Controller
 {
     public function __construct(

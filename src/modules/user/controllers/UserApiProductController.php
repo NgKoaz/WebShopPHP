@@ -8,7 +8,7 @@ use App\services\CategoryManager;
 use App\services\LoginManager;
 use App\services\ProductManager;
 
-// #[Auth("/login")]
+
 class UserApiProductController extends Controller
 {
     public function __construct(private LoginManager $loginManager, private ProductManager $productManager, private CategoryManager $categoryManager) {}

@@ -8,14 +8,33 @@ use Doctrine\ORM\EntityManager;
 
 class RoleManager
 {
+    public static string $ADMIN = "Admin";
+
     public function __construct(private EntityManager $entityManager) {}
 
-    public function getUserRoles(User $user)
+    public function getUserRoles(User $user): ?array
     {
         $roleIds = json_decode($user->roles, true);
         if (is_array($roleIds) && count($roleIds) > 0)
             return $this->entityManager->getRepository(Role::class)->findBy(["id" => $roleIds]);
         return null;
+    }
+
+    public function isUserHasRole(?User $user, string $role = ""): bool
+    {
+        if ($user === null) return false;
+        $roleIds = json_decode($user->roles, true);
+        if (is_array($roleIds) && count($roleIds) > 0)
+            return count($this->entityManager->getRepository(Role::class)->findBy(["id" => $roleIds, "name" => $role])) === 1;
+        return false;
+    }
+
+    public function isUserHasRoles(?User $user, array $roles): bool
+    {
+        foreach ($roles as $role) {
+            if (!$this->isUserHasRole($user, $role)) return false;
+        }
+        return true;
     }
 
     public function hasRoles(array $ids)

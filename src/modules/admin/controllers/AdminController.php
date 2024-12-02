@@ -4,10 +4,11 @@ namespace App\modules\admin\controllers;
 
 use App\core\Attributes\Http\HttpGet;
 use App\core\Controller;
+use App\Middleware\RoleMiddleware;
 
+#[RoleMiddleware("/", "Admin")]
 class AdminController extends Controller
 {
-
     public function __construct() {}
 
     #[HttpGet("/admin")]

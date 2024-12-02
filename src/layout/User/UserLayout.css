@@ -259,6 +259,8 @@ nav {
     opacity: 0;
     pointer-events: none;
     z-index: 100;
+
+    cursor: pointer;
 }
 
 .dropdown .dropdown-menu .dropdown-item {
@@ -271,9 +273,12 @@ nav {
     background-color: black;
 }
 
-.dropdown .dropdown-menu .dropdown-item:nth-child(3):hover {
-    background-color: var(--red-color);
+.dropdown-item.logout-btn {
     border-radius: 0px 0px 10px 10px;
+}
+
+.dropdown-item.logout-btn:hover {
+    background-color: var(--red-color) !important;
 }
 
 .dropdown .dropdown-menu.active {

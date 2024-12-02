@@ -5,12 +5,14 @@ namespace App\modules\admin\controllers;
 use App\core\Attributes\Http\HttpGet;
 use App\core\Attributes\Http\HttpPost;
 use App\core\Controller;
+use App\Middleware\RoleMiddleware;
 use App\modules\admin\models\CreateUserModel;
 use App\modules\admin\models\DeleteUserModel;
 use App\modules\admin\models\EditUserModel;
 use App\services\RoleManager;
 use App\services\UserManager;
 
+#[RoleMiddleware("/api/errors/roles", "Admin")]
 class ApiUserController extends Controller
 {
     public function __construct(private UserManager $userManager, private RoleManager $roleManager) {}

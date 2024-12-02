@@ -5,11 +5,13 @@ namespace App\modules\admin\controllers;
 use App\core\Controller;
 use App\core\Attributes\Http\HttpGet;
 use App\core\Attributes\Http\HttpPost;
+use App\Middleware\RoleMiddleware;
 use App\modules\admin\models\CreateCategoryModel;
 use App\modules\admin\models\DeleteCategoryModel;
 use App\modules\admin\models\UpdateCategoryModel;
 use App\services\CategoryManager;
 
+#[RoleMiddleware("/api/errors/roles", "Admin")]
 class ApiCategoryController extends Controller
 {
     public function __construct(private CategoryManager $categoryManager) {}

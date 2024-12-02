@@ -1,3 +1,17 @@
+<?php
+
+use App\core\Container;
+use App\services\LoginManager;
+use App\services\RoleManager;
+
+$container = Container::getInstance();
+$loginManager = $container->get(LoginManager::class);
+$roleManager = $container->get(RoleManager::class);
+$isLoggedIn = $loginManager->isLoggedIn();
+$isAdmin = $roleManager->isUserHasRole($loginManager->getCurrentUser(), RoleManager::$ADMIN);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,18 +19,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="/public/images/favicon.ico">
-
     <title><?= $title; ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=kid_star" /> -->
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=kid_star" /> -->
-
     <link rel="stylesheet" href="/src/layout/global.css">
     <link rel="stylesheet" href="/src/layout/User/UserLayout.css">
     <?php $this->loadStylesheets() ?>
@@ -26,8 +34,7 @@
     <div class="root-container">
         <!-- Header begin -->
         <?php
-        if (!(isset($viewData["IS_LOGGED_IN"]) && $viewData["IS_LOGGED_IN"]))
-            echo '<header>Sign up and get 20% off to your first order. <a href="/login">Sign Up Now</a></header>';
+        if (!$isLoggedIn) echo '<header>Sign up and get 20% off to your first order. <a href="/login">Sign Up Now</a></header>';
         ?>
         <nav>
             <div class="hamburger">
@@ -56,15 +63,20 @@
                 <i id="icon-search" class="fa-solid fa-magnifying-glass icon-24" onclick="onSearchIconClick(event)"></i>
                 <a id="cartIcon" href="/cart"><i class="fa-solid fa-cart-shopping icon-24"></i><span id="numInCart"></span></a>
                 <div class="dropdown">
-                    <button class="dropdown-btn">
+                    <a class="dropdown-btn" <?= $isLoggedIn ? "" : 'href="/login"' ?>>
                         <i class="fa-regular fa-circle-user icon-24" onclick="onProfileIconClick(event)"></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <a href="/admin">
-                            <li class="dropdown-item">Switch to Admin</li>
-                        </a>
+                    </a>
+                    <ul class="dropdown-menu" <?= $isLoggedIn ? "" : 'hidden' ?>>
+                        <?php
+                        if ($isAdmin) {
+                            echo '
+                            <a href="/admin">
+                                <li class="dropdown-item">Switch to Admin</li>
+                            </a>';
+                        }
+                        ?>
                         <li class="dropdown-item">Setting</li>
-                        <li class="dropdown-item" onclick="sendLogoutRequest(event)">Logout</li>
+                        <li class="dropdown-item logout-btn" onclick="sendLogoutRequest(event)">Logout</li>
                     </ul>
                 </div>
             </div>

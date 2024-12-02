@@ -5,6 +5,7 @@ namespace App\modules\admin\controllers;
 use App\core\Attributes\Http\HttpGet;
 use App\core\Attributes\Http\HttpPost;
 use App\core\Controller;
+use App\Middleware\RoleMiddleware;
 use App\modules\admin\models\CreateProductModel;
 use App\modules\admin\models\DeleteImageModel;
 use App\modules\admin\models\DeleteProductModel;
@@ -15,6 +16,7 @@ use App\modules\admin\models\EditProductModel;
 use App\services\CategoryManager;
 use App\services\ProductManager;
 
+#[RoleMiddleware("/api/errors/roles", "Admin")]
 class ApiProductController extends Controller
 {
     public function __construct(private ProductManager $productManager, private CategoryManager $categoryManager) {}
