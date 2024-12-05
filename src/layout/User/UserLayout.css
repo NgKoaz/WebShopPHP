@@ -463,11 +463,6 @@ footer {
     text-align: center;
 }
 
-.more-description {
-    /* transform: translateY(calc(-147px + 32px + 40px)); */
-
-}
-
 .payment-badges {
     padding-top: 16px;
     display: flex;
@@ -678,10 +673,6 @@ footer {
     align-items: center;
     margin-left: 15px;
     font-size: 30px;
-}
-
-.toast-icon i {
-    color: #3ae374;
 }
 
 .toast-content {

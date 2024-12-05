@@ -22,7 +22,7 @@ function loadTemplate() {
         <div class="items"></div>
     </div>
     <div>
-        <div class="order-summary">
+        <form class="order-summary" action="/checkout" method="GET">
             <h4 class="title">Order Summary</h4>
 
             <div class="bill-details">
@@ -46,9 +46,10 @@ function loadTemplate() {
                 <button id="promoCodeBtn">Apply</button>
             </div>
 
-            <button id="checkoutBtn" class="checkout-btn">Go to Checkout <i class="bi bi-chevron-double-right"></i>
+            <button id="checkoutBtn" class="checkout-btn">
+                Go to Checkout <i class="bi bi-chevron-double-right"></i>
             </button>
-        </div>
+        </form>
     </div>`
 }
 

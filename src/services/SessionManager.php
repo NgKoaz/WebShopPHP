@@ -4,6 +4,11 @@ namespace App\services;
 
 use App\core\ArrayList;
 
+
+define("CART_SESSION", "CART");
+define("PAYMENT_SESSION", "PAYMENT");
+
+
 class SessionManager
 {
     public static string $FLASH = "FLASH";

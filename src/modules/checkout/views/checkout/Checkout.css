@@ -1,0 +1,74 @@
+.app-container {
+    margin-inline: auto;
+    max-width: 664px;
+    padding-inline: 16px;
+}
+
+.method-list {
+    padding: 0px;
+    display: flex;
+    gap: 12px;
+}
+
+.method {
+    max-width: 50%;
+    padding: 12px;
+    border: 1px solid #E3E8EF;
+    border-radius: 12px;
+    display: flex;
+    gap: 5px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.05s ease;
+}
+
+.method .method-name {
+    align-self: center;
+    font-size: var(--md-font-size);
+    font-weight: 500;
+}
+
+.method input[type='radio'] {
+    width: 20px;
+}
+
+.method:has(input[type="radio"]:checked) {
+    border: 2px solid #111729;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mb-3 {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    font-size: var(--md-font-size);
+    font-weight: 500;
+}
+
+select, .text-input {
+    border: 1px solid #E3E8EF;
+    border-radius: 8px;
+    height: 40px;
+    padding-inline: 12px;
+    width: 100%;
+
+    font-size: var(--md-font-size);
+}
+
+.btn {
+    padding: 0px;
+    cursor: pointer;
+}
+
+.btn-submit {
+    height: 42px;
+    width: 100%;
+    color: white;
+    background-color: #111729;
+}

@@ -30,6 +30,13 @@ class UserManager
         $this->entityManager->flush();
     }
 
+    public function changePassword(string $email, string $password)
+    {
+        $user = $this->findByEmail($email);
+        $user->passwordHash = $this->passwordHash($password);
+        $this->entityManager->flush();
+    }
+
     private function passwordHash($password)
     {
         return password_hash($password, PASSWORD_BCRYPT);

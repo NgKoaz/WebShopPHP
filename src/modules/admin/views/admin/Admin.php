@@ -12,7 +12,14 @@ $this
 ob_start();
 ?>
 
-<h1>DAY LA TEMPLATE ADMIn123</h1>
+<div class="app-container">
+    <div class="card-list">
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+    </div>
+</div>
 
 <?php
 $content = ob_get_clean();

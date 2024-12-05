@@ -75,6 +75,9 @@ $isAdmin = $roleManager->isUserHasRole($loginManager->getCurrentUser(), RoleMana
                             </a>';
                         }
                         ?>
+                        <a href="/orders">
+                            <li class="dropdown-item">Orders</li>
+                        </a>
                         <li class="dropdown-item">Setting</li>
                         <li class="dropdown-item logout-btn" onclick="sendLogoutRequest(event)">Logout</li>
                     </ul>
@@ -112,10 +115,9 @@ $isAdmin = $roleManager->isUserHasRole($loginManager->getCurrentUser(), RoleMana
                 <div class="subscription">
                     <h1>STAY UPTO DATE ABOUT OUR LATEST OFFERS</h1>
                     <div class="subscription-form-container">
-                        <form>
+                        <form onsubmit="subscribe(event)">
                             <i class="bi bi-envelope-at-fill"></i>
-
-                            <input type="text" name="email" placeholder="Enter your email address">
+                            <input type="email" name="email" placeholder="Enter your email address">
                             <button>Subscribe to Newsletter</button>
                         </form>
                     </div>

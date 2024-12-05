@@ -8,6 +8,7 @@ use App\core\Attributes\Http\HttpPost;
 use App\core\Controller;
 use App\Middleware\Anonymous;
 use App\modules\auth\models\RegisterModel;
+use App\services\JWTService;
 use App\services\LoginManager;
 use App\services\SessionManager;
 use App\services\UserManager;
@@ -21,7 +22,8 @@ class AuthController extends Controller
         private UserManager $userManager,
         private SessionManager $sessionManager,
         private LoginManager $loginManager,
-        private Client $client
+        private Client $client,
+        private JWTService $jwtService,
     ) {}
 
     #[HttpGet("/login")]
@@ -53,6 +55,12 @@ class AuthController extends Controller
         $this->view("Register", viewData: $viewData);
     }
 
+    #[HttpGet("/forgot-password")]
+    public function getForgotPassword()
+    {
+        return $this->view("ForgotPassword");
+    }
+
     #[HttpPost("/register")]
     public function postRegister(RegisterModel $model)
     {
@@ -63,6 +71,14 @@ class AuthController extends Controller
         }
         return $this->view("Register", $model);
     }
+
+
+    #[HttpGet("/reset-password")]
+    public function getResetPassword()
+    {
+        return $this->view("ResetPassword");
+    }
+
 
     private function registerUser(RegisterModel $model): bool
     {

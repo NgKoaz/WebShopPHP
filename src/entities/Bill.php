@@ -2,11 +2,12 @@
 
 namespace App\Entities;
 
+use DateTime;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\Table;
 
@@ -15,22 +16,41 @@ use Doctrine\ORM\Mapping\Table;
 class Bill
 {
     #[Id]
-    #[Column, GeneratedValue]
-    public int $id;
+    #[Column]
+    public string $id;
 
     #[Column]
     public string $status;
 
-    #[Column]
-    public string $payMethod;
+    #[Column(name: "pay_method", nullable: true)]
+    public ?string $payMethod = null;
 
-    #[Column(name: "payment_service_provider")]
-    public string $paymentServiceProvider;
+    #[Column(name: "payment_service_provider", nullable: true)]
+    public ?string $paymentServiceProvider = null;
 
-    #[Column(name: "total_price")]
-    public int $totalPrice;
+    #[Column(name: "total_price", precision: 2)]
+    public string $totalPrice;
 
-    #[OneToOne]
+    #[Column(name: "order_id")]
+    public int $orderId;
+
+    #[Column(name: "user_id")]
+    public int $userId;
+
+    #[Column(name: "created_at", nullable: true)]
+    public ?DateTime $createdAt;
+
+    #[Column(name: "canceled_at", nullable: true)]
+    public ?DateTime $canceledAt = null;
+
+    #[Column(name: "paid_at", nullable: true)]
+    public ?DateTime $paidAt = null;
+
+    #[OneToOne(cascade: ["persist"])]
     #[JoinColumn(name: "order_id", referencedColumnName: "id", nullable: false)]
     public Order $order;
+
+    #[ManyToOne(targetEntity: User::class)]
+    #[JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false)]
+    public User $user;
 }

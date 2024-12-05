@@ -4,6 +4,7 @@ namespace App\services;
 
 use App\core\App;
 
+
 class CartManager
 {
     private static string $CART = "CART";
@@ -30,6 +31,11 @@ class CartManager
         $cartItems = $this->sessionManager->unsetInEntry(CartManager::$CART, $productId);
     }
 
+    public function clear(): void
+    {
+        $this->sessionManager->unsetEntry(CartManager::$CART);
+    }
+
     public function getItems(): array
     {
         $cartItems = $this->sessionManager->getEntry(CartManager::$CART);
@@ -47,5 +53,15 @@ class CartManager
             ]);
         }
         return $result ?? [];
+    }
+
+    public function getTotalPrice(): float
+    {
+        $result = 0;
+        $items = $this->getItems();
+        foreach ($items as $item) {
+            $result += $item["product"]->price * $item["quantity"];
+        }
+        return $result;
     }
 }

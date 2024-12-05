@@ -39,4 +39,14 @@ class UserApiProductController extends Controller
         $result = $this->productManager->getProductsComplex($page, $limit, $query, ($category !== null ? $category->id : 0), $options);
         return $this->json($result);
     }
+
+    #[HttpGet("/api/products/:id")]
+    public function getProductById(int $id)
+    {
+        $product = $this->productManager->findProductById($id);
+        if ($product !== null) {
+            return $this->json(["code" => 200, "data" => $product]);
+        }
+        return $this->json(["code" => 404, "message" => "Product id does not exist!"], 404);
+    }
 }

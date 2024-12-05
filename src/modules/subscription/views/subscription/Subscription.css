@@ -1,0 +1,16 @@
+.app-container {
+    max-width: 1240px;
+    margin-inline: auto;
+    padding-inline: 16px;
+}
+
+h4 {
+    margin-top: 10px;
+    margin-bottom: 8px;
+    font-size: var(--h4-font-size);
+    font-weight: 700;
+}
+
+p {
+    font-size: var(--md-font-size);
+}

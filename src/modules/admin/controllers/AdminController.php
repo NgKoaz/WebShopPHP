@@ -40,4 +40,10 @@ class AdminController extends Controller
     {
         $this->view("Role");
     }
+
+    #[HttpGet("/admin/subscriptions")]
+    public function getSubscriptions()
+    {
+        return $this->view("Subscription");
+    }
 }

@@ -18,7 +18,9 @@
         "symfony/cache": "^7.1",
         "psr/container": "^2.0",
         "intervention/image": "^3.9",
-        "google/apiclient": "^2.18"
+        "google/apiclient": "^2.18",
+        "phpmailer/phpmailer": "^6.9",
+        "firebase/php-jwt": "^6.10"
     },
     "scripts": {
         "migrate": "./vendor/bin/doctrine-migrations migrate",

@@ -19,7 +19,7 @@ ob_start();
         <form onsubmit="onSubmitForm(event)">
             <div class="input-group mb-4">
                 <label for="usernameInput">Username</label>
-                <input type="text" id="usernameInput" class="input" placeholder="Email or phone number"
+                <input type="text" id="usernameInput" class="input" placeholder="Username or email"
                     name="username">
                 <div id="usernameInvalidFeedback" class="invalid-feedback"></div>
             </div>

@@ -1,0 +1,213 @@
+.app-container {
+    max-width: 1240px;
+    min-height: 50vh;
+    margin-inline: auto;
+    padding-inline: 16px;
+}
+
+.breadcrumb {
+    margin-top: 10px;
+    margin-bottom: 8px;
+}
+
+
+
+.title {
+    margin-bottom: 20px;
+    font-size: var(--h4-font-size);
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.table {
+    width: 100%;
+    background-color: #fcfcfc;
+    border-radius: 8px;
+
+    border-collapse: collapse;
+}
+
+.table td, .table th {
+    border: 2px solid #dbdbdb;
+    text-align: center;
+}
+
+
+table tr:first-child th,
+table tr:first-child td,
+table tr:last-child td,
+table tr:last-child th {
+    border-top: none;
+    border-bottom: none;
+}
+
+table td:first-child,
+table th:first-child,
+table td:last-child,
+table th:last-child {
+    border-left: none;
+    border-right: none;
+}
+
+
+
+
+.tab-slider {
+    display: flex;
+    margin-bottom: 15px;
+
+    user-select: none;
+    overflow-x: auto;
+}
+
+.tab-item {
+    flex-grow: 1;
+
+    min-width: 120px;
+    /* max-width: 290px; */
+    padding: 4px 8px 8px 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+    font-size: var(--lg-font-size);
+    text-align: center;
+
+    cursor: pointer;
+}
+
+.tab-item:hover {
+    font-weight: 500;
+    border-bottom: 1.4px solid rgba(0, 0, 0, 0.6);
+}
+
+.tab-item.selected {
+    font-weight: 700;
+    border-bottom: 2px solid black;
+}
+
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card-container {
+    width: 100%;
+
+}
+
+.card {
+    margin: 5px;
+    padding: 8px;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.card .card-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3px;
+}
+
+.card .card-top .shop-name {
+    font-size: var(--sm-font-size);
+    font-weight: 700;
+}
+
+.card .card-top .status {
+    font-size: var(--sm-font-size);
+    font-weight: 500;
+}
+
+.product-container {}
+
+.product {
+    display: flex;
+    gap: 8px;
+}
+
+.product img {
+    width: 80px;
+    height: 80px;
+}
+
+.product .product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.product .product-title {
+    font-size: var(--md-font-size);
+}
+
+.product .product-quantity {
+    font-size: var(--sm-font-size);
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.product .product-price {
+    font-size: var(--sm-font-size);
+}
+
+.card .total-price {
+    font-size: var(--md-font-size);
+    text-align: right;
+}
+
+.card .card-more-btn {
+    display: inline-block;
+    width: 100%;
+
+    padding: 6px 0px;
+
+    background: none;
+    font-size: var(--sm-font-size);
+    color: rgba(0, 0, 0, 0.7);
+
+    cursor: pointer;
+}
+
+.card .card-more-btn:hover {
+    text-decoration: underline;
+}
+
+.card .actions {
+    margin-top: 14px;
+    text-align: right;
+}
+
+.card-btn {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-inline: 12px;
+    border-radius: 5px;
+
+    background: none;
+    font-size: var(--md-font-size);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.card-btn:hover {
+    opacity: 0.8;
+}
+
+.card-btn:active {
+    opacity: 0.65;
+}
+
+.card-btn-secondary {
+    border: 1.5px solid rgba(0, 0, 0, 0.3);
+    color: black;
+}
+
+.card-btn-primary {
+    background-color: black;
+    color: white;
+}
+
+
+@media screen and (min-width: 768px) {
+    .card-container {
+        width: 50%;
+    }
+}

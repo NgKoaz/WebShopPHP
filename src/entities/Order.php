@@ -20,12 +20,6 @@ class Order
     #[Column]
     public string $status;
 
-    #[Column]
+    #[Column(type: "text")]
     public string $products;
-
-    #[Column(name: "canceled_at", type: "datetime")]
-    public DateTime $canceledAt;
-
-    #[Column(name: "created_at", type: "datetime")]
-    public DateTime $createdAt;
 }

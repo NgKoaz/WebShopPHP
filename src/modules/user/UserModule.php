@@ -6,8 +6,10 @@ use App\core\Module;
 use App\modules\user\controllers\CartController;
 use App\modules\user\controllers\CategoryController;
 use App\modules\user\controllers\HomeController;
+use App\modules\user\controllers\OrderController;
 use App\modules\user\controllers\ProductController;
 use App\modules\user\controllers\UserApiCartController;
+use App\modules\user\controllers\UserApiOrderController;
 use App\modules\user\controllers\UserApiProductController;
 use App\modules\user\controllers\UserApiReviewController;
 
@@ -20,9 +22,11 @@ class UserModule extends Module
             ProductController::class,
             CategoryController::class,
             CartController::class,
+            OrderController::class,
             UserApiProductController::class,
             UserApiCartController::class,
-            UserApiReviewController::class
+            UserApiReviewController::class,
+            UserApiOrderController::class,
         ];
     }
 }

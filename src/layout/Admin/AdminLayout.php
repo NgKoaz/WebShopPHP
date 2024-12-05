@@ -53,6 +53,12 @@
                         <span>Roles</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/admin/subscriptions">
+                        <i class="bi bi-megaphone icon-24"></i>
+                        <span>Subscriptions</span>
+                    </a>
+                </li>
             </ul>
             <button id="close-nav">
                 <i class="bi bi-arrow-left-circle-fill active"></i>

@@ -46,13 +46,18 @@ function closeDropdownWhenClickOutside(event) {
 
 
 
-function openToast(message) {
+function openToast(message, isError) {
     selector.toastContainer.style.pointerEvents = "all";
     selector.toastContainer.innerHTML = `
+    <style>
+        .toast::after {
+            background-color: ${isError ? `#ff3838` : `#3ae374`};
+        }
+    </style>
     <div id="toast" class="toast">
-        <div class="toast-icon"><i class="bi bi-check-circle-fill"></i></div>
+        <div class="toast-icon">${isError ? `<i class="bi bi-x-circle-fill" style="color: #ff3838;"></i>` : `<i class="bi bi-check-circle-fill" style="color: #3ae374;"></i>`}</div>
         <div class="toast-content">
-            <div class="toast-title">Success!</div>
+            <div class="toast-title">${isError ? "Error!" : "Success!"}</div>
             <div class="toast-message">${message}</div>
         </div>
         <div class="toast-close" data-close-toast="#toast">
@@ -253,3 +258,30 @@ function refreshNumInCart() {
 }
 
 
+
+function subscribe(event) {
+    event.preventDefault();
+
+    const form = new FormData(event.target);
+    $.ajax({
+        url: `/api/subscribe`,
+        method: 'POST',
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log(response);
+            openToast(response.message, true);
+        },
+        error: function (xhr, status, error) {
+            // console.error("Request failed:",);
+            const response = JSON.parse(xhr.responseText);
+            switch (response.code) {
+                case 425:
+                    openToast(response.message, true);
+                    break;
+            }
+        }
+    });
+
+}
