@@ -12,6 +12,7 @@ use App\modules\user\models\ApiOrderModel;
 use App\services\CheckoutManager;
 use App\services\LoginManager;
 use App\services\MomoPayment;
+use App\services\SessionManager;
 
 #[Auth("/login")]
 class OrderController extends Controller
@@ -19,13 +20,17 @@ class OrderController extends Controller
     public function __construct(
         private LoginManager $loginManager,
         private CheckoutManager $checkoutManager,
-        private MomoPayment $momoPayment
+        private MomoPayment $momoPayment,
+        private SessionManager $sessionManager
     ) {}
 
     #[HttpGet("/orders")]
     public function getOrders()
     {
-        $this->view("Order");
+        $viewData = new ArrayList;
+        $viewData["TempMessage"] = $this->sessionManager->getFlash("TempMessage");
+        $viewData["IsErrorMessage"] = $this->sessionManager->getFlash("IsErrorMessage");
+        $this->view("Order", viewData: $viewData);
     }
 
     #[HttpGet("/orders/:id")]
@@ -35,45 +40,31 @@ class OrderController extends Controller
         $order = Util::getFirstInArray($result);
     }
 
-    #[HttpPost("/order-rebuy")]
-    public function rebuy(ApiOrderModel $model)
+    #[HttpGet("/order-rebuy/:billId")]
+    public function rebuy(string $billId)
     {
-        if ($model->isValid()) {
-            $isError = false;
-
-            if (!$this->checkoutManager->hasBill($model->billId)) {
-                $model->setError("billId", "Bill id is not exist!");
-                $isError = true;
-            }
-
-            if (!$isError) {
-                $this->checkoutManager->rebuy($model->billId);
-                return $this->redirect("/cart");
-            }
-        }
-        return $this->view("Order");
+        $bill = $this->checkoutManager->findById($billId);
+        $userId = $this->loginManager->getCurrentUserId();
+        if ($bill === null || $bill->userId !== $userId) return $this->notfound();
+        $this->checkoutManager->rebuy($billId);
+        return $this->redirect("/cart");
     }
 
-    #[HttpPost("/order-pay")]
-    public function payOrder(ApiOrderModel $model)
+    #[HttpGet("/order-pay/:billId")]
+    public function payOrder(string $billId)
     {
-        if ($model->isValid()) {
-            $isError = false;
-            if (!$this->checkoutManager->hasBill($model->billId)) {
-                $model->setError("billId", "Bill id is not exist!");
-                $isError = true;
-            }
-            if (!$isError) {
-                $result = json_decode($this->momoPayment->createUrl($this->checkoutManager->findById($model->billId)), true);
-                if (!$result || !isset($result['payUrl'])) {
-                    $viewData = new ArrayList;
-                    $viewData["TempMessage"] = "Momo Pay has occured an error! Please wait or choose others";
-                    return $this->view("/checkout", viewData: $viewData);
-                }
-                return $this->redirect($result['payUrl']);
-            }
+        $bill = $this->checkoutManager->findById($billId);
+        $userId = $this->loginManager->getCurrentUserId();
+        if ($bill === null || $bill->userId !== $userId) return $this->notfound();
+
+        $result = json_decode($this->momoPayment->createUrl($bill), true);
+        if (!$result || !isset($result['payUrl'])) {
+            $viewData = new ArrayList;
+            $viewData["TempMessage"] = "Momo Pay has occured an error! Please wait or choose others";
+            $viewData["IsErrorMessage"] = true;
+            return $this->view("Order", viewData: $viewData);
         }
-        return $this->json(["code" => 404, "errors" => $model->getFullError()], 400);
+        return $this->redirect($result['payUrl']);
     }
 
     // #[http]

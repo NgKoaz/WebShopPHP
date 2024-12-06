@@ -46,4 +46,10 @@ class AdminController extends Controller
     {
         return $this->view("Subscription");
     }
+
+    #[HttpGet("/admin/orders")]
+    public function getOrders()
+    {
+        return $this->view("Order");
+    }
 }

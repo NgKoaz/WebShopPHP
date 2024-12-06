@@ -63,7 +63,7 @@ Container::getInstance()
                 $_ENV["MOMO_PARTNER_CODE"],
                 $_ENV["MOMO_ACCESS_KEY"],
                 $_ENV["MOMO_SECRET_KEY"],
-                "http://localhost:8080/api/checkout/momo/callback",
+                "http://localhost:8080/checkout/momo/callback",
                 "http://localhost:8080/api/checkout/momo/ipn"
             );
         }

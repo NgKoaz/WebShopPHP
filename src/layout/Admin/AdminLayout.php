@@ -59,6 +59,12 @@
                         <span>Subscriptions</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/admin/orders">
+                        <i class="bi bi-box-seam icon-24"></i>
+                        <span>Orders</span>
+                    </a>
+                </li>
             </ul>
             <button id="close-nav">
                 <i class="bi bi-arrow-left-circle-fill active"></i>

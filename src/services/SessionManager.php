@@ -30,16 +30,16 @@ class SessionManager
         $_SESSION[self::$FLASH][$this->TEMP_MESSAGE] = $message;
     }
 
-    public function setFlash(string $name, array $value): void
+    public function setFlash(string $name, mixed $value): void
     {
         if (!isset($_SESSION[self::$FLASH])) $_SESSION[self::$FLASH] = [];
         $_SESSION[self::$FLASH][$name] = $value;
     }
 
-    public function getFlash(string $name): array
+    public function getFlash(string $name): mixed
     {
-        if (!isset($_SESSION[self::$FLASH])) return [];
-        $result = $_SESSION[self::$FLASH][$name];
+        if (!isset($_SESSION[self::$FLASH])) return null;
+        $result = isset($_SESSION[self::$FLASH][$name]) ? $_SESSION[self::$FLASH][$name] : null;
         unset($_SESSION[self::$FLASH][$name]);
         return $result;
     }

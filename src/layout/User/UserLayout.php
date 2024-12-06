@@ -31,6 +31,8 @@ $isAdmin = $roleManager->isUserHasRole($loginManager->getCurrentUser(), RoleMana
 </head>
 
 <body>
+    <input type="hidden" name="TempMessage" value="<?= $viewData["TempMessage"] ?>" data-is-error="<?= $viewData["IsErrorMessage"] ?>">
+
     <div class="root-container">
         <!-- Header begin -->
         <?php
@@ -78,7 +80,7 @@ $isAdmin = $roleManager->isUserHasRole($loginManager->getCurrentUser(), RoleMana
                         <a href="/orders">
                             <li class="dropdown-item">Orders</li>
                         </a>
-                        <li class="dropdown-item">Setting</li>
+                        <li class="dropdown-item" onclick="showProfileModal(event)">Setting</li>
                         <li class="dropdown-item logout-btn" onclick="sendLogoutRequest(event)">Logout</li>
                     </ul>
                 </div>
@@ -209,32 +211,30 @@ $isAdmin = $roleManager->isUserHasRole($loginManager->getCurrentUser(), RoleMana
 
         <!-- Modal begin -->
         <div id="modalContainer">
-            <!-- <div id="reviewModal" class="modal show">
+        </div>
+        <!-- Modal end -->
+
+        <!-- Modal begin -->
+        <div id="profileModalContainer">
+            <div id="profileModal" class="modal" data-close-modal="#profileModal">
+                <div class="modal-top">
+                    <div class="modal-tabs">
+                        <div class="modal-tab-item selected" data-state="BASIC">Basic Info</div>
+                        <div class="modal-tab-item" data-state="AUTH">Auth Email</div>
+                        <div class="modal-tab-item" data-state="CHANGE">Change Email</div>
+                        <div class="modal-tab-item" data-state="PASSWORD">Change Password</div>
+                    </div>
+                </div>
                 <div class="modal-content">
-                    <form>
-                        <div class="rating">
-                            <input type="radio" name="rate" id="rate-5s">
-                            <label for="rate-5s" class="bi bi-star-fill"></label>
-                            <input type="radio" name="rate" id="rate-4s">
-                            <label for="rate-4s" class="bi bi-star-fill"></label>
-                            <input type="radio" name="rate" id="rate-3s">
-                            <label for="rate-3s" class="bi bi-star-fill"></label>
-                            <input type="radio" name="rate" id="rate-2s">
-                            <label for="rate-2s" class="bi bi-star-fill"></label>
-                            <input type="radio" name="rate" id="rate-1s">
-                            <label for="rate-1s" class="bi bi-star-fill"></label>
-                        </div>
-                        <textarea placeholder="Write your review"></textarea>
-                    </form>
                 </div>
                 <div class="modal-action">
-                    <button class="w-50 btn btn-secondary btn-close" data-close-modal="#reviewModal" onclick="closeReviewModal(event)">Cancel</button>
-                    <button class="w-50 btn btn-primary btn-submit">Send</button>
+                    <button class="w-50 btn btn-secondary btn-close" onclick="closeProfileModal(event)">Cancel</button>
+                    <button id="profileModalSaveBtn" class="w-50 btn btn-primary btn-submit" onclick="ModalTabManager.submitForm(event)">Save</button>
                 </div>
                 <div class="modal-close">
-                    <i class=" bi bi-x-lg" data-close-modal="#reviewModal" onclick="closeReviewModal(event)"></i>
+                    <i class="bi bi-x-lg" onclick="closeProfileModal(event)"></i>
                 </div>
-            </div> -->
+            </div>
         </div>
         <!-- Modal end -->
     </div>

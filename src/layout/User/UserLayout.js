@@ -16,17 +16,31 @@ selector.searchResList = document.querySelectorAll(".search-results");
 
 selector.toastContainer = document.querySelector("#toastContainer");
 selector.numInCart = document.querySelector("#numInCart");
+
+const profileModalContainer = document.querySelector("#profileModalContainer");
+
 let toastTimer = null;
+
+
+const modalTabManager = new ModalTabManager();
 
 
 document.addEventListener("DOMContentLoaded", () => {
     refreshNumInCart();
-})
 
-document.onclick = (event) => {
+    const TempMessage = document.querySelector("input[name='TempMessage']");
+    if (TempMessage.value) {
+        let isError = false;
+        if (TempMessage.dataset.isError === "true")
+            isError = true;
+        openToast(TempMessage.value, isError);
+    }
+});
+
+document.addEventListener("click", (event) => {
     closeSearchWhenClickOutside(event);
     closeDropdownWhenClickOutside(event);
-}
+});
 
 const closeSearchWhenClickOutside = (event) => {
     const parent = event.target.closest(".search-result-container");
@@ -121,7 +135,8 @@ function onSearchIconClick(event) {
 
 function onProfileIconClick(event) {
     const dropdown = event.target.closest(".dropdown");
-    dropdown.querySelector(".dropdown-menu").classList.toggle("active");
+    dropdown.querySelector(".dropdown-menu").classList.add("active");
+
 }
 //#endregion
 
@@ -285,3 +300,299 @@ function subscribe(event) {
     });
 
 }
+
+
+
+//#region Profile Modal
+function showProfileModal(event) {
+    // Close Menu
+    const dropdownMenu = document.querySelectorAll(".dropdown-menu")
+    dropdownMenu.forEach(menu => menu.classList.remove("active"))
+
+    $.ajax({
+        url: `/api/user`,
+        method: 'GET',
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log(response);
+            ModalTabManager.user = response.data;
+            // Open modal
+            const modal = profileModalContainer.querySelector(".modal");
+            setTimeout(() => {
+                modalTabManager.loadTabByState(ModalTabManager.state);
+                modal.classList.add("show");
+            }, 100);
+        },
+        error: function (xhr, status, error) {
+            console.error("Request failed:", xhr.responseText);
+        }
+    });
+}
+
+function closeProfileModal() {
+    const modal = document.querySelector("#profileModal");
+    modal.classList.remove("show");
+}
+
+
+function ModalTabManager() {
+    this.tabContainer = document.querySelector(".modal-tabs");
+    this.tabItems = document.querySelectorAll(".modal-tab-item");
+    this.modalContent = document.querySelector("#profileModal .modal-content")
+    ModalTabManager.state = "BASIC";
+    ModalTabManager.user = {};
+    this.tabItems.forEach(item => {
+        item.addEventListener("click", (event) => {
+            this.tabItems.forEach(item => item.classList.remove("selected"));
+            event.target.classList.add("selected");
+            const newState = event.target.dataset.state;
+            if (ModalTabManager.state === newState) return;
+            ModalTabManager.state = event.target.dataset.state;
+            this.loadTabByState(newState);
+        });
+    });
+    return this;
+}
+
+ModalTabManager.handleSubmit = function (event) {
+    event.preventDefault();
+
+    switch (ModalTabManager.state) {
+        case "BASIC":
+            FormAction.changeBasicInfo(event);
+            break;
+        case "AUTH":
+            FormAction.authEmail(event);
+            break;
+        case "CHANGE":
+            FormAction.changeEmail(event);
+            break;
+        case "PASSWORD":
+            FormAction.changePassword(event);
+            break;
+        default:
+    }
+}
+
+ModalTabManager.submitForm = function (event) {
+    const form = $("#settingForm")[0];
+    $(form).trigger("submit");
+}
+
+ModalTabManager.prototype.loadTabByState = function (state) {
+    const user = ModalTabManager.user;
+    const saveBtn = document.querySelector("#profileModalSaveBtn");
+    switch (state) {
+        case "BASIC":
+            this.modalContent.innerHTML = `
+                <form id="settingForm" onsubmit="ModalTabManager.handleSubmit(event)">
+                    <div class="input-group mb-4">
+                        <label for="firstnameInput">Firstname</label>
+                        <input type="text" id="firstnameInput" class="input" placeholder="Firstname"
+                            name="firstname" value="${user.firstName}">
+                        <div id="firstnameFeedback" class="invalid-feedback"></div>
+                    </div>
+                    <div class="input-group mb-4">
+                        <label for="lastnameInput">Lastname</label>
+                        <input type="text" id="lastnameInput" class="input" placeholder="Lastname"
+                            name="lastname" value="${user.lastName}">
+                        <div id="lastnameFeedback" class="invalid-feedback"></div>
+                    </div>
+                    <div class="input-group mb-4">
+                        <label for="addressInput">Address</label>
+                        <input type="text" id="addressInput" class="input" placeholder="Addresss"
+                            name="address" value="${user.address ?? ""}">
+                        <div id="addressFeedback" class="invalid-feedback"></div>
+                    </div>
+                </form>
+            `;
+            saveBtn.innerHTML = "Save";
+            break;
+
+        case "AUTH":
+            this.modalContent.innerHTML = `
+                <form id="settingForm" onsubmit="ModalTabManager.handleSubmit(event)">
+                    <div class="input-group mb-4">
+                        <label for="emailInput">Email</label>
+                        <input type="email" id="emailInput" class="input disabled" placeholder="Email" value="${user.email}" disabled>
+                        <div id="emailFeedback" class="invalid-feedback"></div>
+                    </div>
+                </form>
+            `;
+            saveBtn.innerHTML = "Auth";
+            break;
+        case "CHANGE":
+            this.modalContent.innerHTML = `
+                <form id="settingForm" onsubmit="ModalTabManager.handleSubmit(event)">
+                    <div class="input-group mb-4">
+                        <label for="emailInput" style="margin-bottom: 8px;">Email (if you put an different email, you have to auth your email again!)</label>
+                        <input type="email" id="emailInput" class="input" placeholder="Email"
+                            name="email" value="${user.email}">
+                        <div id="emailFeedback" class="invalid-feedback"></div>
+                    </div>
+                </form>
+            `;
+            saveBtn.innerHTML = "Change";
+            break;
+
+        case "PASSWORD":
+            this.modalContent.innerHTML = `
+                <form id="settingForm" onsubmit="ModalTabManager.handleSubmit(event)">
+                    <div class="input-group mb-4">
+                        <label for="currentPassword">Current password</label>
+                        <input type="password" id="currentPasswordInput" class="input" placeholder="Current password"
+                            name="currentPassword" autocomplete="none">
+                        <div id="currentPasswordFeedback" class="invalid-feedback"></div>
+                    </div>
+
+                    <div class="input-group mb-4">
+                        <label for="newPassword">New password</label>
+                        <input type="password" id="newPasswordInput" class="input" placeholder="New password"
+                            name="newPassword" autocomplete="none">
+                        <div id="newPasswordFeedback" class="invalid-feedback"></div>
+                    </div>
+                </form>
+            `;
+            saveBtn.innerHTML = "Change";
+            break;
+        default:
+    }
+}
+
+
+function FormAction() {
+    return this;
+}
+
+FormAction.changeBasicInfo = function (event) {
+    const form = new FormData(event.target);
+
+    form.entries().forEach(pair => console.log(pair));
+    $.ajax({
+        url: `/api/user/change-basic-info`,
+        method: 'POST',
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log(response);
+            // Open modal
+            closeProfileModal();
+            openToast(response.message);
+        },
+        error: function (xhr, status, error) {
+            console.error("Request failed:", xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
+            const errors = response.errors;
+
+            const content = Object.keys(errors).reduce((content, key) => {
+                return content +
+                    `
+                    ${key}: 
+                    ${errors[key].join(" - ")}<br>
+                    `
+            }, "");
+
+            openToast(content, true);
+        }
+    });
+
+}
+
+FormAction.authEmail = function (event) {
+    $.ajax({
+        url: `/api/user/auth-email`,
+        method: 'POST',
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log(response);
+            // Open modal
+            closeProfileModal();
+            openToast(response.message);
+        },
+        error: function (xhr, status, error) {
+            console.error("Request failed:", xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
+            openToast(response.message, true);
+        }
+    });
+}
+
+FormAction.changeEmail = function (event) {
+    const form = new FormData(event.target);
+
+    for (const [key, value] of form.entries()) {
+        if (key === "email" && value === ModalTabManager.user.email) {
+            closeProfileModal();
+            openToast("No change!");
+            return;
+        }
+    }
+
+    $.ajax({
+        url: `/api/user/change-email`,
+        method: 'POST',
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log(response);
+            // Open modal
+            closeProfileModal();
+            openToast(response.message);
+        },
+        error: function (xhr, status, error) {
+            console.error("Request failed:", xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
+            const errors = response.errors;
+
+            const content = Object.keys(errors).reduce((content, key) => {
+                return content +
+                    `
+                    ${key}: 
+                    ${errors[key].join(" - ")}<br>
+                    `
+            }, "");
+
+            openToast(content, true);
+        }
+    });
+}
+
+FormAction.changePassword = function (event) {
+    const form = new FormData(event.target);
+
+    form.entries().forEach(pair => console.log(pair));
+    $.ajax({
+        url: `/api/user/change-password`,
+        method: 'POST',
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log(response);
+            // Open modal
+            closeProfileModal();
+            openToast(response.message);
+        },
+        error: function (xhr, status, error) {
+            console.error("Request failed:", xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
+            const errors = response.errors;
+
+            const content = Object.keys(errors).reduce((content, key) => {
+                return content +
+                    `
+                    ${key}: 
+                    ${errors[key].join(" - ")}<br>
+                    `
+            }, "");
+
+            openToast(content, true);
+        }
+    });
+}
+
+//#endregion

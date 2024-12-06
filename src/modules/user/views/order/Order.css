@@ -19,39 +19,6 @@
     text-transform: uppercase;
 }
 
-.table {
-    width: 100%;
-    background-color: #fcfcfc;
-    border-radius: 8px;
-
-    border-collapse: collapse;
-}
-
-.table td, .table th {
-    border: 2px solid #dbdbdb;
-    text-align: center;
-}
-
-
-table tr:first-child th,
-table tr:first-child td,
-table tr:last-child td,
-table tr:last-child th {
-    border-top: none;
-    border-bottom: none;
-}
-
-table td:first-child,
-table th:first-child,
-table td:last-child,
-table th:last-child {
-    border-left: none;
-    border-right: none;
-}
-
-
-
-
 .tab-slider {
     display: flex;
     margin-bottom: 15px;

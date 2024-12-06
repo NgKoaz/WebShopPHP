@@ -37,6 +37,17 @@ class JWTService
         return JWT::encode($payload, $this->secretKey . $hashPassword, 'HS256');
     }
 
+    public function generateEmailAuthenticationToken(string $email)
+    {
+        $expiredAt = new DateTime;
+        $expiredAt->modify('+5 minutes');
+        $payload = [
+            "expiredAt" => $expiredAt->format(FORMAT_DATE),
+            "email" => $email
+        ];
+        return JWT::encode($payload, $this->secretKey . $email, 'HS256');
+    }
+
     public function decode(string $token, string $extSecretKey = ""): ?array
     {
         try {

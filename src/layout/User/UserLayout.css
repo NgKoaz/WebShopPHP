@@ -503,6 +503,8 @@ footer {
     top: 0px;
     right: 0px;
     pointer-events: none;
+
+    z-index: 1000;
 }
 
 .toast {
@@ -539,7 +541,7 @@ footer {
 }
 
 
-#modalContainer {
+#modalContainer, #profileModalContainer {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -550,15 +552,16 @@ footer {
     pointer-events: none;
 }
 
-#modalContainer:has(.modal.show) {
+#modalContainer:has(.modal.show), #profileModalContainer:has(.modal.show) {
     opacity: 1;
     background-color: rgba(0, 0, 0, 0.1);
     pointer-events: all;
 }
 
+
 .modal {
     position: relative;
-    width: min(90vw, 600px);
+    width: min(90vw, 700px);
     margin-top: 10vh;
     margin-inline: auto;
     padding: 20px;
@@ -585,6 +588,8 @@ footer {
     margin-top: 25px;
     padding-bottom: 10px;
     border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+    max-height: 60vh;
+    overflow-y: auto;
 }
 
 .modal-content textarea {
@@ -605,12 +610,48 @@ footer {
     padding-inline: 20px;
 }
 
+.modal-close {
+    cursor: pointer;
+}
+
+.modal-tabs {
+    margin-top: 10px;
+    display: flex;
+    user-select: none;
+    overflow-x: auto;
+}
+
+.modal-tab-item {
+    flex-shrink: 0;
+    flex-grow: 1;
+
+    min-width: 120px;
+    /* max-width: 290px; */
+    padding: 4px 12px 8px 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+    font-size: var(--md-font-size);
+    text-align: center;
+
+    cursor: pointer;
+}
+
+.modal-tab-item:hover {
+    font-weight: 500;
+    border-bottom: 1.4px solid rgba(0, 0, 0, 0.6);
+}
+
+.modal-tab-item.selected {
+    font-weight: 700;
+    border-bottom: 2px solid black;
+}
+
 .w-50 {
     width: 50%;
 }
 
 .btn {
-    padding: 14px 0px;
+    padding: 10px 0px;
     font-size: var(--md-font-size);
     border-radius: 8px;
     cursor: pointer;
@@ -665,6 +706,34 @@ footer {
     to {
         width: 0%;
     }
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.mb-4 {
+    margin-bottom: 12px;
+}
+
+.input {
+    padding: 12px 16px;
+    width: 100%;
+
+    color: rgb(0, 0, 0);
+    font-size: var(--md-font-size);
+
+    border: 1px solid rgb(0, 0, 0, 0.1);
+    border-radius: 6px;
+
+    background-color: #fcfcfc;
+}
+
+.input.disabled {
+    background-color: #f1f1f1;
+    display: block !important;
 }
 
 

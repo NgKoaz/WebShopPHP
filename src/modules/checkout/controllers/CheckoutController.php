@@ -11,6 +11,7 @@ use App\services\CartManager;
 use App\services\CheckoutManager;
 use App\services\LoginManager;
 use App\services\MomoPayment;
+use App\services\SessionManager;
 
 #[Auth("/login")]
 class CheckoutController extends Controller
@@ -20,6 +21,7 @@ class CheckoutController extends Controller
         private LoginManager $loginManager,
         private CartManager $cartManager,
         private CheckoutManager $checkoutManager,
+        private SessionManager $sessionManager,
     ) {}
 
     #[HttpGet("/checkout")]
@@ -50,22 +52,12 @@ class CheckoutController extends Controller
     #[HttpGet("/checkout/momo/callback")]
     public function callbackMomo(string $resultCode, string $message, string $requestId)
     {
-        // if (+$resultCode != 0) {
-        //     $this->checkoutManager->deleteById($requestId);
-        //     return $this->redirect("/order")
-        // }
-
-        // $file = ROOT_DIR . "/src/cache/global/log/momo/callback.txt";
-        // $fileStream = fopen($file, 'a');
-        // if ($fileStream) {
-        //     $data = print_r($_GET, true);
-        //     fwrite($fileStream, $data);
-        //     fclose($fileStream);
-        // }
-
         if (+$resultCode !== 0) {
+            $this->sessionManager->setFlash("IsErrorMessage", "true");
+            $this->sessionManager->setFlash("TempMessage", "Failed transaction!");
         } else {
             $this->checkoutManager->onPaidBill($requestId, BILL_PAID, ONLINE_METHOD, MOMO_PSP);
+            $this->sessionManager->setFlash("TempMessage", "Successful transaction!");
         }
         return $this->redirect("/orders");
     }

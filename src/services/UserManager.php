@@ -37,6 +37,38 @@ class UserManager
         $this->entityManager->flush();
     }
 
+    public function changeEmail(int $id, string $newEmail)
+    {
+        $user = $this->findById($id);
+        $user->email = $newEmail;
+        $user->isVerifiedEmail = false;
+        $this->entityManager->flush();
+    }
+
+    public function authEmail(string $email)
+    {
+        $user = $this->findByEmail($email);
+        if ($user !== null) $user->isVerifiedEmail = true;
+        $this->entityManager->flush();
+    }
+
+    public function hasEmailExceptId(int $id, string $email): bool
+    {
+        $user = $this->findByEmail($email);
+        if ($user === null) return false;
+        return $user->id !== $id;
+    }
+
+    public function changeBasicInfo(int $id, string $firstname, string $lastname, string $address)
+    {
+        $user = $this->findById($id);
+        $user->firstName = $firstname;
+        $user->lastName = $lastname;
+        $user->address = $address;
+
+        $this->entityManager->flush();
+    }
+
     private function passwordHash($password)
     {
         return password_hash($password, PASSWORD_BCRYPT);

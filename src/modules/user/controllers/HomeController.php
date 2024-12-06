@@ -17,7 +17,8 @@ class HomeController extends Controller
     public function getIndex()
     {
         $viewData = new ArrayList;
-        $viewData["IS_LOGGED_IN"] = $this->loginManager->isLoggedIn();
+        $viewData["TempMessage"] = $this->sessionManager->getFlash("TempMessage");
+        $viewData["IsErrorMessage"] = $this->sessionManager->getFlash("IsErrorMessage");
         $this->view("index", viewData: $viewData);
     }
 }

@@ -117,16 +117,15 @@ TabManager.prototype.setTabState = function (state) {
                 OrderManager.orders.filter(order => order.status === "UNPAID"),
                 "Unpaid",
                 `<button class="card-btn card-btn-secondary" onclick="OrderActions.cancel(event)">Cancel</button>
-                <button class="card-btn card-btn-primary">Pay</button>`
+                <button class="card-btn card-btn-primary" onclick="OrderActions.pay(event)">Pay</button>`
             );
             break;
         case "PREPARING":
             this.loadOrderWithOrderList(
                 OrderManager.orders.filter(order => order.order_status === "PREPARING"),
                 "Preparing",
-                `<button class="card-btn card-btn-secondary" onclick="OrderActions.cancel(event)">Cancel</button>`
-                    + order.status === "UNPAID" ? `<button class="card-btn card-btn-primary">Pay</button>` :
-                    `<button class="card-btn card-btn-secondary">Detail</button>`
+                `<button class="card-btn card-btn-secondary" onclick="OrderActions.cancel(event)">Cancel</button>
+                <button class="card-btn card-btn-secondary">Detail</button>`
             );
             break;
         case "SHIPPING":
@@ -148,7 +147,7 @@ TabManager.prototype.setTabState = function (state) {
             this.loadOrderWithOrderList(
                 OrderManager.orders.filter(order => order.order_status === "RECEIVED"),
                 "Received",
-                `<button class="card-btn card-btn-secondary">Rebuy</button>
+                `<button class="card-btn card-btn-secondary" onclick="OrderActions.rebuy(event)">Rebuy</button>
                 <button class="card-btn card-btn-primary">Review</button>`
             );
             break;
@@ -156,7 +155,7 @@ TabManager.prototype.setTabState = function (state) {
             this.loadOrderWithOrderList(
                 OrderManager.orders.filter(order => order.status === "CANCELLED"),
                 "Cancelled",
-                `<button class="card-btn card-btn-primary">Rebuy</button>`
+                `<button class="card-btn card-btn-primary" onclick="OrderActions.rebuy(event)">Rebuy</button>`
             );
             break;
         default:
@@ -199,7 +198,6 @@ TabManager.prototype.loadOrderWithOrderList = function (orders, status, actionHT
 function OrderActions() { }
 
 OrderActions.cancel = function (event) {
-    // console.log(event);
     const form = new FormData();
     form.append("billId", event.target.closest(".actions").dataset.billId);
     $.ajax({
@@ -220,36 +218,18 @@ OrderActions.cancel = function (event) {
     });
 }
 
-OrderActions.pay = function () {
-
+OrderActions.pay = function (event) {
+    const billId = event.target.closest(".actions").dataset.billId;
+    window.location.href = `/order-pay/${billId}`;
 }
 
 OrderActions.receive = function () {
 
 }
 
+OrderActions.rebuy = function (event) {
+    const billId = event.target.closest(".actions").dataset.billId;
+    window.location.href = `/order-rebuy/${billId}`;
+}
 
 
-
-// `<div class="card-container">
-//             <div class="card">
-//                 <div class="product-container">
-//                     <div class="product-list">
-//                         <div class="product">
-//                             <img src="/public/upload/images/1674ae6152c9031732961813.png">
-//                             <div class="product-info">
-//                                 <div class="product-title">Gradient Graphic T-shirt</div>
-//                                 <div class="product-quantity">x1</div>
-//                                 <div class="product-price">$25.99</div>
-//                             </div>
-//                         </div>
-//                     </div>
-//                     <button class="card-more-btn">More <i class="bi bi-arrow-bar-down"></i></button>
-//                 </div>
-//                 <div class="total-price">Total price (1 product): $12312312</div>
-//                 <div class="actions">
-//                     <button class="card-btn card-btn-primary">Received</button>
-//                     <button class="card-btn">Cancel</button>
-//                 </div>
-//             </div>
-//         </div>`

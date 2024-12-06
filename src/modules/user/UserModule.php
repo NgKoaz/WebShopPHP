@@ -12,6 +12,7 @@ use App\modules\user\controllers\UserApiCartController;
 use App\modules\user\controllers\UserApiOrderController;
 use App\modules\user\controllers\UserApiProductController;
 use App\modules\user\controllers\UserApiReviewController;
+use App\modules\user\controllers\UserApiUserController;
 
 class UserModule extends Module
 {
@@ -27,6 +28,7 @@ class UserModule extends Module
             UserApiCartController::class,
             UserApiReviewController::class,
             UserApiOrderController::class,
+            UserApiUserController::class,
         ];
     }
 }

@@ -108,4 +108,9 @@ abstract class Controller
     {
         require_once App::getRootDirectory() . "/src/views/$view.php";
     }
+
+    protected function notfound()
+    {
+        return $this->loadSharedView("404");
+    }
 }

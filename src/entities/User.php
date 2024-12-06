@@ -39,7 +39,7 @@ class User
     #[Column(name: "last_name")]
     public string $lastName;
 
-    #[Column(name: "address", nullable: true)]
+    #[Column(name: "address", type: "text", nullable: true)]
     public string $address;
 
     #[Column(nullable: true)]
