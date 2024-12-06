@@ -13,11 +13,15 @@ ob_start();
 ?>
 
 <div class="app-container">
-    <div class="card-list">
-        <div class="card"></div>
-        <div class="card"></div>
-        <div class="card"></div>
-        <div class="card"></div>
+    <div class="info-container">
+        <div class="card">
+
+        </div>
+    </div>
+    <div class="order-container">
+        <div class="order">
+            sofos
+        </div>
     </div>
 </div>
 

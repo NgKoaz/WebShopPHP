@@ -4,17 +4,13 @@ const storage = {}
 selector.categories = document.querySelector(".categories");
 state.autoGenerate = true;
 state.draggable = false;
-state.categories = []
+state.categories = [];
+
 
 storage.greenColor = "#32ff7e";
 storage.darkGreenColor = "#3ae374";
 storage.redColor = "#ff3838";
 
-selector.toastLive = document.getElementById('liveToast');
-selector.toastBootstrap = bootstrap.Toast.getOrCreateInstance(selector.toastLive);
-selector.toastTitle = document.querySelector(".toast .toast-title");
-selector.toastBody = document.querySelector(".toast .toast-body");
-selector.toastRect = document.querySelector(".toast rect");
 
 
 //#region Utility
@@ -41,23 +37,7 @@ function generateSlug(slug) {
 }
 //#endregion
 
-//#region TOAST
-function showErrorToast(title, message) {
-    selector.toastRect.setAttribute('fill', storage.redColor);
-    selector.toastTitle.innerHTML = title;
-    selector.toastTitle.style.color = storage.redColor;
-    selector.toastBody.innerHTML = message;
-    selector.toastBootstrap.show();
-}
 
-function showSuccessToast(title, message) {
-    selector.toastRect.setAttribute('fill', storage.greenColor);
-    selector.toastTitle.innerHTML = title;
-    selector.toastTitle.style.color = storage.greenColor;
-    selector.toastBody.innerHTML = message;
-    selector.toastBootstrap.show();
-}
-//#endregion
 
 function isAllSave() {
     const saveBtns = document.querySelectorAll("[data-save-btn]");
@@ -115,7 +95,7 @@ function onSlugChange(event) {
 function handleSaveError(response, cElementId) {
     if (response?.errors === null) return;
     if (response?.errors?.id) {
-        showErrorToast("Error!", "Non-expected error. Please, reload page!");
+        Toast.gI().showError("Non-expected error. Please, reload page!");
         return;
     }
     console.log(`#${cElementId} input[name='name']`);
@@ -143,14 +123,14 @@ function handleSaveError(response, cElementId) {
             feedbacks[errKey].innerHTML = errors[errKey].join("<br>");
         }
     })
-    showErrorToast("Error!", "Check your error message!");
+    Toast.gI().showError("Check your error message!");
 }
 
 function onSaveClick(cElementId) {
     const cObj = document.querySelector(`#${cElementId}`);
     const parentSaveBtn = document.querySelector(`#${cObj.dataset.parentId} [data-save-btn]`);
     if (parentSaveBtn && parentSaveBtn.style.display !== "none") {
-        showErrorToast("Error!", "You have to save parent category first!");
+        Toast.gI().showError("You have to save parent category first!");
         return;
     }
 
@@ -175,7 +155,7 @@ function onSaveClick(cElementId) {
         processData: false,
         contentType: false,
         success: function (response) {
-            showSuccessToast("Success!", `Category has been ${cObj.dataset.id ? "updated" : "created"}!`);
+            Toast.gI().showSuccess(`Category has been ${cObj.dataset.id ? "updated" : "created"}!`);
             refreshCategories();
             console.log(response)
         },
@@ -203,7 +183,7 @@ function onDeleteClick(cElementId) {
             processData: false,
             contentType: false,
             success: function (response) {
-                showSuccessToast("Success!", `Category has been ${cObj.dataset.id ? "updated" : "created"}!`);
+                Toast.gI().showSuccess(`Category has been ${cObj.dataset.id ? "updated" : "created"}!`);
                 refreshCategories();
             },
             error: function (xhr, status, error) {
@@ -218,7 +198,7 @@ function onDeleteClick(cElementId) {
 
 function onDecreaseLevel(cElementId) {
     if (!isAllSave()) {
-        showErrorToast("Error!", "Save all categories before create a new one");
+        Toast.gI().showError("Save all categories before create a new one");
         return;
     }
 
@@ -242,12 +222,12 @@ function onDecreaseLevel(cElementId) {
         contentType: false,
         success: function (response) {
             console.log(response)
-            showSuccessToast("Success!", `Category has been changed!`);
+            Toast.gI().showSuccess("Category has been changed!");
             refreshCategories();
         },
         error: function (xhr, status, error) {
             console.log(xhr.responseText);
-            showErrorToast("Error!", `Some errors occur!`);
+            Toast.gI().showError("Some errors occur!");
             renderCategories(state.oldResponse);
         }
     });
@@ -255,7 +235,7 @@ function onDecreaseLevel(cElementId) {
 
 function addCategory(cData, parentElementId, data) {
     if (!isAllSave()) {
-        showErrorToast("Error!", "Save all categories before create a new one");
+        Toast.gI().showError("Save all categories before create a new one");
         return;
     }
 
@@ -358,7 +338,7 @@ function onDragEnd(event) {
 function onDrop(event) {
     event.preventDefault();
     if (!isAllSave()) {
-        showErrorToast("Error!", "Save all categories before create a new one");
+        Toast.gI().showError("Save all categories before create a new one");
         return;
     }
     const draggingItem = document.querySelector(".dragging");
@@ -366,7 +346,7 @@ function onDrop(event) {
     targetItem.classList.remove("drag-over");
 
     if (!targetItem.dataset.id) {
-        showErrorToast("Error!", "You have to save that category before drop into it!");
+        Toast.gI().showError("You have to save that category before drop into it!");
         return;
     }
 
@@ -398,12 +378,12 @@ function onDrop(event) {
             contentType: false,
             success: function (response) {
                 console.log(response)
-                showSuccessToast("Success!", `Category has been changed!`);
+                Toast.gI().showSuccess("Category has been changed!");
                 refreshCategories();
             },
             error: function (xhr, status, error) {
                 console.log(xhr.responseText);
-                showErrorToast("Error!", `Some errors occur!`);
+                Toast.gI().showError("Some errors occur!");
                 renderCategories(state.oldResponse);
             }
         });

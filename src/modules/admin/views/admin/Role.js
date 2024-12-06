@@ -5,40 +5,13 @@ storage = {}
 
 selector.tBody = document.querySelector("#roleTable tbody");
 
-selector.toastLive = document.getElementById('liveToast');
-selector.toastBootstrap = bootstrap.Toast.getOrCreateInstance(selector.toastLive);
-selector.toastTitle = document.querySelector(".toast .toast-title");
-selector.toastBody = document.querySelector(".toast .toast-body");
-selector.toastRect = document.querySelector(".toast rect");
-
-storage.greenColor = "#32ff7e";
-storage.darkGreenColor = "#3ae374";
-storage.redColor = "#ff3838";
-
-//#region TOAST
-function showErrorToast(title, message) {
-    selector.toastRect.setAttribute('fill', storage.redColor);
-    selector.toastTitle.innerHTML = title;
-    selector.toastTitle.style.color = storage.redColor;
-    selector.toastBody.innerHTML = message;
-    selector.toastBootstrap.show();
-}
-
-function showSuccessToast(title, message) {
-    selector.toastRect.setAttribute('fill', storage.greenColor);
-    selector.toastTitle.innerHTML = title;
-    selector.toastTitle.style.color = storage.greenColor;
-    selector.toastBody.innerHTML = message;
-    selector.toastBootstrap.show();
-}
-//#endregion
 
 function handleErrorEditRoleRequest(response, element, value) {
     element.innerHTML = value;
     const content = Object.keys(response.errors).reduce((content, errKey) => {
         return content + response.errors[errKey].join("<br>");
     }, "");
-    showErrorToast("Error!", content);
+    Toast.gI().showError(content);
 }
 
 function onBlur(event, roleId, previousValue) {
@@ -56,7 +29,7 @@ function onBlur(event, roleId, previousValue) {
         processData: false,
         contentType: false,
         success: function (response) {
-            showSuccessToast("Success!", "Category name has been updated!");
+            Toast.gI().showSuccess("Category name has been updated!");
         },
         error: function (xhr, status, error) {
             handleErrorEditRoleRequest(JSON.parse(xhr.responseText), parentElement, previousValue);
@@ -73,7 +46,7 @@ function onEdit(event, roleId) {
 }
 
 function handleSuccessDeleteRequest(response) {
-    showSuccessToast("Success!", "Category name has been deleted!");
+    Toast.gI().showSuccess("Category name has been deleted!");
     refreshRoleTable();
 }
 
@@ -93,7 +66,7 @@ function onDelete(roleId) {
         },
         error: function (xhr, status, error) {
             const response = JSON.parse(xhr.responseText);
-            showErrorToast("Error!", (response?.errors?.message) ? response.errors.message : "Non-expected error. Please, reload page!");
+            Toast.gI().showError((response?.errors?.message) ? response.errors.message : "Non-expected error. Please, reload page!");
         }
     });
 }
@@ -143,7 +116,7 @@ function refreshRoleTable() {
             renderRoleTable(response);
         },
         error: function (xhr, status, error) {
-            showErrorToast("Error!", "Non-expected error. Reload page!");
+            Toast.gI().showError("Non-expected error. Reload page!");
         }
     });
 }
@@ -157,7 +130,7 @@ function handleSuccessRequest(response) {
     inputObj.value = "";
     inputObj.classList.remove("is-invalid");
     document.querySelector("#nameInvalidFeedback").innerHTML = "";
-    showSuccessToast("Success!", "Role has been created");
+    Toast.gI().showSuccess("Role has been created");
     refreshRoleTable();
 }
 
@@ -185,7 +158,7 @@ function handleErrorRoleRequest(response) {
             feedbacks[errKey].innerHTML = errors[errKey].join("<br>");
         }
     })
-    showErrorToast("Error!", "Check your error message!");
+    Toast.gI().showError("Check your error message!");
 }
 
 function onCreateRoleSubmit(event) {

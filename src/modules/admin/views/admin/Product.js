@@ -5,13 +5,7 @@ const modalBody = document.querySelector("#modal .modal-body")
 const submitModalButton = document.querySelector("#submitModalButton");
 const closeModalButton = document.querySelector("#closeModalButton");
 
-const pagination = document.querySelector(".pagination")
-
-const toastLive = document.getElementById('liveToast');
-const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-const toastTitle = document.querySelector(".toast .toast-title");
-const toastBody = document.querySelector(".toast .toast-body");
-const toastRect = document.querySelector(".toast rect");
+const pagination = document.querySelector(".pagination");
 
 const tbodyFoundProductTable = document.querySelector("#foundProductTable tbody");
 const productDetailsPreview = document.querySelector("#productDetailsPreview");
@@ -108,24 +102,6 @@ function generateSlug(slug) {
 //#endregion
 
 
-//#region TOAST
-function showErrorToast(title, message) {
-    toastRect.setAttribute('fill', redColor);
-    toastTitle.innerHTML = title;
-    toastTitle.style.color = redColor;
-    toastBody.innerHTML = message;
-    toastBootstrap.show();
-}
-
-function showSuccessToast(title, message) {
-    toastRect.setAttribute('fill', greenColor);
-    toastTitle.innerHTML = title;
-    toastTitle.style.color = greenColor;
-    toastBody.innerHTML = message;
-    toastBootstrap.show();
-}
-//#endregion
-
 
 // START TABLE
 function updateTable(data) {
@@ -189,7 +165,7 @@ function refreshDataForTable(page = 1, limit = 12) {
             updatePagination(response);
         },
         error: function (xhr, status, error) {
-            showErrorToast("Error!", "Non-expected error. Please, reload page!")
+            Toast.gI().showError("Non-expected error. Please, reload page!")
         }
     });
 }
@@ -347,13 +323,13 @@ function handleErrorCreateRequest(response) {
             feedbacks[errKey].innerHTML = errors[errKey].join("<br>");
         }
     })
-    showErrorToast("Error!", "Check your error message!");
+    Toast.gI().showError("Check your error message!");
 }
 
 function handleSuccessCreateRequest(response) {
     refreshDataForTable();
     closeModal();
-    showSuccessToast("Success!", "Product has been created!");
+    Toast.gI().showSucess("Product has been created!");
 }
 
 function onCreateSubmit(event) {
@@ -388,7 +364,7 @@ function showDetailModal(event) {
 
     product = state["products"].filter(p => +p.id === +productId)?.[0];
     if (product === null) {
-        showErrorToast("Error!", "Non-expected error. Reload page!");
+        Toast.gI().showError("Non-expected error. Reload page!");
         return;
     };
 
@@ -469,7 +445,7 @@ function toggleIsDeleted(event) {
 function handleSuccessEditRequest(response) {
     refreshDataForTable();
     closeModal();
-    showSuccessToast("Success!", "Product has been editted!");
+    Toast.gI().showSucess("Product has been editted!");
 }
 
 function handleErrorEditRequest(response) {
@@ -506,7 +482,7 @@ function handleErrorEditRequest(response) {
             feedbacks[errKey].innerHTML = errors[errKey].join("<br>");
         }
     })
-    showErrorToast("Error!", "Check your error message!");
+    Toast.gI().showError("Check your error message!");
 }
 
 function onEditSubmit(event) {
@@ -537,7 +513,7 @@ function showEditModal(event) {
     productId = parent.dataset.id;
     product = state["products"].filter(p => +p.id === +productId)?.[0];
     if (product === null) {
-        showErrorToast("Error!", "Non-expected error. Reload page!");
+        Toast.gI().showError("Non-expected error. Reload page!");
         return;
     };
     state.autoGenerate = true;
@@ -627,11 +603,11 @@ function showEditModal(event) {
 function handleSuccessDeleteRequest(response) {
     refreshDataForTable();
     closeModal();
-    showSuccessToast("Success!", "Product has been deleted!");
+    Toast.gI().showSucess("Product has been deleted!");
 }
 
 function handleErrorDeleteRequest(response) {
-    showErrorToast("Error!", "Non-expected error. Please, reload page!");
+    Toast.gI().showError("Non-expected error. Please, reload page!");
 }
 
 function onDeleteSubmit(event) {
@@ -659,7 +635,7 @@ function showDeleteModal(event) {
     productId = parent.dataset.id;
     product = state["products"].filter(p => +p.id === +productId)?.[0];
     if (product === null) {
-        showErrorToast("Error!", "Non-expected error. Reload page!");
+        Toast.gI().showError("Non-expected error. Reload page!");
         return;
     };
     modalTitle.innerHTML = `Delete Product ID: ${product.id} `;
@@ -706,12 +682,12 @@ function saveProductDetailsHTML(event) {
         contentType: false,
         success: function (response) {
             console.log(response);
-            showSuccessToast("Success!", "Saved");
+            Toast.gI().showSucess("Saved");
             saveProductDetailBtn.classList.add("disabled");
         },
         error: function (xhr, status, error) {
             console.log(xhr.responseText);
-            showErrorToast("Error!", "Perhaps, you need to select product first!");
+            Toast.gI().showError("Perhaps, you need to select product first!");
             // handleErrorEditRequest(JSON.parse(xhr.responseText));
         }
     });
@@ -723,7 +699,7 @@ function changeOrderImage(event, productId, index, tend) {
 
     if (tend > 0) {
         if (+index <= 0) {
-            showErrorToast("Error!", "Cannot go up anymore");
+            Toast.gI().showError("Cannot go up anymore");
             return;
         }
 
@@ -732,7 +708,7 @@ function changeOrderImage(event, productId, index, tend) {
         images[+index] = temp;
     } else {
         if (+index >= images.length - 1) {
-            showErrorToast("Error!", "Cannot go down anymore");
+            Toast.gI().showError("Cannot go down anymore");
             return;
         }
 
@@ -758,7 +734,7 @@ function changeOrderImage(event, productId, index, tend) {
         },
         error: function (xhr, status, error) {
             console.log(xhr.responseText);
-            showErrorToast("Error!", "Select product first!");
+            Toast.gI().showError("Select product first!");
         }
     });
 }
@@ -862,7 +838,7 @@ function handleFindingProductError(response) {
             feedbacks[errKey].innerHTML = errors[errKey].join("<br>");
         }
     })
-    showErrorToast("Error!", "Check your error message!");
+    Toast.gI().showError("Check your error message!");
 }
 
 function findProductById(event) {
@@ -939,7 +915,7 @@ uploadImageForm.onclick = (event) => {
 uploadImageButton.onclick = (event) => {
     const fileInput = document.querySelector("#uploadImageForm input[type='file']");
     if (fileInput.files.length <= 0) {
-        showErrorToast("Error!", "Select image!");
+        Toast.gI().showError("Select image!");
         return;
     }
 
@@ -961,7 +937,7 @@ uploadImageButton.onclick = (event) => {
         },
         error: function (xhr, status, error) {
             console.log(xhr.responseText);
-            showErrorToast("Error!", "Select product first!");
+            Toast.gI().showError("Select product first!");
         }
     });
 }

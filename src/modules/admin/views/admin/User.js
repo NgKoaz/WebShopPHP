@@ -7,17 +7,6 @@ const closeModalButton = document.querySelector("#closeModalButton");
 
 const pagination = document.querySelector(".pagination")
 
-const toastLive = document.getElementById('liveToast');
-const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive);
-const toastTitle = document.querySelector(".toast .toast-title");
-const toastBody = document.querySelector(".toast .toast-body");
-const toastRect = document.querySelector(".toast rect");
-
-
-
-const greenColor = "#32ff7e";
-const darkGreenColor = "#3ae374";
-const redColor = "#ff3838";
 
 
 let tempUsers = [];
@@ -26,24 +15,6 @@ let isDeletedState = false;
 let currentPageState = 1;
 let totalPagesState = 1;
 
-
-// START OF TOAST
-function showErrorToast(title, message) {
-    toastRect.setAttribute('fill', redColor);
-    toastTitle.innerHTML = title;
-    toastTitle.style.color = redColor;
-    toastBody.innerHTML = message;
-    toastBootstrap.show();
-}
-
-function showSuccessToast(title, message) {
-    toastRect.setAttribute('fill', greenColor);
-    toastTitle.innerHTML = title;
-    toastTitle.style.color = greenColor;
-    toastBody.innerHTML = message;
-    toastBootstrap.show();
-}
-// END OF TOAST
 
 
 // START TABLE
@@ -73,7 +44,7 @@ function updateTable(data) {
             <td>${user.username}</td>
             <td>${user.email}</td>
             <td>${user.phoneNumber}</td>
-            <th style="color: ${user.isDeleted ? redColor : darkGreenColor}">${user.isDeleted ? "Deactive" : "Active"}</th>
+            <th style="color: ${user.isDeleted ? Color.red : Color.darkGreen}">${user.isDeleted ? "Deactive" : "Active"}</th>
             <td class="buttons" data-id="${user.id}">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal" onclick="showDetailModal(event)">
                     Detail
@@ -333,13 +304,13 @@ function handleErrorCreateRequest(response) {
             feedbacks[errKey].innerHTML = errors[errKey].join("<br>");
         }
     })
-    showErrorToast("Error!", "Check your error message!");
+    Toast.gI().showError("Check your error message!");
 }
 
 function handleSuccessCreateRequest(response) {
     refreshDataForTable();
     closeModal();
-    showSuccessToast("Success!", "User has been created!");
+    Toast.gI().showSuccess("User has been created!");
 }
 
 function onCreateSubmit(event) {
@@ -374,7 +345,7 @@ function showDetailModal(event) {
 
     user = tempUsers.filter(u => +u.id === +userId)?.[0];
     if (user === null) {
-        showErrorToast("Error!", "Non-expected error. Reload page!");
+        Toast.gI().showError("Non-expected error. Reload page!");
         return;
     };
 
@@ -422,7 +393,7 @@ function toggleIsDeleted(event) {
     isDeletedState = !isDeletedState;
     input = event.target.previousElementSibling;
     input.value = isDeletedState ? "Inactive" : "Active";
-    input.style.color = isDeletedState ? redColor : darkGreenColor;
+    input.style.color = isDeletedState ? Color.red : Color.darkGreen;
 
     // console.log(event.target);
     event.target.classList.remove("btn-danger");
@@ -434,7 +405,7 @@ function toggleIsDeleted(event) {
 function handleSuccessEditRequest(response) {
     refreshDataForTable();
     closeModal();
-    showSuccessToast("Success!", "User has been editted!");
+    Toast.gI().showSuccess("User has been editted!");
 }
 
 function handleErrorEditRequest(response) {
@@ -469,7 +440,7 @@ function handleErrorEditRequest(response) {
             feedbacks[errKey].innerHTML = errors[errKey].join("<br>");
         }
     })
-    showErrorToast("Error!", "Check your error message!");
+    Toast.gI().showError("Check your error message!");
 }
 
 function onEditSubmit(event) {
@@ -501,7 +472,7 @@ function showEditModal(event) {
     userId = parent.dataset.id;
     user = tempUsers.filter(u => +u.id === +userId)?.[0];
     if (user === null) {
-        showErrorToast("Error!", "Non-expected error. Reload page!");
+        Toast.gI().showError("Non-expected error. Reload page!");
         return;
     };
     isDeletedState = user.isDeleted;
@@ -557,7 +528,7 @@ function showEditModal(event) {
                 <span class="input-group-text" name="status">Status</span>
                 <input type="text" class="form-control" 
                     style="font-weight: 700; 
-                            color: ${user.isDeleted ? redColor : darkGreenColor};"
+                            color: ${user.isDeleted ? Color.red : Color.darkGreen};"
                             value=${user.isDeleted ? "Inactive" : "Active"} 
                     disabled>
                 <button class="btn ${!user.isDeleted ? "btn-danger" : "btn-success"}" onclick="toggleIsDeleted(event)">${!user.isDeleted ? "Inactive" : "Active"}</button>
@@ -583,11 +554,11 @@ function showEditModal(event) {
 function handleSuccessDeleteRequest(response) {
     refreshDataForTable();
     closeModal();
-    showSuccessToast("Success!", "User has been deleted!");
+    Toast.gI().showSuccess("User has been deleted!");
 }
 
 function handleErrorDeleteRequest(response) {
-    showErrorToast("Error!", "Non-expected error. Please, reload page!");
+    Toast.gI().showError("Non-expected error. Please, reload page!");
 }
 
 function onDeleteSubmit(event) {
@@ -613,7 +584,7 @@ function showDeleteModal(event) {
     userId = parent.dataset.id;
     user = tempUsers.filter(u => +u.id === +userId)?.[0];
     if (user === null) {
-        showErrorToast("Error!", "Non-expected error. Reload page!");
+        Toast.gI().showError("Non-expected error. Reload page!");
         return;
     };
     isDeletedState = user.isDeleted;

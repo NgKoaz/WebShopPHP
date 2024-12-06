@@ -56,7 +56,7 @@ class CheckoutController extends Controller
             $this->sessionManager->setFlash("IsErrorMessage", "true");
             $this->sessionManager->setFlash("TempMessage", "Failed transaction!");
         } else {
-            $this->checkoutManager->onPaidBill($requestId, BILL_PAID, ONLINE_METHOD, MOMO_PSP);
+            $this->checkoutManager->onPaidBill($requestId, ONLINE_METHOD, MOMO_PSP);
             $this->sessionManager->setFlash("TempMessage", "Successful transaction!");
         }
         return $this->redirect("/orders");

@@ -161,4 +161,48 @@ class CheckoutManager
             $this->cartManager->addItem($productId, $quantity);
         }
     }
+
+    public function getOrderWithPagination(string $page, string $limit)
+    {
+        $count = $this->entityManager->getRepository(Bill::class)->count([]);
+
+        $totalPages = ceil($count / $limit);
+        $page = ($page < 1) ? 1 : $page;
+        $offset = ($page - 1) * $limit;
+        $offset = $offset < 0 ? 0 : $offset;
+
+        $sql = '
+            SELECT b.*, o.status as order_status, o.products
+            FROM bills b
+            JOIN orders o ON b.order_id = o.id';
+
+        //         LIMIT ' . intval($limit) . '
+        // OFFSET ' . intval($offset) . '
+
+        $query = $this->entityManager->getConnection()->prepare($sql);
+        $stmt = $query->executeQuery();
+        $orders = $stmt->fetchAllAssociative();
+
+        return [
+            "orders" => $orders,
+            "totalPages" => $totalPages,
+            "currentPage" => $page
+        ];
+    }
+
+    public function getPrepareOrder(): array
+    {
+        $sql = "
+            SELECT b.*, o.status as order_status, o.products
+            FROM bills b
+            JOIN orders o ON b.order_id = o.id
+            WHERE o.status = '" . ORDER_PREPARING . "'
+        ";
+
+        $productQuery = $this->entityManager->getConnection()->prepare($sql);
+        $stmt = $productQuery->executeQuery();
+        $products = $stmt->fetchAllAssociative();
+
+        return $products;
+    }
 }

@@ -26,7 +26,12 @@ ob_start();
                         <thead>
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">Name</th>
+                                <th scope="col">Created at</th>
+                                <th scope="col">Pay method</th>
+                                <th scope="col">PSP</th>
+                                <th scope="col">Order status</th>
+                                <th scope="col">Bill status</th>
+                                <th scope="col">Price</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -45,11 +50,16 @@ ob_start();
             </h2>
             <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    <table id="prepareOrderTable" class="table table-bordered mt-3">
+                    <table id="orderTable" class="table table-bordered mt-3">
                         <thead>
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">Name</th>
+                                <th scope="col">Created at</th>
+                                <th scope="col">Pay method</th>
+                                <th scope="col">PSP</th>
+                                <th scope="col">Order status</th>
+                                <th scope="col">Bill status</th>
+                                <th scope="col">Price</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>

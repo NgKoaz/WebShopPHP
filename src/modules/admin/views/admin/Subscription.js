@@ -1,38 +1,6 @@
 const subscriptionTable = new SubscriptionTable();
 const textEditor = new TextEditor("#emailComposer", "#broadcastBtn");
 
-
-const storage = {};
-const selector = {};
-storage.greenColor = "#32ff7e";
-storage.darkGreenColor = "#3ae374";
-storage.redColor = "#ff3838";
-
-selector.toastLive = document.getElementById('liveToast');
-selector.toastBootstrap = bootstrap.Toast.getOrCreateInstance(selector.toastLive);
-selector.toastTitle = document.querySelector(".toast .toast-title");
-selector.toastBody = document.querySelector(".toast .toast-body");
-selector.toastRect = document.querySelector(".toast rect");
-
-//#region TOAST
-function showErrorToast(title, message) {
-    selector.toastRect.setAttribute('fill', storage.redColor);
-    selector.toastTitle.innerHTML = title;
-    selector.toastTitle.style.color = storage.redColor;
-    selector.toastBody.innerHTML = message;
-    selector.toastBootstrap.show();
-}
-
-function showSuccessToast(title, message) {
-    selector.toastRect.setAttribute('fill', storage.greenColor);
-    selector.toastTitle.innerHTML = title;
-    selector.toastTitle.style.color = storage.greenColor;
-    selector.toastBody.innerHTML = message;
-    selector.toastBootstrap.show();
-}
-//#endregion
-
-
 document.addEventListener("DOMContentLoaded", () => {
     subscriptionTable.fetchSubscriptions(subscriptionTable.refreshSubscriptionTable);
     textEditor.initTinyMCE();
@@ -89,7 +57,7 @@ SubscriptionTable.delete = function (event, email) {
         contentType: false,
         success: function (response) {
             console.log(response);
-            showSuccessToast("Success!", response.message);
+            Toast.gI().showSuccess(response.message);
             subscriptionTable.fetchSubscriptions(subscriptionTable.refreshSubscriptionTable);
         },
         error: function (xhr, status, error) {
@@ -153,7 +121,7 @@ TextEditor.prototype.broadcast = function () {
         contentType: false,
         success: function (response) {
             console.log(response);
-            showSuccessToast("Success!", response.message);
+            Toast.gI().showSuccess(response.message);
             editor.setContent("");
         },
         error: function (xhr, status, error) {
