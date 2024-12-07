@@ -47,6 +47,7 @@ function onEdit(event, roleId) {
 
 function handleSuccessDeleteRequest(response) {
     Toast.gI().showSuccess("Category name has been deleted!");
+    Modal.gI().close();
     refreshRoleTable();
 }
 
@@ -72,17 +73,12 @@ function onDelete(roleId) {
 }
 
 function openConfirmDeleteModal(roleId) {
-    const modalSubmitBtn = document.querySelector("#modalSubmitBtn");
-    const modalTitle = document.querySelector("#modal .modal-title");
-    const modalBody = document.querySelector("#modal .modal-body");
-
-    modalTitle.innerHTML = "Delete role";
-    modalBody.innerHTML = `Do you want to delete role has id [${roleId}]?`;
-
-    modalSubmitBtn.onclick = () => {
+    const title = "Delete role";
+    const body = `Do you want to delete role has id [${roleId}]?`;
+    Modal.gI().show(title, body, true, "Delete", "btn-danger", () => {
         onDelete(roleId);
         document.querySelector("#modalCloseBtn")?.click();
-    }
+    }, null);
 }
 
 function renderRoleTable(response) {
@@ -121,7 +117,7 @@ function refreshRoleTable() {
     });
 }
 
-refreshRoleTable()
+refreshRoleTable();
 
 
 

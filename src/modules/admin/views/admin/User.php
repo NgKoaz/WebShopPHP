@@ -47,41 +47,6 @@ ob_start();
             <li class="page-item"><a class="page-link" href="#">Next</a></li>
         </ul>
     </nav>
-
-    <!-- Modal -->
-    <div class="modal fade" id="modal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog custom-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModalButton">Close</button>
-                    <button type="button" class="btn btn-primary" id="submitModalButton"></button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast -->
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <rect width="100%" height="100%" fill="#ff3838"></rect>
-                </svg>
-                <strong class="me-auto toast-title" style="color: #ff3838;"></strong>
-                <small>Just now</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-            </div>
-        </div>
-    </div>
 </div>
 
 <?php

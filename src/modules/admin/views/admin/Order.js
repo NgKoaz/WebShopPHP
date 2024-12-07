@@ -66,9 +66,15 @@ PrepareOrderTable.prototype.updateView = function (orders) {
                 <td scope="col">${order.status}</td>
                 <td scope="col">$${order.total_price}</td>
                 <td scope="col">
-                    <button class="btn btn-primary">View products</button>
-                    <button class="btn btn-success">Done</button>
-                    <button class="btn btn-danger">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
+                        View products
+                    </button>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal">
+                        Done
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal">
+                        Cancel
+                    </button>
                 </td>
             </tr>
         `;
@@ -140,7 +146,9 @@ OrderTable.prototype.updateView = function ({ orders, currentPage, totalPages })
                 <td scope="col">${order.status}</td>
                 <td scope="col">$${order.total_price}</td>
                 <td scope="col">
-                    <button class="btn btn-primary">View products</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
+                        View products
+                    </button>
                 </td>
             </tr>
         `;

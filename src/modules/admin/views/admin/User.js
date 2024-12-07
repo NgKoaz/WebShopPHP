@@ -44,7 +44,7 @@ function updateTable(data) {
             <td>${user.username}</td>
             <td>${user.email}</td>
             <td>${user.phoneNumber}</td>
-            <th style="color: ${user.isDeleted ? Color.red : Color.darkGreen}">${user.isDeleted ? "Deactive" : "Active"}</th>
+            <th style="color: ${user.isDeleted ? Color.Red : Color.DarkGreen}">${user.isDeleted ? "Deactive" : "Active"}</th>
             <td class="buttons" data-id="${user.id}">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal" onclick="showDetailModal(event)">
                     Detail
@@ -61,7 +61,7 @@ function updateTable(data) {
 }
 
 function changePage(page) {
-    if (page <= 0 || page > toastTitle || page === currentPageState) return;
+    if (page <= 0 || page > totalPagesState || page === currentPageState) return;
     refreshDataForTable(page);
 }
 
@@ -101,30 +101,11 @@ refreshDataForTable();
 // END TABLE
 
 
-// MODAL 
-function closeModal() {
-    closeModalButton.click();
-}
-
-function updateModalSubmitButton(content, setDeleteButton) {
-    submitModalButton.classList.remove("btn-primary");
-    submitModalButton.classList.remove("btn-danger");
-    submitModalButton.style.display = "";
-    if (content) submitModalButton.innerHTML = content;
-    else submitModalButton.style.display = "none";
-    if (setDeleteButton) {
-        submitModalButton.classList.add("btn-danger");
-    } else {
-        submitModalButton.classList.add("btn-primary");
-    }
-}
-// END MODAL 
-
 
 // START OF CREATE MODAL
 function showCreateModal() {
-    modalTitle.innerHTML = "Create an user";
-    modalBody.innerHTML = `
+    const title = "Create an user";
+    const body = `
         <form id="modalForm" class="g-3 needs-validation" novalidate onsubmit="onCreateSubmit(event)">
             <div class="input-group mb-3 has-validation">
                 <span class="input-group-text">First name</span>
@@ -182,13 +163,13 @@ function showCreateModal() {
             </div>
         </form>
     `;
-    updateModalSubmitButton('Create', false);
-    submitModalButton.onclick = () => {
+
+    Modal.gI().show(title, body, true, "Create", "btn-primary", () => {
         const form = $("#modalForm")[0];
         $(form).trigger("submit");
-    }
-
-    refreshRoleSelect("roleSelect")
+    }, () => {
+        refreshRoleSelect("roleSelect");
+    });
 }
 
 function refreshDataRoleSelect(selectorId, user) {
@@ -309,7 +290,7 @@ function handleErrorCreateRequest(response) {
 
 function handleSuccessCreateRequest(response) {
     refreshDataForTable();
-    closeModal();
+    Modal.gI().close();
     Toast.gI().showSuccess("User has been created!");
 }
 
@@ -340,49 +321,50 @@ function onCreateSubmit(event) {
 
 // START OF DETAIL MODAL
 function showDetailModal(event) {
-    parent = event.target.parentElement;
-    userId = parent.dataset.id;
+    const parent = event.target.parentElement;
+    const userId = parent.dataset.id;
 
-    user = tempUsers.filter(u => +u.id === +userId)?.[0];
+    const user = tempUsers.filter(u => +u.id === +userId)?.[0];
     if (user === null) {
         Toast.gI().showError("Non-expected error. Reload page!");
         return;
     };
 
-    modalTitle.innerHTML = `Detail User ID: ${user.id}`;
-    modalBody.innerHTML = `
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Fistname</span>
-            <input type="text" class="form-control" value="${user.firstName}" disabled>
-            <span class="input-group-text" id="basic-addon1">Lastname</span>
-            <input type="text" class="form-control" value="${user.lastName}" disabled>
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">Username</span>
-            <input type="text" class="form-control" value="${user.username}" disabled>
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text">@</span>
-            <input type="text" class="form-control" value=${user.email} disabled>
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text">Phone</span>
-            <input type="text" class="form-control" value=${user.phoneNumber} disabled>
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text">Roles</span>
-            <input type="text" class="form-control" value="${findRoleNames(user, tempRoles) ?? "NULL"}" disabled>
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text">Status</span>
-            <input type="text" class="form-control" value=${user.isDeleted ? "Inactive" : "Active"} disabled>
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text">Create At</span>
-            <input type="text" class="form-control" value=${user.createdAt.date} disabled>
-        </div>
-    `;
-    updateModalSubmitButton("", false);
+    const title = `Detail User ID: ${user.id}`;
+    const body = `
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Fistname</span>
+                <input type="text" class="form-control" value="${user.firstName}" disabled>
+                <span class="input-group-text" id="basic-addon1">Lastname</span>
+                <input type="text" class="form-control" value="${user.lastName}" disabled>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Username</span>
+                <input type="text" class="form-control" value="${user.username}" disabled>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">@</span>
+                <input type="text" class="form-control" value=${user.email} disabled>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Phone</span>
+                <input type="text" class="form-control" value=${user.phoneNumber} disabled>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Roles</span>
+                <input type="text" class="form-control" value="${findRoleNames(user, tempRoles) ?? "NULL"}" disabled>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Status</span>
+                <input type="text" class="form-control" value=${user.isDeleted ? "Inactive" : "Active"} disabled>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Create At</span>
+                <input type="text" class="form-control" value=${user.createdAt.date} disabled>
+            </div>
+        `;
+
+    Modal.gI().show(title, body, false, "", "btn-primary", null);
 }
 // END OF DETAIL MODAL
 
@@ -393,7 +375,7 @@ function toggleIsDeleted(event) {
     isDeletedState = !isDeletedState;
     input = event.target.previousElementSibling;
     input.value = isDeletedState ? "Inactive" : "Active";
-    input.style.color = isDeletedState ? Color.red : Color.darkGreen;
+    input.style.color = isDeletedState ? Color.Red : Color.DarkGreen;
 
     // console.log(event.target);
     event.target.classList.remove("btn-danger");
@@ -404,7 +386,7 @@ function toggleIsDeleted(event) {
 
 function handleSuccessEditRequest(response) {
     refreshDataForTable();
-    closeModal();
+    Modal.gI().close();
     Toast.gI().showSuccess("User has been editted!");
 }
 
@@ -468,16 +450,17 @@ function onEditSubmit(event) {
 }
 
 function showEditModal(event) {
-    parent = event.target.parentElement;
-    userId = parent.dataset.id;
-    user = tempUsers.filter(u => +u.id === +userId)?.[0];
+    const parent = event.target.parentElement;
+    const userId = parent.dataset.id;
+    const user = tempUsers.filter(u => +u.id === +userId)?.[0];
     if (user === null) {
         Toast.gI().showError("Non-expected error. Reload page!");
         return;
     };
     isDeletedState = user.isDeleted;
-    modalTitle.innerHTML = `Edit User ID: ${user.id}`;
-    modalBody.innerHTML = `
+
+    const title = `Edit User ID: ${user.id}`;
+    const body = `
         <form id="modalForm" class="g-3 needs-validation" novalidate onsubmit="onEditSubmit(event)">
             <input type="hidden" name="id" value="${user.id}">
             <div class="input-group mb-3 has-validation">
@@ -517,10 +500,8 @@ function showEditModal(event) {
                     <div class="chosen-item">Nothing selected!</div>
                     <i class="bi bi-caret-down-fill select-caret"></i>
                     <ul class="option-list">
-                        
                     </ul>
                 </div>
-                
                 <div id="roleInvalidFeedback" class="invalid-feedback"></div>
             </div>
 
@@ -528,7 +509,7 @@ function showEditModal(event) {
                 <span class="input-group-text" name="status">Status</span>
                 <input type="text" class="form-control" 
                     style="font-weight: 700; 
-                            color: ${user.isDeleted ? Color.red : Color.darkGreen};"
+                            color: ${user.isDeleted ? Color.Red : Color.DarkGreen};"
                             value=${user.isDeleted ? "Inactive" : "Active"} 
                     disabled>
                 <button class="btn ${!user.isDeleted ? "btn-danger" : "btn-success"}" onclick="toggleIsDeleted(event)">${!user.isDeleted ? "Inactive" : "Active"}</button>
@@ -539,11 +520,14 @@ function showEditModal(event) {
             </div>
         </form>
     `;
-    updateModalSubmitButton("Edit", false);
-    submitModalButton.onclick = () => {
-        const form = $("#modalForm")[0];
-        $(form).trigger("submit");
-    }
+
+    Modal.gI().show(title, body, true, "Edit", "btn-primary",
+        () => {
+            const form = $("#modalForm")[0];
+            $(form).trigger("submit");
+        });
+
+
 
     refreshRoleSelect("roleSelect", user);
 }
@@ -553,7 +537,7 @@ function showEditModal(event) {
 // START OF DELETE MODAL
 function handleSuccessDeleteRequest(response) {
     refreshDataForTable();
-    closeModal();
+    Modal.gI().close();
     Toast.gI().showSuccess("User has been deleted!");
 }
 
@@ -580,16 +564,17 @@ function onDeleteSubmit(event) {
 }
 
 function showDeleteModal(event) {
-    parent = event.target.parentElement;
-    userId = parent.dataset.id;
-    user = tempUsers.filter(u => +u.id === +userId)?.[0];
+    const parent = event.target.parentElement;
+    const userId = parent.dataset.id;
+    const user = tempUsers.filter(u => +u.id === +userId)?.[0];
     if (user === null) {
         Toast.gI().showError("Non-expected error. Reload page!");
         return;
     };
     isDeletedState = user.isDeleted;
-    modalTitle.innerHTML = `Delete User ID: ${user.id}`;
-    modalBody.innerHTML = `
+
+    const title = `Delete User ID: ${user.id}`;
+    const body = `
         <form id="modalForm" class="g-3 needs-validation" novalidate onsubmit="onDeleteSubmit(event)">
             <input type="hidden" name="id" value="${user.id}">
             <div class="input-group mb-3 has-validation">
@@ -602,11 +587,11 @@ function showDeleteModal(event) {
             </div>
         </form>
     `;
-    updateModalSubmitButton("Delete", true);
-    submitModalButton.onclick = () => {
+
+    Modal.gI().show(title, body, true, "Delete", "btn-danger", () => {
         const form = $("#modalForm")[0];
         $(form).trigger("submit");
-    }
+    });
 }
 // END OF DELETE MODAL
 

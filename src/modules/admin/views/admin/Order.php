@@ -74,6 +74,7 @@ ob_start();
 </div>
 
 
+
 <?php
 $content = ob_get_clean();
 include App::getLayoutDirectory() . "/Admin/AdminLayout.php";
