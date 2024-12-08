@@ -154,13 +154,12 @@ Modal.prototype.show = function (title, body, isShowSubmitBtn, submitBtnText, ty
 
     this.submitBtn.classList.remove("btn-primary");
     this.submitBtn.classList.remove("btn-danger");
+    this.submitBtn.classList.remove("btn-success");
     this.submitBtn.style.display = "";
     this.submitBtn.innerHTML = submitBtnText;
     this.submitBtn.style.display = isShowSubmitBtn ? "" : "none";
     if (typeBtnClass) this.submitBtn.classList.add(typeBtnClass);
-
-    this.submitBtn.onclick = onSubmitBtnClick;
-
+    if (onSubmitBtnClick) this.submitBtn.onclick = onSubmitBtnClick;
     if (onLoadData) onLoadData();
 }
 

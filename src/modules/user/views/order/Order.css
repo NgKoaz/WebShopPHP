@@ -89,6 +89,7 @@
 .product {
     display: flex;
     gap: 8px;
+    margin-bottom: 6px;
 }
 
 .product img {

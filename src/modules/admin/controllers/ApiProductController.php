@@ -191,4 +191,12 @@ class ApiProductController extends Controller
         }
         return $this->json(["code" => 404, "errors" => $model->getFullError()], 400);
     }
+
+    #[HttpGet("/admin/products/watch/:id")]
+    public function watchProduct(string $id)
+    {
+        $product = $this->productManager->findProductById($id);
+        if ($product === null) return $this->notfound();
+        return $this->redirect("/products/$product->slug");
+    }
 }

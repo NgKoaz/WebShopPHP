@@ -87,9 +87,11 @@ aside {
     width: 230px;
 }
 
-/* aside.active {
-} */
-
+.custom-modal {
+    min-width: 768px;
+    width: 80%;
+    max-width: 1240px;
+}
 
 aside.left {
     position: relative;

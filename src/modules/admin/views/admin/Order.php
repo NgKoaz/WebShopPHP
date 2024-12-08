@@ -36,7 +36,6 @@ ob_start();
                             </tr>
                         </thead>
                         <tbody>
-
                         </tbody>
                     </table>
                 </div>
@@ -50,6 +49,11 @@ ob_start();
             </h2>
             <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
+                    <form class="input-group mb-3" onsubmit="OrderTable.gI().findById(event)">
+                        <span class="input-group-text" id="basic-addon1">Find by id</span>
+                        <input type="text" class="form-control" name="billId" placeholder="Id" aria-label="Bill Id" aria-describedby="basic-addon1">
+                        <button class="btn btn-primary" id="basic-addon1">Find</button>
+                    </form>
                     <table id="orderTable" class="table table-bordered mt-3">
                         <thead>
                             <tr>
@@ -67,6 +71,15 @@ ob_start();
 
                         </tbody>
                     </table>
+                    <nav>
+                        <ul class="pagination justify-content-end">
+                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>

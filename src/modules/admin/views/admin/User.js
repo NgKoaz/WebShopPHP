@@ -1,9 +1,4 @@
 const tbody = document.querySelector("table tbody");
-const modal = document.querySelector("#modal");
-const modalTitle = document.querySelector("#modal .modal-title")
-const modalBody = document.querySelector("#modal .modal-body")
-const submitModalButton = document.querySelector("#submitModalButton");
-const closeModalButton = document.querySelector("#closeModalButton");
 
 const pagination = document.querySelector(".pagination")
 

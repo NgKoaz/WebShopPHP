@@ -2,12 +2,9 @@
 
 namespace App\services;
 
-use App\Entities\Category;
 use App\Entities\Product;
 use DateTime;
 use Doctrine\ORM\EntityManager;
-use PDO;
-use PgSql\Lob;
 
 class ProductManager
 {
@@ -275,7 +272,7 @@ class ProductManager
             $filteredImages = [];
             foreach ($productImages as $pImage) {
                 if ($pImage["lg"] == $image) {
-                    foreach ($pImage as $key => $path) if (file_exists(ROOT_DIR . $path)) unlink(ROOT_DIR . $path);
+                    // foreach ($pImage as $key => $path) if (file_exists(ROOT_DIR . $path)) unlink(ROOT_DIR . $path);
                     continue;
                 }
                 $filteredImages[] = $pImage;

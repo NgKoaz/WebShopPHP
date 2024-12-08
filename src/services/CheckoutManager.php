@@ -2,14 +2,16 @@
 
 namespace App\services;
 
+use App\core\Util\ArrayHelper;
 use App\Entities\Bill;
 use App\Entities\Order;
 use DateTime;
 use Doctrine\ORM\EntityManager;
-
+use PDO;
 
 define("ORDER_PREPARING", "PREPARING");
 define("ORDER_SHIPPING", "SHIPPING");
+define("ORDER_SHIPPED", "SHIPPED");
 define("ORDER_RECEIVED", "RECEIVED");
 define("ORDER_CANCELLED", "CANCELLED");
 
@@ -35,10 +37,6 @@ class CheckoutManager
         private SessionManager $sessionManager
     ) {}
 
-    // public function getPaymentRequestFromSession(int $request,) {
-    //     $this->sessionManager->setEntry(PAYMENT_SESSION, );
-    // }
-
     public function createOrderForCurrentUser(): ?Bill
     {
         $orderProducts = [];
@@ -51,7 +49,8 @@ class CheckoutManager
                 "id" => $product->id,
                 "name" => $product->name,
                 "price" => $product->price,
-                "quantity" => $quantity
+                "quantity" => $quantity,
+                "image" => ArrayHelper::firstOrDefault(json_decode($product->images, true), null)
             ];
             $totalPrice += $quantity * $product->price;
         }
@@ -162,9 +161,20 @@ class CheckoutManager
         }
     }
 
-    public function getOrderWithPagination(string $page, string $limit)
+    public function getOrderWithPagination(int $page, int $limit, ?string $id)
     {
-        $count = $this->entityManager->getRepository(Bill::class)->count([]);
+        $queryBuilder = $this->entityManager
+            ->getRepository(Bill::class)
+            ->createQueryBuilder('b')
+            ->select('COUNT(b.id)');
+        if ($id !== null) {
+            $queryBuilder
+                ->andWhere('b.id = :id')
+                ->setParameter('id', $id);
+        }
+        $count = $queryBuilder->getQuery()->getSingleScalarResult();
+
+
 
         $totalPages = ceil($count / $limit);
         $page = ($page < 1) ? 1 : $page;
@@ -174,15 +184,17 @@ class CheckoutManager
         $sql = '
             SELECT b.*, o.status as order_status, o.products
             FROM bills b
-            JOIN orders o ON b.order_id = o.id';
+            JOIN orders o ON b.order_id = o.id ';
 
-        //         LIMIT ' . intval($limit) . '
-        // OFFSET ' . intval($offset) . '
+        if ($id !== null) $sql .= " WHERE b.id = '$id' ";
+
+        $sql .= 'LIMIT ' . intval($limit) . '
+            OFFSET ' . intval($offset);
 
         $query = $this->entityManager->getConnection()->prepare($sql);
         $stmt = $query->executeQuery();
         $orders = $stmt->fetchAllAssociative();
-
+        // var_dump($orders);
         return [
             "orders" => $orders,
             "totalPages" => $totalPages,
@@ -199,10 +211,18 @@ class CheckoutManager
             WHERE o.status = '" . ORDER_PREPARING . "'
         ";
 
-        $productQuery = $this->entityManager->getConnection()->prepare($sql);
-        $stmt = $productQuery->executeQuery();
-        $products = $stmt->fetchAllAssociative();
+        $orderQuery = $this->entityManager->getConnection()->prepare($sql);
+        $stmt = $orderQuery->executeQuery();
+        $orders = $stmt->fetchAllAssociative();
 
-        return $products;
+        return $orders;
+    }
+
+    public function onDonePrepare(string $billId): void
+    {
+        $bill = $this->findById($billId);
+        if ($bill->order->status !== ORDER_PREPARING) return;
+        $bill->order->status = ORDER_SHIPPED;
+        $this->entityManager->flush();
     }
 }
