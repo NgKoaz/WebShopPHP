@@ -190,7 +190,7 @@ TabManager.prototype.loadOrderWithOrderList = function (orders, status, actionHT
                         <div class="product-list">
                             ${subContent}
                         </div>
-                        ${products.length > 1 ? `<button class="card-more-btn">More <i class="bi bi-arrow-bar-down"></i></button>` : ``} 
+                        ${products.length > 1 && false ? `<button class="card-more-btn">More <i class="bi bi-arrow-bar-down"></i></button>` : ``} 
                     </div>
                     <div class="total-price">Total price (${totalProduct} product${totalProduct > 1 ? "s" : ""}): $${Math.round(totalPrice * 100) / 100}</div>
                     <div class="actions" data-bill-id="${order.id}">

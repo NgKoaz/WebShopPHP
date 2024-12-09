@@ -41,6 +41,10 @@ ob_start();
             <div class="left product-images">
                 <div class="large-image">
                     <img src="<?= $imgs[0]["lg"] ?>">
+                    <?php
+                    if ($product->quantity == 0)
+                        echo '<div class="out-of-order"></div>';
+                    ?>
                 </div>
                 <div class="small-images">
                     <?php
@@ -71,6 +75,7 @@ ob_start();
                         ?>
                     </div>
                     <div class="price">$<?= $product->price ?></div>
+                    <p class="quantity">Remaining: <?= $product->quantity ?> item(s)</p>
                     <p class="description"><?= $product->description ?></p>
                 </div>
 
@@ -88,7 +93,6 @@ ob_start();
             </div>
         </div>
 
-        <hr>
 
         <div class="tabs">
             <div class="top">

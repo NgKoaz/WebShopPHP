@@ -2,9 +2,11 @@
 
 namespace App\modules\user\controllers;
 
+use App\core\ArrayList;
 use App\core\Attributes\Http\HttpGet;
 use App\core\Attributes\Http\HttpPost;
 use App\core\Controller;
+use App\core\Util\ArrayHelper;
 use App\modules\user\models\AddCartModel;
 use App\modules\user\models\DeleteCartModel;
 use App\modules\user\models\EditCartModel;
@@ -32,12 +34,18 @@ class UserApiCartController extends Controller
                 $isError = true;
             }
 
+            $product = $this->productManager->findProductById($model->productId);
+            if ($model->quantity > $product->quantity) {
+                $model->setError("quantity", "There are(is)  $product->quantity item(s) left!");
+                $isError = true;
+            }
+
             if (!$isError) {
                 $this->cartManager->addItem($model->productId, $model->quantity);
                 return $this->json($this->cartManager->getItems());
             }
         }
-        return $this->json(["code" => 404, "errors" => $model->getFullError()], 400);
+        return $this->json(["code" => 400, "message" => $model->getSerializedErrorMessage()], 400);
     }
 
     #[HttpPost("/api/cart/edit")]
@@ -76,5 +84,16 @@ class UserApiCartController extends Controller
             }
         }
         return $this->json(["code" => 404, "errors" => $model->getFullError()], 400);
+    }
+
+    #[HttpPost("/api/cart/checkout")]
+    public function checkoutCart()
+    {
+        $cartItems = $this->cartManager->getItems2();
+        $isOutOfStock = ArrayHelper::some($cartItems, fn($item) => $item["product"]["quantity"] < $item["quantity"]);
+
+        return $isOutOfStock ?
+            $this->json(["code" => 400, "message" => "Some item is out of stock! Check again!"]) :
+            $this->json(["code" => 200, "redirect" => "/checkout"]);
     }
 }

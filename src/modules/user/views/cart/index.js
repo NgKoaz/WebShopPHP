@@ -4,17 +4,50 @@ state.isLoadedTemplate = false;
 
 document.addEventListener("DOMContentLoaded", () => {
     refreshCart();
+
+    Cart.gI();
 });
 
 {/* <div class="sm-entry">
-                    <div>Discount (-20%)</div>
-                    <div id="discount">-$113</div>
-                </div> 
-                <div id="deliveryFeeField" class="sm-entry">
-                    <div>Delivery Fee</div>
-                    <div id="deliveryFee">$15</div>
-                </div>
-                */}
+    <div>Discount (-20%)</div>
+    <div id="discount">-$113</div>
+</div> 
+<div id="deliveryFeeField" class="sm-entry">
+    <div>Delivery Fee</div>
+    <div id="deliveryFee">$15</div>
+</div>
+*/}
+
+
+function Cart() {
+    Cart.instance = null;
+    return this;
+}
+
+Cart.gI = function () {
+    if (!Cart.instance) Cart.instance = new Cart();
+    return Cart.instance;
+}
+
+Cart.prototype.checkout = function (event) {
+    $.ajax({
+        url: `/api/cart/checkout`,
+        method: "POST",
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log(response);
+            window.location.href = response.redirect;
+        },
+        error: function (xhr, status, error) {
+            console.error("Request failed:", xhr.responseText);
+            // openToast()
+        }
+    });
+}
+
+
+
 
 function loadTemplate() {
     mainContent.innerHTML = `
@@ -22,22 +55,18 @@ function loadTemplate() {
         <div class="items"></div>
     </div>
     <div>
-        <form class="order-summary" action="/checkout" method="GET">
+        <div class="order-summary">
             <h4 class="title">Order Summary</h4>
-
             <div class="bill-details">
                 <div id="subtotalField" class="sm-entry">
                     <div>Subtotal</div>
                     <div id="subtotal">$123</div>
                 </div>           
-                
             </div>
-
             <div id="totalField" class="lg-entry">
                 <div>Total</div>
                 <div id="total">$467</div>
             </div>
-
             <div class="promotion-code">
                 <div class="input-container">
                     <i class="bi bi-tag"></i>
@@ -45,12 +74,12 @@ function loadTemplate() {
                 </div>
                 <button id="promoCodeBtn">Apply</button>
             </div>
-
-            <button id="checkoutBtn" class="checkout-btn">
+            <button id="checkoutBtn" class="checkout-btn" onclick="Cart.gI().checkout(event)">
                 Go to Checkout <i class="bi bi-chevron-double-right"></i>
             </button>
-        </form>
-    </div>`
+        </div>
+    </div>`;
+
 }
 
 function clearTemplate() {
@@ -97,6 +126,7 @@ function loadItems(response) {
 
                         <div class="bottom">
                             <div class="price">$${product.price}</div>
+                            <div class="remaining-quantity">Remaining: ${product.quantity}</div>
 
                             <div class="quantity-modifier">
                                 ${quantity}

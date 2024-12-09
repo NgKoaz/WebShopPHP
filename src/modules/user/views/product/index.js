@@ -68,6 +68,8 @@ function addProductIntoCart(event) {
         },
         error: function (xhr, status, error) {
             console.log(xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
+            openToast(response.message, true);
         }
     });
 }

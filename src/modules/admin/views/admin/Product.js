@@ -1,9 +1,4 @@
 const tbody = document.querySelector("#productTable tbody");
-const modal = document.querySelector("#modal");
-const modalTitle = document.querySelector("#modal .modal-title")
-const modalBody = document.querySelector("#modal .modal-body")
-const submitModalButton = document.querySelector("#submitModalButton");
-const closeModalButton = document.querySelector("#closeModalButton");
 
 const pagination = document.querySelector(".pagination");
 
@@ -68,34 +63,6 @@ function initTinyMCE(selector) {
 }
 //#endregion
 
-//#region Utility
-function formatCurrency(price) {
-    return Math.round(price).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-}
-
-function generateSlug(slug) {
-    const normalizeVietnamese = (str) => {
-        const accents = {
-            'à': 'a', 'á': 'a', 'ả': 'a', 'ạ': 'a', 'ã': 'a', 'â': 'a', 'ầ': 'a', 'ấ': 'a', 'ẩ': 'a', 'ậ': 'a', 'ă': 'a', 'ắ': 'a', 'ằ': 'a', 'ẳ': 'a', 'ẵ': 'a', 'ặ': 'a',
-            'è': 'e', 'é': 'e', 'ẻ': 'e', 'ẹ': 'e', 'ẽ': 'e', 'ê': 'e', 'ề': 'e', 'ế': 'e', 'ể': 'e', 'ệ': 'e',
-            'ì': 'i', 'í': 'i', 'ỉ': 'i', 'ị': 'i', 'ĩ': 'i',
-            'ò': 'o', 'ó': 'o', 'ỏ': 'o', 'ọ': 'o', 'õ': 'o', 'ô': 'o', 'ồ': 'o', 'ố': 'o', 'ổ': 'o', 'ộ': 'o', 'ơ': 'o', 'ỡ': 'o', 'ở': 'o', 'ờ': 'o', 'ớ': 'o',
-            'ù': 'u', 'ú': 'u', 'ủ': 'u', 'ụ': 'u', 'ũ': 'u', 'ư': 'u', 'ừ': 'u', 'ứ': 'u', 'ử': 'u', 'ự': 'u', 'ữ': 'u',
-            'ỳ': 'y', 'ý': 'y', 'ỷ': 'y', 'ỵ': 'y', 'ỹ': 'y',
-            'đ': 'd', 'Đ': 'd',
-            'ç': 'c', 'Ç': 'c'
-        };
-        return str.split('').map(char => accents[char] || char).join('');
-    };
-    return normalizeVietnamese(slug)
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-|-$/g, '');
-}
-//#endregion
 
 
 
@@ -110,7 +77,7 @@ function updateTable(data) {
             <th scope="row">${product.id}</th>
             <td>${product.name}</td>
             <td>${product.quantity}</td>
-            <td>${formatCurrency(product.price)}</td>
+            <td>${Utility.formatCurrency(product.price)}</td>
             <td>${product.rate}</td>
             <td>${product.category_name ?? "NULL"}</td>
             <td>${product.slug}</td>
@@ -174,7 +141,7 @@ refreshDataForTable();
 function onChangeName(event, slugSelector) {
     if (!state.autoGenerate) return;
     slugObject = document.querySelector(slugSelector);
-    if (slugObject) slugObject.value = generateSlug(event.target.value)
+    if (slugObject) slugObject.value = Utility.generateSlug(event.target.value)
 }
 
 function showCreateModal() {
@@ -211,7 +178,7 @@ function showCreateModal() {
 
             <div class="mb-3 has-validation input-group">
                 <span class="input-group-text">Slug</span>
-                <input type="text" class="form-control" id="slugInput" name="slug" placeholder="/t-shirt-fashion" value="" required>
+                <input type="text" class="form-control" id="slugInput" name="slug" placeholder="t-shirt-fashion" value="" required>
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                     <input type="checkbox" class="btn-check" id="btncheck1" checked onchange="(() => state.autoGenerate = !state.autoGenerate)()">
                     <label class="btn btn-outline-primary" for="btncheck1">Auto generate</label>
@@ -740,7 +707,7 @@ function handleFindingSuccess(product) {
             <th>${product.id}</th>
             <td>${product.name}</td>
             <td>${product.quantity}</td>
-            <td>${formatCurrency(product.price)}</td>
+            <td>${Utility.formatCurrency(product.price)}</td>
             <td>${product.rate}</td>
             <td>${product.slug}</td>
         </tr>

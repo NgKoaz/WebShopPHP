@@ -12,6 +12,241 @@ let totalPagesState = 1;
 
 
 
+function UserTable() {
+
+}
+
+
+
+function ModalManager() {
+    ModalManager.CREATE = 0;
+    ModalManager.DETAIL = 1;
+    ModalManager.EDIT = 2;
+    ModalManager.DELETE = 3;
+    ModalManager.instance = null;
+    return this;
+}
+
+ModalManager.gI = function () {
+    if (!ModalManager.instance) ModalManager.instance = new ModalManager();
+    return ModalManager.instance;
+}
+
+ModalManager.prototype.show = function (event, typeModal) {
+    let title = "";
+    let body = "";
+    const userId = (typeModal != ModalManager.CREATE) ? event.target.closest("[data-id]").dataset.id : "";
+    const user = (typeModal != ModalManager.CREATE) ? tempUsers.filter(u => +u.id === +userId)?.[0] : null;
+    switch (typeModal) {
+        case ModalManager.CREATE:
+            title = "Create an user";
+            body = `
+                <form id="modalForm" class="g-3 needs-validation" novalidate onsubmit="onCreateSubmit(event)">
+                    <div class="input-group mb-3 has-validation">
+                        <span class="input-group-text">First name</span>
+                        <input id="firstnameInput" type="text" placeholder="First name" class="form-control" 
+                            name="firstname" value="">
+                        <span class="input-group-text">Last name</span>
+                        <input
+                            id="lastnameInput" type="text" placeholder="Last name" class="form-control"
+                            name="lastname"
+                            value="">
+                        <div class="invalid-feedback d-flex">
+                            <div id="firstnameInvalidFeedback" class="col-md-6">
+                            </div>
+                            <div id="lastnameInvalidFeedback" class="col-md-6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 has-validation input-group">
+                        <span class="input-group-text">Username</span>
+                        <input type="text" class="form-control" id="usernameInput" name="username" value="" placeholder="Username" autocomplete="username" required>
+                        <div id="usernameInvalidFeedback" class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-3 has-validation input-group">
+                        <span class="input-group-text">@</span>
+                        <input type="email" class="form-control" id="emailInput" name="email" value="" placeholder="Email" required>
+                        <div id="emailInvalidFeedback" class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-3 has-validation input-group">
+                        <span class="input-group-text">Roles</span>
+                        <div id="roleSelect" class="select-menu form-control">
+                            <div class="chosen-item">Nothing selected!</div>
+                            <i class="bi bi-caret-down-fill select-caret"></i>
+                            <ul class="option-list">
+                            </ul>
+                        </div>
+                        <div id="roleInvalidFeedback" class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-3 has-validation input-group">
+                        <span class="input-group-text">Phone</span>
+                        <input type="text" class="form-control" id="phoneInput" name="phone" placeholder="0987654321" value="" required>
+                        <div id="phoneInvalidFeedback" class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-3 has-validation input-group">
+                        <span class="input-group-text">Password</span>
+                        <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Password" value="" autocomplete="current-password" required>
+                        <div id="passwordInvalidFeedback" class="invalid-feedback"></div>
+                    </div>
+                </form>
+            `;
+
+            Modal.gI().show(title, body, true, "Create", "btn-primary", () => {
+                const form = $("#modalForm")[0];
+                $(form).trigger("submit");
+            }, () => {
+                refreshRoleSelect("roleSelect");
+            });
+            break;
+        case ModalManager.DETAIL:
+            if (user === null) {
+                Toast.gI().showError("Non-expected error. Reload page!");
+                return;
+            };
+            title = `Detail User ID: ${user.id}`;
+            body = `
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Fistname</span>
+                        <input type="text" class="form-control" value="${user.firstName}" disabled>
+                        <span class="input-group-text" id="basic-addon1">Lastname</span>
+                        <input type="text" class="form-control" value="${user.lastName}" disabled>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Username</span>
+                        <input type="text" class="form-control" value="${user.username}" disabled>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">@</span>
+                        <input type="text" class="form-control" value=${user.email} disabled>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Phone</span>
+                        <input type="text" class="form-control" value=${user.phoneNumber} disabled>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Roles</span>
+                        <input type="text" class="form-control" value="${findRoleNames(user, tempRoles) ?? "NULL"}" disabled>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Status</span>
+                        <input type="text" class="form-control" value=${user.isDeleted ? "Inactive" : "Active"} disabled>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Create At</span>
+                        <input type="text" class="form-control" value=${user.createdAt.date} disabled>
+                    </div>
+                `;
+
+            Modal.gI().show(title, body, false, "", "btn-primary", null);
+
+            break;
+        case ModalManager.EDIT:
+            if (user === null) {
+                Toast.gI().showError("Non-expected error. Reload page!");
+                return;
+            };
+            isDeletedState = user.isDeleted;
+
+            title = `Edit User ID: ${user.id}`;
+            body = `
+                <form id="modalForm" class="g-3 needs-validation" novalidate onsubmit="onEditSubmit(event)">
+                    <input type="hidden" name="id" value="${user.id}">
+                    <div class="input-group mb-3 has-validation">
+                        <span class="input-group-text">Fistname</span>
+                        <input id="firstnameInput" type="text" class="form-control" value="${user.firstName}" placeholder="Firstname" name="firstname">
+                        <span class="input-group-text" id="basic-addon1">Lastname</span>
+                        <input id="lastnameInput" type="text" class="form-control" value="${user.lastName}" placeholder="Lastname" name="lastname">
+                        <div class="invalid-feedback d-flex">
+                            <div id="firstnameInvalidFeedback" class="col-md-6">
+                            </div>
+                            <div id="lastnameInvalidFeedback" class="col-md-6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3 has-validation">
+                        <span class="input-group-text" id="basic-addon1">Username</span>
+                        <input type="text" class="form-control" value="${user.username}" disabled>
+                    </div>
+                    <div class="input-group mb-3 has-validation">
+                        <span class="input-group-text">@</span>
+                        <input type="text" class="form-control" value=${user.email} disabled>
+                    </div>
+                    <div class="input-group mb-3 has-validation">
+                        <span class="input-group-text">New password</span>
+                        <input type="password" id="passwordInput" class="form-control" value="" placeholder="New password" name="password">
+                        <div id="passwordInvalidFeedback" class="invalid-feedback"></div>
+                    </div>
+                    <div class="input-group mb-3 has-validation">
+                        <span class="input-group-text" name="phone">Phone</span>
+                        <input type="text" id="phoneInput" class="form-control" value=${user.phoneNumber} placeholder="Phone" name="phone">
+                        <div id="phoneInvalidFeedback" class="invalid-feedback"></div>
+                    </div>
+                    <div class="mb-3 has-validation input-group">
+                        <span class="input-group-text">Roles</span>
+                        <div id="roleSelect" class="select-menu form-control">
+                            <div class="chosen-item">Nothing selected!</div>
+                            <i class="bi bi-caret-down-fill select-caret"></i>
+                            <ul class="option-list">
+                            </ul>
+                        </div>
+                        <div id="roleInvalidFeedback" class="invalid-feedback"></div>
+                    </div>
+                    <div class="input-group mb-3 has-validation">
+                        <span class="input-group-text" name="status">Status</span>
+                        <input type="text" class="form-control" 
+                            style="font-weight: 700; 
+                                    color: ${user.isDeleted ? Color.Red : Color.DarkGreen};"
+                                    value=${user.isDeleted ? "Inactive" : "Active"} 
+                            disabled>
+                        <button class="btn ${!user.isDeleted ? "btn-danger" : "btn-success"}" onclick="toggleIsDeleted(event)">${!user.isDeleted ? "Inactive" : "Active"}</button>
+                    </div>
+                    <div class="input-group mb-3 has-validation">
+                        <span class="input-group-text">Create At</span>
+                        <input type="text" class="form-control" value=${user.createdAt.date} disabled>
+                    </div>
+                </form>
+            `;
+
+            Modal.gI().show(title, body, true, "Edit", "btn-primary", () => {
+                const form = $("#modalForm")[0];
+                $(form).trigger("submit");
+            });
+            refreshRoleSelect("roleSelect", user);
+
+            break;
+        case ModalManager.DELETE:
+            if (user === null) {
+                Toast.gI().showError("Non-expected error. Reload page!");
+                return;
+            };
+
+            isDeletedState = user.isDeleted;
+
+            title = `Delete User ID: ${user.id}`;
+            body = `
+                <form id="modalForm" class="g-3 needs-validation" novalidate onsubmit="onDeleteSubmit(event)">
+                    <input type="hidden" name="id" value="${user.id}">
+                    <div class="input-group mb-3 has-validation">
+                        <span class="input-group-text" id="basic-addon1">Username</span>
+                        <input type="text" class="form-control" value="${user.username}" disabled>
+                    </div>
+                    <div class="input-group mb-3 has-validation">
+                        <span class="input-group-text">@</span>
+                        <input type="text" class="form-control" value=${user.email} disabled>
+                    </div>
+                </form>
+            `;
+
+            Modal.gI().show(title, body, true, "Delete", "btn-danger", () => {
+                const form = $("#modalForm")[0];
+                $(form).trigger("submit");
+            });
+
+            break;
+        default:
+    }
+}
+
 // START TABLE
 function findRoleNames(user, roles) {
     console.log(user, roles);
@@ -41,13 +276,13 @@ function updateTable(data) {
             <td>${user.phoneNumber}</td>
             <th style="color: ${user.isDeleted ? Color.Red : Color.DarkGreen}">${user.isDeleted ? "Deactive" : "Active"}</th>
             <td class="buttons" data-id="${user.id}">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal" onclick="showDetailModal(event)">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal" onclick="ModalManager.gI().show(event, ModalManager.DETAIL)">
                     Detail
                 </button>
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal" onclick="showEditModal(event)">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal" onclick="ModalManager.gI().show(event, ModalManager.EDIT)">
                     Edit
                 </button>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal" onclick="showDeleteModal(event)">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal" onclick="ModalManager.gI().show(event, ModalManager.DELETE)">
                     Delete
                 </button>
             </td>
@@ -98,75 +333,6 @@ refreshDataForTable();
 
 
 // START OF CREATE MODAL
-function showCreateModal() {
-    const title = "Create an user";
-    const body = `
-        <form id="modalForm" class="g-3 needs-validation" novalidate onsubmit="onCreateSubmit(event)">
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text">First name</span>
-                <input id="firstnameInput" type="text" placeholder="First name" class="form-control" 
-                    name="firstname" value="">
-                <span class="input-group-text">Last name</span>
-                <input
-                    id="lastnameInput" type="text" placeholder="Last name" class="form-control"
-                    name="lastname"
-                    value="">
-                <div class="invalid-feedback d-flex">
-                    <div id="firstnameInvalidFeedback" class="col-md-6">
-                    </div>
-                    <div id="lastnameInvalidFeedback" class="col-md-6">
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-3 has-validation input-group">
-                <span class="input-group-text">Username</span>
-                <input type="text" class="form-control" id="usernameInput" name="username" value="" placeholder="Username" autocomplete="username" required>
-                <div id="usernameInvalidFeedback" class="invalid-feedback"></div>
-            </div>
-
-            <div class="mb-3 has-validation input-group">
-                <span class="input-group-text">@</span>
-                <input type="email" class="form-control" id="emailInput" name="email" value="" placeholder="Email" required>
-                <div id="emailInvalidFeedback" class="invalid-feedback"></div>
-            </div>
-
-            <div class="mb-3 has-validation input-group">
-                <span class="input-group-text">Roles</span>
-                <div id="roleSelect" class="select-menu form-control">
-                    <div class="chosen-item">Nothing selected!</div>
-                    <i class="bi bi-caret-down-fill select-caret"></i>
-                    <ul class="option-list">
-                        
-                    </ul>
-                </div>
-                
-                <div id="roleInvalidFeedback" class="invalid-feedback"></div>
-            </div>
-
-
-            <div class="mb-3 has-validation input-group">
-                <span class="input-group-text">Phone</span>
-                <input type="text" class="form-control" id="phoneInput" name="phone" placeholder="0987654321" value="" required>
-                <div id="phoneInvalidFeedback" class="invalid-feedback"></div>
-            </div>
-
-            <div class="mb-3 has-validation input-group">
-                <span class="input-group-text">Password</span>
-                <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Password" value="" autocomplete="current-password" required>
-                <div id="passwordInvalidFeedback" class="invalid-feedback"></div>
-            </div>
-        </form>
-    `;
-
-    Modal.gI().show(title, body, true, "Create", "btn-primary", () => {
-        const form = $("#modalForm")[0];
-        $(form).trigger("submit");
-    }, () => {
-        refreshRoleSelect("roleSelect");
-    });
-}
-
 function refreshDataRoleSelect(selectorId, user) {
     const optionList = document.querySelector(`#${selectorId} .option-list`);
     optionList.innerHTML = ``;
@@ -316,50 +482,7 @@ function onCreateSubmit(event) {
 
 // START OF DETAIL MODAL
 function showDetailModal(event) {
-    const parent = event.target.parentElement;
-    const userId = parent.dataset.id;
 
-    const user = tempUsers.filter(u => +u.id === +userId)?.[0];
-    if (user === null) {
-        Toast.gI().showError("Non-expected error. Reload page!");
-        return;
-    };
-
-    const title = `Detail User ID: ${user.id}`;
-    const body = `
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Fistname</span>
-                <input type="text" class="form-control" value="${user.firstName}" disabled>
-                <span class="input-group-text" id="basic-addon1">Lastname</span>
-                <input type="text" class="form-control" value="${user.lastName}" disabled>
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Username</span>
-                <input type="text" class="form-control" value="${user.username}" disabled>
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text">@</span>
-                <input type="text" class="form-control" value=${user.email} disabled>
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text">Phone</span>
-                <input type="text" class="form-control" value=${user.phoneNumber} disabled>
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text">Roles</span>
-                <input type="text" class="form-control" value="${findRoleNames(user, tempRoles) ?? "NULL"}" disabled>
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text">Status</span>
-                <input type="text" class="form-control" value=${user.isDeleted ? "Inactive" : "Active"} disabled>
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text">Create At</span>
-                <input type="text" class="form-control" value=${user.createdAt.date} disabled>
-            </div>
-        `;
-
-    Modal.gI().show(title, body, false, "", "btn-primary", null);
 }
 // END OF DETAIL MODAL
 
@@ -443,89 +566,6 @@ function onEditSubmit(event) {
         }
     });
 }
-
-function showEditModal(event) {
-    const parent = event.target.parentElement;
-    const userId = parent.dataset.id;
-    const user = tempUsers.filter(u => +u.id === +userId)?.[0];
-    if (user === null) {
-        Toast.gI().showError("Non-expected error. Reload page!");
-        return;
-    };
-    isDeletedState = user.isDeleted;
-
-    const title = `Edit User ID: ${user.id}`;
-    const body = `
-        <form id="modalForm" class="g-3 needs-validation" novalidate onsubmit="onEditSubmit(event)">
-            <input type="hidden" name="id" value="${user.id}">
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text">Fistname</span>
-                <input id="firstnameInput" type="text" class="form-control" value="${user.firstName}" placeholder="Firstname" name="firstname">
-                <span class="input-group-text" id="basic-addon1">Lastname</span>
-                <input id="lastnameInput" type="text" class="form-control" value="${user.lastName}" placeholder="Lastname" name="lastname">
-                <div class="invalid-feedback d-flex">
-                    <div id="firstnameInvalidFeedback" class="col-md-6">
-                    </div>
-                    <div id="lastnameInvalidFeedback" class="col-md-6">
-                    </div>
-                </div>
-            </div>
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text" id="basic-addon1">Username</span>
-                <input type="text" class="form-control" value="${user.username}" disabled>
-            </div>
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text">@</span>
-                <input type="text" class="form-control" value=${user.email} disabled>
-            </div>
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text">New password</span>
-                <input type="password" id="passwordInput" class="form-control" value="" placeholder="New password" name="password">
-                <div id="passwordInvalidFeedback" class="invalid-feedback"></div>
-            </div>
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text" name="phone">Phone</span>
-                <input type="text" id="phoneInput" class="form-control" value=${user.phoneNumber} placeholder="Phone" name="phone">
-                <div id="phoneInvalidFeedback" class="invalid-feedback"></div>
-            </div>
-
-            <div class="mb-3 has-validation input-group">
-                <span class="input-group-text">Roles</span>
-                <div id="roleSelect" class="select-menu form-control">
-                    <div class="chosen-item">Nothing selected!</div>
-                    <i class="bi bi-caret-down-fill select-caret"></i>
-                    <ul class="option-list">
-                    </ul>
-                </div>
-                <div id="roleInvalidFeedback" class="invalid-feedback"></div>
-            </div>
-
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text" name="status">Status</span>
-                <input type="text" class="form-control" 
-                    style="font-weight: 700; 
-                            color: ${user.isDeleted ? Color.Red : Color.DarkGreen};"
-                            value=${user.isDeleted ? "Inactive" : "Active"} 
-                    disabled>
-                <button class="btn ${!user.isDeleted ? "btn-danger" : "btn-success"}" onclick="toggleIsDeleted(event)">${!user.isDeleted ? "Inactive" : "Active"}</button>
-            </div>
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text">Create At</span>
-                <input type="text" class="form-control" value=${user.createdAt.date} disabled>
-            </div>
-        </form>
-    `;
-
-    Modal.gI().show(title, body, true, "Edit", "btn-primary",
-        () => {
-            const form = $("#modalForm")[0];
-            $(form).trigger("submit");
-        });
-
-
-
-    refreshRoleSelect("roleSelect", user);
-}
 // END OF EDIT MODAL
 
 
@@ -555,37 +595,6 @@ function onDeleteSubmit(event) {
         error: function (xhr, status, error) {
             handleErrorDeleteRequest(JSON.parse(xhr.responseText));
         }
-    });
-}
-
-function showDeleteModal(event) {
-    const parent = event.target.parentElement;
-    const userId = parent.dataset.id;
-    const user = tempUsers.filter(u => +u.id === +userId)?.[0];
-    if (user === null) {
-        Toast.gI().showError("Non-expected error. Reload page!");
-        return;
-    };
-    isDeletedState = user.isDeleted;
-
-    const title = `Delete User ID: ${user.id}`;
-    const body = `
-        <form id="modalForm" class="g-3 needs-validation" novalidate onsubmit="onDeleteSubmit(event)">
-            <input type="hidden" name="id" value="${user.id}">
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text" id="basic-addon1">Username</span>
-                <input type="text" class="form-control" value="${user.username}" disabled>
-            </div>
-            <div class="input-group mb-3 has-validation">
-                <span class="input-group-text">@</span>
-                <input type="text" class="form-control" value=${user.email} disabled>
-            </div>
-        </form>
-    `;
-
-    Modal.gI().show(title, body, true, "Delete", "btn-danger", () => {
-        const form = $("#modalForm")[0];
-        $(form).trigger("submit");
     });
 }
 // END OF DELETE MODAL

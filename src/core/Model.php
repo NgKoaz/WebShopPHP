@@ -64,6 +64,16 @@ class Model implements ArrayAccess
         return $this->errors;
     }
 
+    public function getSerializedErrorMessage(): string
+    {
+        $str = "";
+        foreach ($this->errors as $error) {
+            $str .= join(". ", $error);
+        }
+
+        return $str;
+    }
+
     public function getError(string $property): mixed
     {
         return isset($this->errors[$property]) ? $this->errors[$property] : null;

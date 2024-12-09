@@ -69,7 +69,6 @@
     flex-direction: column;
     flex-grow: 1;
     justify-content: space-between;
-    gap: 5px;
 }
 
 .item .right .top .info {
@@ -106,6 +105,13 @@
     align-self: flex-start;
     font-size: var(--lg-font-size);
     font-weight: 700;
+}
+
+.item .right .bottom .remaining-quantity {
+    margin-top: 3px;
+    align-self: flex-start;
+    font-size: var(--sm-font-size);
+    color: rgb(0, 0, 0, 0.7);
 }
 
 .item .right .bottom .quantity-modifier {

@@ -7,31 +7,6 @@ state.categories = [];
 
 
 
-//#region Utility
-function generateSlug(slug) {
-    const normalizeVietnamese = (str) => {
-        const accents = {
-            'à': 'a', 'á': 'a', 'ả': 'a', 'ạ': 'a', 'ã': 'a', 'â': 'a', 'ầ': 'a', 'ấ': 'a', 'ẩ': 'a', 'ậ': 'a', 'ă': 'a', 'ắ': 'a', 'ằ': 'a', 'ẳ': 'a', 'ẵ': 'a', 'ặ': 'a',
-            'è': 'e', 'é': 'e', 'ẻ': 'e', 'ẹ': 'e', 'ẽ': 'e', 'ê': 'e', 'ề': 'e', 'ế': 'e', 'ể': 'e', 'ệ': 'e',
-            'ì': 'i', 'í': 'i', 'ỉ': 'i', 'ị': 'i', 'ĩ': 'i',
-            'ò': 'o', 'ó': 'o', 'ỏ': 'o', 'ọ': 'o', 'õ': 'o', 'ô': 'o', 'ồ': 'o', 'ố': 'o', 'ổ': 'o', 'ộ': 'o', 'ơ': 'o', 'ỡ': 'o', 'ở': 'o', 'ờ': 'o', 'ớ': 'o',
-            'ù': 'u', 'ú': 'u', 'ủ': 'u', 'ụ': 'u', 'ũ': 'u', 'ư': 'u', 'ừ': 'u', 'ứ': 'u', 'ử': 'u', 'ự': 'u', 'ữ': 'u',
-            'ỳ': 'y', 'ý': 'y', 'ỷ': 'y', 'ỵ': 'y', 'ỹ': 'y',
-            'đ': 'd', 'Đ': 'd',
-            'ç': 'c', 'Ç': 'c'
-        };
-        return str.split('').map(char => accents[char] || char).join('');
-    };
-    return normalizeVietnamese(slug.toLowerCase())
-        .trim()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-|-$/g, '');
-}
-//#endregion
-
-
 
 function isAllSave() {
     const saveBtns = document.querySelectorAll("[data-save-btn]");
@@ -77,7 +52,7 @@ function autoGenerateSlug(event, cElementId) {
 
     if (!state.autoGenerate) return;
     const cObj = document.querySelector(`#${cElementId} input[name='slug']`);
-    if (cObj) cObj.value = generateSlug(event.target.value);
+    if (cObj) cObj.value = Utility.generateSlug(event.target.value);
 }
 
 function onSlugChange(event) {

@@ -71,7 +71,7 @@ MainPage.prototype.updateOrderOverview = function () {
             const orders = response.data.orders;
             this.waitingOrderCard.innerHTML = orders.reduce((total, order) => total + (order.order_status === "PREPARING" ? 1 : 0), 0);
             this.completedOrderCard.innerHTML = orders.reduce((total, order) => total + (order.order_status === "SHIPPED" || order.order_status === "RECEIVED" ? 1 : 0), 0);
-            this.earningCard.innerHTML = "$" + Math.round(orders.reduce((total, order) => total + +order.total_price, 0) * 100) / 100;
+            this.earningCard.innerHTML = Utility.formatCurrency(orders.reduce((total, order) => total + +order.total_price, 0));
             newOrderList.setData(orders.filter(order => order.order_status === "PREPARING"))
             const sortedOrders = orders.sort((a, b) => new Date(a.created_at) <= new Date(b.created_at) ? -1 : 1);
             orderChart.setData(sortedOrders);
@@ -83,7 +83,6 @@ MainPage.prototype.updateOrderOverview = function () {
         }
     });
 }
-
 
 
 
@@ -207,8 +206,6 @@ Chart.prototype.render = function () {
 
 
 
-
-
 function ViewList(id, selector) {
     this.id = id;
     this.selector = selector;
@@ -232,7 +229,7 @@ ViewList.prototype.updateView = function () {
                     `<div class="notify-card">
                         <div class="notify-card-icon"><i class="bi bi-file-text icon-32"></i></div>
                         <div class="notify-card-info">
-                            <div class="notify-card-bold-text">Total: $${Math.round(data.total_price * 100) / 100}</div>
+                            <div class="notify-card-bold-text">Total: ${Utility.formatCurrency(data.total_price)}</div>
                             <div class="notify-card-text">Created at: ${data.created_at}</div>
                         </div>
                     </div>`

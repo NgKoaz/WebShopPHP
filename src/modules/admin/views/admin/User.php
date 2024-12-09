@@ -14,7 +14,7 @@ ob_start();
 
 <div class="user-manager">
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal" onclick="showCreateModal()">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal" onclick="ModalManager.gI().show(event, ModalManager.CREATE)">
         Create user
     </button>
 

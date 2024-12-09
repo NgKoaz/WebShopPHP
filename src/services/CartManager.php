@@ -3,13 +3,19 @@
 namespace App\services;
 
 use App\core\App;
-
+use App\core\Util\ArrayHelper;
+use Doctrine\DBAL\ParameterType;
+use Doctrine\ORM\EntityManager;
 
 class CartManager
 {
     private static string $CART = "CART";
 
-    public function __construct(private SessionManager $sessionManager, private ProductManager $productManager) {}
+    public function __construct(
+        private EntityManager $entityManager,
+        private SessionManager $sessionManager,
+        private ProductManager $productManager
+    ) {}
 
     public function addItem(mixed $productId, int $quantity = 1): void
     {
@@ -54,6 +60,32 @@ class CartManager
         }
         return $result ?? [];
     }
+
+    public function getItems2(): array
+    {
+        $cartItems = $this->sessionManager->getEntry(CartManager::$CART);
+        $productIds = ArrayHelper::mapKeyValue($cartItems, fn($productId, $quantity) => $productId);
+        if (count($productIds) === 0) return [];
+
+        $sql = "
+            SELECT p.id, p.name, p.price, p.quantity, p.slug, p.images, p.sold_number
+            FROM products p
+            WHERE p.id IN (" . join(",", $productIds) . ");
+        ";
+        $query = $this->entityManager->getConnection()->prepare($sql);
+        $stmt = $query->executeQuery();
+        $products = $stmt->fetchAllAssociative();
+
+        $result = ArrayHelper::mapKeyValue($cartItems, function ($productId, $quantity) use ($products) {
+            return [
+                "product" => ArrayHelper::findOne($products, fn($product) => $product["id"] == $productId),
+                "quantity" => $quantity
+            ];
+        });
+
+        return $result;
+    }
+
 
     public function getTotalPrice(): float
     {

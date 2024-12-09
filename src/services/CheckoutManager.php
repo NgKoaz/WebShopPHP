@@ -146,7 +146,7 @@ class CheckoutManager
             WHERE b.user_id = :userId
         ");
 
-        $stmt->bindValue("userId", $userId);;
+        $stmt->bindValue("userId", $userId);
         $result = $stmt->executeQuery()->fetchAllAssociative();
 
         return $result;
