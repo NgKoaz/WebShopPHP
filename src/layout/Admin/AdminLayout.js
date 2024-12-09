@@ -12,16 +12,21 @@ documentOnClickCallback["closeDropdown"] = (event) => {
     }
 };
 
-document.addEventListener("readystatechange", () => {
+document.addEventListener("DOMContentLoaded", () => {
+    Sidebar.gI().init();
     Toast.gI().init();
     Modal.gI().init();
 
-    setActiveForNav();
     setClickDropdown();
 
     const logoutButton = document.querySelector("[data-logout-btn]");
     logoutButton.onclick = sendLogoutRequest;
 })
+
+
+function Topbar() {
+
+}
 
 
 function setClickDropdown() {
@@ -52,7 +57,47 @@ function sendLogoutRequest(event) {
     });
 }
 
-function setActiveForNav() {
+
+function Utility() { }
+Utility.shortString = function (inputStr, maxLen) {
+    return inputStr.length > maxLen ? inputStr.slice(0, maxLen) + "..." : inputStr;
+}
+
+
+function Sidebar() {
+    Sidebar.instance = null;
+    this.isOpen = true;
+    this.toggleNavBtn = "#toggleNavBtn";
+    this.sidebar = "aside.left"
+}
+
+Sidebar.gI = function () {
+    if (!Sidebar.instance) Sidebar.instance = new Sidebar();
+    return Sidebar.instance;
+}
+
+Sidebar.prototype.init = function () {
+    this.setActive();
+    this.toggleNavBtn = document.querySelector(this.toggleNavBtn);
+    this.sidebar = document.querySelector(this.sidebar);
+    this.toggleNavBtn.onclick = function () {
+        this.toggle();
+    }.bind(this);
+}
+
+Sidebar.prototype.toggle = function () {
+    this.isOpen = !this.isOpen;
+    // console.log(this);
+    if (this.isOpen) {
+        this.sidebar.classList.add("show");
+        this.toggleNavBtn.innerHTML = `<i class="bi bi-arrow-left-circle-fill active"></i>`;
+    } else {
+        this.sidebar.classList.remove("show");
+        this.toggleNavBtn.innerHTML = `<i class="bi bi-arrow-right-circle-fill active"></i>`;
+    }
+}
+
+Sidebar.prototype.setActive = function () {
     const path = window.location.pathname;
     const links = document.querySelectorAll("ul.my-navbar li a");
     links.forEach(link => {
@@ -61,6 +106,7 @@ function setActiveForNav() {
         }
     })
 }
+
 
 
 

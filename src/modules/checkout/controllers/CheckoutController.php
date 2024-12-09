@@ -12,6 +12,7 @@ use App\services\CheckoutManager;
 use App\services\LoginManager;
 use App\services\MomoPayment;
 use App\services\SessionManager;
+use Google\Service\FirebaseRules\Arg;
 
 #[Auth("/login")]
 class CheckoutController extends Controller
@@ -31,10 +32,35 @@ class CheckoutController extends Controller
     }
 
     #[HttpPost("/checkout")]
-    public function postCheckout()
+    public function postCheckout(?string $method = null)
     {
+        // Checking begin
+        if ($method === null) {
+            $viewData = new ArrayList;
+            $viewData["TempMessage"] = "Select payment method";
+            $viewData["IsErrorMessage"] = "true";
+            return $this->view("Checkout", viewData: $viewData);
+        }
+        $user = $this->loginManager->getCurrentUser();
+        if (!$user->isVerifiedEmail) {
+            $viewData = new ArrayList;
+            $viewData["TempMessage"] = "Please, verify your email!<br>(Profile Icon -> Settings).";
+            $viewData["IsErrorMessage"] = "true";
+            return $this->view("Checkout", viewData: $viewData);
+        }
+        if (!isset($user->address)) {
+            $viewData = new ArrayList;
+            $viewData["TempMessage"] = "Please, change your true address!<br>(Profile Icon -> Settings).";
+            $viewData["IsErrorMessage"] = "true";
+            return $this->view("Checkout", viewData: $viewData);
+        }
+        // Checking end
+
+
         $bill = $this->checkoutManager->createOrderForCurrentUser();
         if ($bill === null) {
+            $viewData["TempMessage"] = "Cannot create bill, please re-create!";
+            $viewData["IsErrorMessage"] = "true";
             return $this->redirect("/cart");
         } else {
             $result = json_decode($this->momoPayment->createUrl($bill), true);
@@ -42,7 +68,7 @@ class CheckoutController extends Controller
                 $this->checkoutManager->deleteByObject($bill);
                 $viewData = new ArrayList;
                 $viewData["TempMessage"] = "Momo Pay has occured an error! Please wait or choose others";
-                return $this->view("checkout", viewData: $viewData);
+                return $this->view("Checkout", viewData: $viewData);
             }
             $this->cartManager->clear();
             return $this->redirect($result['payUrl']);

@@ -4,6 +4,13 @@
     padding-inline: 16px;
 }
 
+.paragraph {
+    font-size: var(--sm-font-size);
+    color: rgb(0, 0, 0, 0.6);
+    font-style: italic;
+    margin: 10px 0px;
+}
+
 .method-list {
     padding: 0px;
     display: flex;

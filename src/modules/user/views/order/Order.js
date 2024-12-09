@@ -165,6 +165,7 @@ TabManager.prototype.setTabState = function (state) {
 TabManager.prototype.loadOrderWithOrderList = function (orders, status, actionHTML) {
     const content = orders.reduce((content, order) => {
         const products = JSON.parse(order.products);
+        const totalProduct = products.reduce((totalProduct, product) => totalProduct + product.quantity, 0);
         const totalPrice = products.reduce((totalPrice, product) => totalPrice + product.price * product.quantity, 0);
         const subContent = products.reduce((subContent, product) => {
             return subContent + `
@@ -191,7 +192,7 @@ TabManager.prototype.loadOrderWithOrderList = function (orders, status, actionHT
                         </div>
                         ${products.length > 1 ? `<button class="card-more-btn">More <i class="bi bi-arrow-bar-down"></i></button>` : ``} 
                     </div>
-                    <div class="total-price">Total price (${products.length} product${products.length > 1 ? "s" : ""}]): $${Math.round(totalPrice * 100) / 100}</div>
+                    <div class="total-price">Total price (${totalProduct} product${totalProduct > 1 ? "s" : ""}): $${Math.round(totalPrice * 100) / 100}</div>
                     <div class="actions" data-bill-id="${order.id}">
                         ${actionHTML}
                     </div>

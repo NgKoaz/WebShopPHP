@@ -24,8 +24,11 @@
     text-decoration: none;
     list-style: none;
     outline: none;
-    border: none;
     transition: 0.2s ease;
+}
+
+button, input {
+    border: none;
 }
 
 .root-container {

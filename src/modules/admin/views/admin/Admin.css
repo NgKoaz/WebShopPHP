@@ -2,23 +2,200 @@
     padding: 20px 20px 0px 20px;
     display: flex;
     flex-direction: row;
+    width: 100%;
+}
+
+h4 {
+    font-size: 22px;
+    color: #343C6A;
+}
+
+.ml-10px {
+    margin-left: 10px;
+}
+
+.mt-15px {
+    margin-top: 15px;
+}
+
+.app-container .left {
+    flex-grow: 1;
+    flex-shrink: 2;
+    flex-basis: 0;
+    width: 0px;
+}
+
+.app-container .right {
+    flex-shrink: 0;
+}
+
+.icon-32 {
+    font-size: 32px;
 }
 
 .info-container {
-    margin-right: 10px;
-    border: 1px solid red;
-    flex: 70%;
-    height: 500px;
+    display: flex;
 }
 
-.order-container {
+.notify-container {
+    width: 350px;
     margin-inline: 10px;
-    height: 500px;
     border-radius: 12px;
     background-color: white;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-
-    flex: 30%;
 }
 
-.card {}
+.card-container {
+    width: 25%;
+    margin-inline: 10px;
+}
+
+.custom-card {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.custom-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #202224;
+    opacity: 0.7;
+}
+
+.custom-body {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2B3674;
+}
+
+.custom-card .bi-cash-stack {
+    padding-inline: 10px;
+    border-radius: 10px;
+
+    color: #4ad991;
+    background-color: #d9f7e8;
+}
+
+.custom-card .bi-boxes {
+    padding-inline: 10px;
+    border-radius: 10px;
+
+    color: #fec53d;
+    background-color: #fff3d6;
+}
+
+.custom-card .bi-people {
+    padding-inline: 10px;
+    border-radius: 10px;
+
+    color: #8280ff;
+    background-color: #e5e4ff;
+}
+
+.custom-card .bi-hourglass-split {
+    padding-inline: 10px;
+    border-radius: 10px;
+
+    color: #ff9871;
+    background-color: #ffded1;
+}
+
+
+.chart-container {
+    margin-top: 20px;
+}
+
+#earningChart {
+    margin-inline: 10px;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.top-chart {
+    min-height: 300px;
+}
+
+.bottom-chart {
+    display: flex;
+    gap: 10px;
+
+    margin-inline: 10px;
+    margin-top: 20px;
+}
+
+.bottom-chart-left, .bottom-chart-right {
+    flex: 50%;
+}
+
+#userChart, #orderChart {
+    background-color: white;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.notify-container {
+    padding: 20px;
+}
+
+.notify-card {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+}
+
+.notify-container .notify-card:last-child {
+    margin-bottom: 0px;
+}
+
+.notify-card-bold-text {
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.notify-card-text {
+    font-weight: 500;
+    font-size: 14px;
+    color: #718EBF;
+}
+
+.notify-card-icon .bi-file-text {
+    padding: 4px 10px;
+    background-color: #dcfaf8;
+    color: #16dbcc;
+    border-radius: 10px;
+}
+
+.notify-card-icon .bi-person {
+    padding: 4px 10px;
+    background-color: #ffe0eb;
+    color: #ff8eb4;
+    border-radius: 10px;
+}
+
+.nav-new-order {
+    display: block;
+    margin-top: 12px;
+    margin-inline: 10px;
+    padding: 12px 0px;
+    border: 2px dashed #2D60FF;
+    border-radius: 10px;
+    color: #2D60FF;
+    font-size: 16px;
+    font-weight: 500;
+    background: none;
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+}
+
+.nav-new-order:hover {
+    background-color: #2D60FF;
+    color: white;
+}

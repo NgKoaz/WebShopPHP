@@ -4,6 +4,7 @@ namespace App\services;
 
 use App\Entities\User;
 use DateTime;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManager;
 
 class UserManager
@@ -28,6 +29,22 @@ class UserManager
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+    }
+
+    public function getOverviewUsers(): array
+    {
+        $sql = "
+            SELECT u.username, u.created_at
+            FROM users u
+            ORDER BY u.created_at DESC
+        ";
+
+        $query = $this->entityManager->getConnection()->prepare($sql);
+        $stmt = $query->executeQuery();
+        $users = $stmt->fetchAllAssociative();
+
+
+        return ["users" => $users];
     }
 
     public function changePassword(string $email, string $password)

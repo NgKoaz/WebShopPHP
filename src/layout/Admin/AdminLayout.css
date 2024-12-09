@@ -81,10 +81,7 @@ img {
     display: flex;
     width: 100vw;
     height: 100vh;
-}
-
-aside {
-    width: 230px;
+    overflow-y: hidden;
 }
 
 .custom-modal {
@@ -94,10 +91,15 @@ aside {
 }
 
 aside.left {
-    position: relative;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    width: 80px;
+    z-index: 100;
 }
 
 aside .logo {
+    visibility: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -105,7 +107,7 @@ aside .logo {
 
     font-family: "Open Sans", serif;
     font-optical-sizing: auto;
-    font-weight: 800;
+    font-weight: 700;
     font-style: normal;
     font-size: var(--h4-font-size);
 
@@ -121,7 +123,6 @@ ul.my-navbar {
 }
 
 
-
 ul.my-navbar li a {
     display: flex;
     align-items: center;
@@ -132,6 +133,7 @@ ul.my-navbar li a {
 }
 
 ul.my-navbar li a span {
+    display: none;
     padding-left: 20px;
     font-size: var(--md-font-size);
     font-weight: 700;
@@ -140,6 +142,8 @@ ul.my-navbar li a span {
 ul.my-navbar li a.active {
     margin-left: 0px;
     color: var(--selected-color);
+
+    transition: none;
 }
 
 ul.my-navbar li a.active::before {
@@ -153,7 +157,20 @@ ul.my-navbar li a.active::before {
     border-bottom-right-radius: 20px;
 }
 
-#close-nav {
+aside.left.show .logo {
+    visibility: visible;
+}
+
+aside.left.show ul.my-navbar li a span {
+    display: unset;
+}
+
+aside.left.show {
+    width: 230px;
+}
+
+
+#toggleNavBtn {
     position: absolute;
     top: 50%;
     left: 100%;
@@ -166,7 +183,7 @@ ul.my-navbar li a.active::before {
     border-radius: 50%;
 }
 
-#close-nav i {
+#toggleNavBtn i {
     display: none;
 
     border-radius: 20px;
@@ -178,7 +195,7 @@ ul.my-navbar li a.active::before {
     background-color: none;
 }
 
-#close-nav i.active {
+#toggleNavBtn i.active {
     display: inline-block;
 }
 
@@ -269,6 +286,7 @@ header .header-right .setting-icon:active {
 }
 
 main {
-    min-height: calc(100% - var(--header-height));
+    height: calc(100% - var(--header-height));
     background-color: var(--main-page-color);
+    overflow-y: auto;
 }

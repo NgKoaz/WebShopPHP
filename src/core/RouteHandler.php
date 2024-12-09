@@ -27,8 +27,13 @@ class RouteHandler
 
     public function run(Request $request, array $params)
     {
-        // Add param into Get method.
+        // Add params for GET Method.
         foreach ($_GET as $key => $value) {
+            $params[$key] = $value;
+        }
+
+        // Add params for POST Method.
+        foreach ($_POST as $key => $value) {
             $params[$key] = $value;
         }
 

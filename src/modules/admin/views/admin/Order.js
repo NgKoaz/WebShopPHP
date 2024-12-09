@@ -6,15 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
-function Utility() { }
-Utility.shortString = function (inputStr, maxLen) {
-    return inputStr.length > maxLen ? inputStr.slice(0, maxLen) + "..." : inputStr;
-}
-
-
-
-
 function PrepareOrderTable() {
     PrepareOrderTable.instance = null;
     this.tBody = "#prepareOrderTable tbody";

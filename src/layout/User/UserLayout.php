@@ -243,6 +243,7 @@ $isAdmin = $roleManager->isUserHasRole($loginManager->getCurrentUser(), RoleMana
     <script src="/src/layout/User/UserLayout.js" crossorigin="anonymous" defer></script>
     <?php $this->loadScripts() ?>
     <script src="https://kit.fontawesome.com/f521236fc5.js" crossorigin="anonymous" defer></script>
+    <script src="public/js/snowfall.js" crossorigin="anonymous" defer></script>
 </body>
 
 </html>

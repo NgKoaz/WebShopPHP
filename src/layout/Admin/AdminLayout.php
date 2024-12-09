@@ -20,7 +20,7 @@
 <body>
 
     <div class="root-container">
-        <aside class="left">
+        <aside class="left show">
             <div class="logo"><a href="/admin">ADMIN</a></div>
             <ul class="my-navbar">
                 <li>
@@ -66,9 +66,8 @@
                     </a>
                 </li>
             </ul>
-            <button id="close-nav">
+            <button id="toggleNavBtn">
                 <i class="bi bi-arrow-left-circle-fill active"></i>
-                <i class="bi bi-arrow-right-circle-fill"></i>
             </button>
         </aside>
         <div class="right">

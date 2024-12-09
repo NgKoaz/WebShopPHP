@@ -1,15 +1,9 @@
 const selector = {}
 const state = {}
-const storage = {}
 selector.categories = document.querySelector(".categories");
 state.autoGenerate = true;
 state.draggable = false;
 state.categories = [];
-
-
-storage.greenColor = "#32ff7e";
-storage.darkGreenColor = "#3ae374";
-storage.redColor = "#ff3838";
 
 
 

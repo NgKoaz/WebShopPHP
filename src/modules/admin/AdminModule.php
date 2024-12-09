@@ -7,6 +7,7 @@ use App\modules\admin\controllers\ApiUserController;
 use App\modules\admin\controllers\AdminController;
 use App\modules\admin\controllers\ApiCategoryController;
 use App\modules\admin\controllers\ApiOrderController;
+use App\modules\admin\controllers\ApiOverviewController;
 use App\modules\admin\controllers\ApiProductController;
 use App\modules\admin\controllers\ApiRoleController;
 use App\modules\admin\controllers\ApiSubscriptionController;
@@ -22,7 +23,8 @@ class AdminModule extends Module
             ApiCategoryController::class,
             ApiRoleController::class,
             ApiSubscriptionController::class,
-            ApiOrderController::class
+            ApiOrderController::class,
+            ApiOverviewController::class
         ];
     }
 }

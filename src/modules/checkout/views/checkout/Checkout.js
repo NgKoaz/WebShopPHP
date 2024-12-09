@@ -7,7 +7,4 @@ document.addEventListener("DOMContentLoaded", () => {
             methodSelector.click();
         });
     });
-
-    const tempMessage = document.querySelector("#TempMessage");
-    tempMessage?.value && openToast(tempMessage.value);
 });

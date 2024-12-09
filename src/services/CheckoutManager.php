@@ -6,8 +6,8 @@ use App\core\Util\ArrayHelper;
 use App\Entities\Bill;
 use App\Entities\Order;
 use DateTime;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManager;
-use PDO;
 
 define("ORDER_PREPARING", "PREPARING");
 define("ORDER_SHIPPING", "SHIPPING");
@@ -25,7 +25,7 @@ define("ONLINE_METHOD", "ONLINE");
 define("OFFLINE_METHOD", "OFFLINE");
 
 define("MOMO_PSP", "MOMO");
-// define("MOMO_PSP", "MOMO");
+
 
 class CheckoutManager
 {
@@ -36,6 +36,22 @@ class CheckoutManager
         private ProductManager $productManager,
         private SessionManager $sessionManager
     ) {}
+
+    public function getOverviewOrders()
+    {
+        $sql = "
+            SELECT b.*, o.status AS order_status
+            FROM bills b
+            JOIN orders o ON b.order_id = o.id
+            ORDER BY b.created_at DESC
+        ";
+
+        $query = $this->entityManager->getConnection()->prepare($sql);
+        $stmt = $query->executeQuery();
+        $orders = $stmt->fetchAllAssociative();
+
+        return ["orders" => $orders];
+    }
 
     public function createOrderForCurrentUser(): ?Bill
     {
