@@ -140,7 +140,7 @@ TabManager.prototype.setTabState = function (state) {
                 OrderManager.orders.filter(order => order.order_status === "SHIPPED"),
                 "Shipped",
                 `<button class="card-btn card-btn-secondary">Detail</button>
-                <button class="card-btn card-btn-primary">Received</button>`
+                <button class="card-btn card-btn-primary" onclick="OrderActions.receive(event)">Received</button>`
             );
             break;
         case "RECEIVED":
@@ -153,7 +153,7 @@ TabManager.prototype.setTabState = function (state) {
             break;
         case "CANCELLED":
             this.loadOrderWithOrderList(
-                OrderManager.orders.filter(order => order.status === "CANCELLED"),
+                OrderManager.orders.filter(order => order.order_status === "CANCELLED"),
                 "Cancelled",
                 `<button class="card-btn card-btn-primary" onclick="OrderActions.rebuy(event)">Rebuy</button>`
             );
@@ -184,7 +184,7 @@ TabManager.prototype.loadOrderWithOrderList = function (orders, status, actionHT
                 <div class="card">
                     <div class="card-top">
                         <div class="shop-name">BK.CO</div>
-                        <div class="status">${status} ${status === "Preparing" && order.status === "UNPAID" ? "- Unpaid" : "- Paid"}</div>
+                        <div class="status">${status} ${status === "Preparing" && order.status === "UNPAID" ? "- Unpaid" : status === "Preparing" ? "- Paid" : ""}</div>
                     </div>
                     <div class="product-container">
                         <div class="product-list">
@@ -219,9 +219,15 @@ OrderActions.cancel = function (event) {
             orderManager.fetchOrders(() => {
                 tabManager.reloadCurrentTab();
             });
+            openToast(response.message);
         }.bind(this),
         error: function (xhr, status, error) {
             console.error("Request failed:", xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
+            orderManager.fetchOrders(() => {
+                tabManager.reloadCurrentTab();
+            });
+            openToast(response.message, true);
         }
     });
 }
@@ -240,4 +246,31 @@ OrderActions.rebuy = function (event) {
     window.location.href = `/order-rebuy/${billId}`;
 }
 
+OrderActions.receive = function (event) {
+    const billId = event.target.closest("[data-bill-id]").dataset.billId;
+    const form = new FormData();
+    form.append("billId", billId);
+    $.ajax({
+        url: `/api/orders/receive`,
+        method: 'POST',
+        data: form,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            console.log(response);
+            orderManager.fetchOrders(() => {
+                tabManager.reloadCurrentTab();
+            });
+            openToast(response.message);
+        }.bind(this),
+        error: function (xhr, status, error) {
+            console.error("Request failed:", xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
+            orderManager.fetchOrders(() => {
+                tabManager.reloadCurrentTab();
+            });
+            openToast(response.message, true);
+        }
+    });
+}
 

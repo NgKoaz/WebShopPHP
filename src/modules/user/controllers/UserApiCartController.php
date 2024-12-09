@@ -90,10 +90,10 @@ class UserApiCartController extends Controller
     public function checkoutCart()
     {
         $cartItems = $this->cartManager->getItems2();
-        $isOutOfStock = ArrayHelper::some($cartItems, fn($item) => $item["product"]["quantity"] < $item["quantity"]);
+        $isOutOfStock = (count($cartItems) > 0) ? ArrayHelper::some($cartItems, fn($item) => $item["product"]["quantity"] < $item["quantity"]) : false;
 
         return $isOutOfStock ?
-            $this->json(["code" => 400, "message" => "Some item is out of stock! Check again!"]) :
+            $this->json(["code" => 400, "message" => "Some item is out of stock! Check again!"], 400) :
             $this->json(["code" => 200, "redirect" => "/checkout"]);
     }
 }

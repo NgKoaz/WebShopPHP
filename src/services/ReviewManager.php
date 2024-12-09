@@ -2,6 +2,7 @@
 
 namespace App\services;
 
+use App\core\Util\ArrayHelper;
 use App\Entities\Review;
 use DateTime;
 use Doctrine\ORM\EntityManager;
@@ -9,6 +10,20 @@ use Doctrine\ORM\EntityManager;
 class ReviewManager
 {
     public function __construct(private EntityManager $entityManager, private LoginManager $loginManager, private ProductManager $productManager) {}
+
+    public function removePermissionReview(int $productId)
+    {
+        $user = $this->loginManager->getCurrentUser();
+        $canReviews = isset($user->canReviews) && strlen($user->canReviews) > 0 ? $user->canReviews : "[]";
+        $canReviews = json_decode($canReviews, true);
+
+        $canReviews = ArrayHelper::filter($canReviews, function ($element) use ($productId) {
+            return $element["productId"] !== $productId;
+        }, []);
+
+        $user->canReviews = json_encode($canReviews);
+        $this->entityManager->flush();
+    }
 
     public function addComment(int $productId, int $rate, string $comment)
     {

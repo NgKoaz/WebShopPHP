@@ -6,6 +6,7 @@ use App\core\ArrayList;
 use App\core\Attributes\Http\HttpGet;
 use App\core\Attributes\Http\HttpPost;
 use App\core\Controller;
+use App\core\Util\ArrayHelper;
 use App\Middleware\Auth;
 use App\services\CartManager;
 use App\services\CheckoutManager;
@@ -51,6 +52,16 @@ class CheckoutController extends Controller
         if (!isset($user->address)) {
             $viewData = new ArrayList;
             $viewData["TempMessage"] = "Please, change your true address!<br>(Profile Icon -> Settings).";
+            $viewData["IsErrorMessage"] = "true";
+            return $this->view("Checkout", viewData: $viewData);
+        }
+
+
+        $cartItems = $this->cartManager->getItems2();
+        $isOutOfStock = (count($cartItems) > 0) ? ArrayHelper::some($cartItems, fn($item) => $item["product"]["quantity"] < $item["quantity"]) : false;
+        if ($isOutOfStock) {
+            $viewData = new ArrayList;
+            $viewData["TempMessage"] = "Out of stock, please back to Cart site to revise quantity of products!";
             $viewData["IsErrorMessage"] = "true";
             return $this->view("Checkout", viewData: $viewData);
         }

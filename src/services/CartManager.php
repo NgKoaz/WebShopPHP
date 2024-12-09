@@ -86,6 +86,12 @@ class CartManager
         return $result;
     }
 
+    public function isOutOfStock(): bool
+    {
+        $cartItems = $this->getItems2();
+        return (count($cartItems) > 0) ? ArrayHelper::some($cartItems, fn($item) => +$item["product"]["quantity"] < +$item["quantity"]) : false;
+    }
+
 
     public function getTotalPrice(): float
     {

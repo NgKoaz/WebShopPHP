@@ -144,11 +144,13 @@ function submitReviewForm(event) {
             console.log(response);
             closeReviewModal();
             getReviews();
-            openToast("Review has been sent!");
+            openToast(response.message);
         },
         error: function (xhr, status, error) {
-            const errors = JSON.parse(xhr.responseText).errors;
-            if (errors?.user) window.location.href = "/login";
+            console.log(xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
+            // if (errors?.user) window.location.href = "/login";
+            openToast(response.message, true);
         }
     });
 }

@@ -54,6 +54,9 @@ class User
     #[Column(name: "is_verified_email")]
     public bool $isVerifiedEmail = false;
 
+    #[Column(name: "can_reviews", type: 'text', nullable: true)]
+    public ?string $canReviews;
+
     #[Column(name: "deleted_at",  type: "datetime", nullable: True)]
     public DateTime $deleteAt;
 

@@ -40,8 +40,9 @@ Cart.prototype.checkout = function (event) {
             window.location.href = response.redirect;
         },
         error: function (xhr, status, error) {
-            console.error("Request failed:", xhr.responseText);
-            // openToast()
+            console.log(xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
+            openToast(response.message, true);
         }
     });
 }

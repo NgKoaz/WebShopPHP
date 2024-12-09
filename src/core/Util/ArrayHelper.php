@@ -46,4 +46,18 @@ class ArrayHelper
         foreach ($arr as $element) if ($callback($element)) return true;
         return false;
     }
+
+    public static function reduce(array $arr, callable $callback, mixed $defaultValue): mixed
+    {
+        $result = $defaultValue;
+        foreach ($arr as $element) $result = $callback($result, $element);
+        return $result;
+    }
+
+    public static function filter(array $arr, callable $predicate)
+    {
+        $result = [];
+        foreach ($arr as $element) if ($predicate($element)) $result[] = $element;
+        return $result;
+    }
 }

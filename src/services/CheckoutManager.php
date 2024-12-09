@@ -8,6 +8,8 @@ use App\Entities\Order;
 use DateTime;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\Parameter;
+use Google\Service\Analytics\Resource\Data;
 
 define("ORDER_PREPARING", "PREPARING");
 define("ORDER_SHIPPING", "SHIPPING");
@@ -51,6 +53,44 @@ class CheckoutManager
         $orders = $stmt->fetchAllAssociative();
 
         return ["orders" => $orders];
+    }
+
+    public function receive(string $billId)
+    {
+        $bill = $this->findById($billId);
+        $bill->order->status = ORDER_RECEIVED;
+        $bill->paidAt = new DateTime;
+
+        $canReviews = isset($bill->user->canReviews) && strlen($bill->user->canReviews) > 0 ? json_decode($bill->user->canReviews, true) : [];
+        $products = json_decode($bill->order->products, true);
+        $currentTime = new DateTime;
+        foreach ($products as $product) {
+            array_push($canReviews, [
+                "productId" => $product["id"],
+                "expiredAt" => $currentTime->modify('+1 month')->format('Y-m-d H:i:s')
+            ]);
+        }
+
+        $bill->user->canReviews = json_encode($canReviews);
+        $this->entityManager->flush();
+    }
+
+    public function checkAccomodation(string $billId): string
+    {
+        $bill = $this->findById($billId);
+        $products = json_decode($bill->order->products, true);
+        if (count($products) === 0) return "";
+
+
+        $result = ArrayHelper::reduce($products, function ($errorString, $product) {
+            $productEntity = $this->productManager->findProductById($product["id"]);
+            if ($productEntity->quantity < $product["quantity"]) {
+                return $errorString . "Product ID: $productEntity->id is out of stock! [Required: " . $product["quantity"] . "] [In stock: " . $productEntity->quantity . "]";
+            }
+            return $errorString;
+        }, "");
+
+        return $result;
     }
 
     public function createOrderForCurrentUser(): ?Bill
@@ -161,7 +201,6 @@ class CheckoutManager
     {
         $bill = $this->findById($id);
         $bill->canceledAt = new DateTime;
-        $bill->status = BILL_CANCELLED;
         $bill->order->status = ORDER_CANCELLED;
         $this->entityManager->flush();
     }
@@ -191,7 +230,6 @@ class CheckoutManager
         $count = $queryBuilder->getQuery()->getSingleScalarResult();
 
 
-
         $totalPages = ceil($count / $limit);
         $page = ($page < 1) ? 1 : $page;
         $offset = ($page - 1) * $limit;
@@ -201,16 +239,16 @@ class CheckoutManager
             SELECT b.*, o.status as order_status, o.products
             FROM bills b
             JOIN orders o ON b.order_id = o.id ';
-
         if ($id !== null) $sql .= " WHERE b.id = '$id' ";
-
-        $sql .= 'LIMIT ' . intval($limit) . '
-            OFFSET ' . intval($offset);
+        $sql .= "ORDER BY b.created_at DESC ";
+        $sql .= 'LIMIT :limit OFFSET :offset';
 
         $query = $this->entityManager->getConnection()->prepare($sql);
+        $query->bindValue(':limit', $limit, ParameterType::INTEGER);
+        $query->bindValue(':offset', $offset, ParameterType::INTEGER);
         $stmt = $query->executeQuery();
         $orders = $stmt->fetchAllAssociative();
-        // var_dump($orders);
+
         return [
             "orders" => $orders,
             "totalPages" => $totalPages,
@@ -239,6 +277,13 @@ class CheckoutManager
         $bill = $this->findById($billId);
         if ($bill->order->status !== ORDER_PREPARING) return;
         $bill->order->status = ORDER_SHIPPED;
+
+        $products = json_decode($bill->order->products, true);
+        ArrayHelper::forEach($products, function ($product) {
+            $productEntity = $this->productManager->findProductById($product["id"]);
+            $productEntity->quantity -= +$product["quantity"];
+        });
+
         $this->entityManager->flush();
     }
 }

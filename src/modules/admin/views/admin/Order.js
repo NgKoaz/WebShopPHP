@@ -31,7 +31,7 @@ PrepareOrderTable.prototype.fetch = function () {
             console.log(xhr.responseText);
             const response = JSON.parse(xhr.responseText);
             this.updateView(response.data);
-            PrepareOrderTable.orders = response.data;
+            PrepareOrderTable.orders = response.data.sort((a, b) => new Date(a.created_at) <= new Date(b.created_at) ? -1 : 1);
         } else {
             console.error('Error:', xhr.status, xhr.statusText);
         }
@@ -108,6 +108,7 @@ PrepareOrderTable.prototype.handleButtonEvent = (event) => {
                             <div class="card-body">
                                 <h5 class="card-title">${product.name}</h5>
                                 <p class="card-text" style="color: ${Color.Red}; font-weight: 600;">$${product.price}</p>
+                                <p class="card-text" style="color: rgb(0, 0, 0, 0.6);">Quantity: ${product.quantity}</p>
                                 <a href="/admin/products/watch/${product.id}" class="btn btn-primary">Watch product</a>
                             </div>
                         </div>
@@ -160,7 +161,9 @@ PrepareOrderTable.prototype.done = (billId) => {
             OrderTable.gI().fetch();
         },
         error: function (xhr, status, error) {
-            Toast.gI().showError("Non-expected error. Reload page!");
+            console.log(xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
+            Toast.gI().showError(response.message);
         }
     });
 }
@@ -222,7 +225,7 @@ OrderTable.prototype.fetch = function (page = 1, id = null) {
             Pagination.currentPage = response.data.currentPage;
             Pagination.totalPages = response.data.totalPages;
             OrderTable.orders = response.data.orders;
-            this.updateView(response.data);
+            this.updateView(response.data.orders.sort((a, b) => new Date(a.created_at) <= new Date(b.created_at) ? -1 : 1));
             Pagination.gI().updateView();
         } else {
             console.error('Error:', xhr.status, xhr.statusText);
@@ -236,7 +239,7 @@ OrderTable.prototype.fetch = function (page = 1, id = null) {
     xhr.send();
 }
 
-OrderTable.prototype.updateView = function ({ orders, currentPage, totalPages }) {
+OrderTable.prototype.updateView = function (orders) {
     const content = orders.reverse().reduce((content, order) => {
         return content + `
             <tr data-bill-id=${order.id}>
@@ -290,6 +293,7 @@ OrderTable.prototype.handleButtonEvent = (event) => {
                         <div class="card-body">
                             <h5 class="card-title">${product.name}</h5>
                             <p class="card-text" style="color: ${Color.Red}; font-weight: 600;">$${product.price}</p>
+                            <p class="card-text" style="color: rgb(0, 0, 0, 0.6);">Quantity: ${product.quantity}</p>
                             <a href="/admin/products/watch/${product.id}" class="btn btn-primary">Watch product</a>
                         </div>
                     </div>
@@ -348,8 +352,4 @@ Pagination.prototype.updateView = function () {
             OrderTable.gI().fetch(newPage);
         })
     })
-}
-
-Pagination.prototype.change = function (page) {
-
 }

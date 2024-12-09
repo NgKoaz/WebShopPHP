@@ -18,8 +18,9 @@ class SessionManager
 
     public function __construct()
     {
-        ini_set('session.gc_maxlifetime', 1800);
-        ini_set('session.cookie_lifetime', 1800);
+        ini_set('session.gc_maxlifetime', 360000);
+        ini_set('session.cookie_lifetime', 360000);
+
         session_start();
 
         if (!isset($_SESSION[$this->PERSISTENT])) $_SESSION[$this->PERSISTENT] = new ArrayList;
