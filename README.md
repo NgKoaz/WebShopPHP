@@ -23,9 +23,35 @@
      DB_DRIVER="pdo_mysql"
      ```
 
-- Your URL. It's depends on your Apache HTTP Port. 
+- Your URL. It's depends on your Apache HTTP Port.
+```
 WEB_HOST_URL="http://localhost:80"
+  ```
 
 - Google OAuth2, go to this link to create one `https://console.cloud.google.com/apis/credentials"`
+  ```
 GOOGLE_CLIENT_ID=""
 GOOGLE_CLIENT_SECRET=""
+  ``` 
+
+- Momo Test API
+```
+MOMO_ENDPOINT="https://test-payment.momo.vn/v2/gateway/api/create"
+MOMO_PARTNER_CODE=""
+MOMO_ACCESS_KEY=""
+MOMO_SECRET_KEY=""
+```
+
+- Email
+```
+EMAIL_HOST="smtp.gmail.com"
+EMAIL_USERNAME=""
+EMAIL_PASSWORD=""
+EMAIL_PORT=587
+EMAIL_NAME_DISPLAY="BK.CO"
+```
+
+- JWT
+```
+JWT_SECRET_KEY=""
+```
