@@ -80,7 +80,9 @@ JWT_SECRET_KEY=""
 ## Download library and set up Autoload.
 - Run at root project directory: `composer install`
 
-
+## Cache route table
+- You have to locate PHP executable file in Variable Environment.
+- In root project root directory, type `php cli.php route:cache` to cache route table.
 
 
 
