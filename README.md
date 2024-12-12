@@ -15,11 +15,13 @@
 ## Create .ENV
 - First, we create `.env` file from `.env.example`.
 - We have five constants at first. It's very straight forward. You don't need to change these if you keep default config in MySQL of XAMPP
-DB_NAME="webshop"
-DB_USER="root"
-DB_PASS=""
-DB_HOST="localhost"
-DB_DRIVER="pdo_mysql"
+   ```
+     DB_NAME="webshop"
+     DB_USER="root"
+     DB_PASS=""
+     DB_HOST="localhost"
+     DB_DRIVER="pdo_mysql"
+     ```
 
 - Your URL. It's depends on your Apache HTTP Port. 
 WEB_HOST_URL="http://localhost:80"
