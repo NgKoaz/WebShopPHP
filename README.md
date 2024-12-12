@@ -29,20 +29,20 @@ WEB_HOST_URL="http://localhost:80"
   ```
 
 - Google OAuth2, go to this link to create one `https://console.cloud.google.com/apis/credentials"`
-  ```
+```
 GOOGLE_CLIENT_ID=""
 GOOGLE_CLIENT_SECRET=""
-  ``` 
+``` 
 
-- Momo Test API
+- Momo Test API. Just copy this.
 ```
 MOMO_ENDPOINT="https://test-payment.momo.vn/v2/gateway/api/create"
-MOMO_PARTNER_CODE=""
-MOMO_ACCESS_KEY=""
-MOMO_SECRET_KEY=""
+MOMO_PARTNER_CODE="MOMO"
+MOMO_ACCESS_KEY="F8BBA842ECF85"
+MOMO_SECRET_KEY="K951B6PE1waDMi640xX08PD3vg6EkVlz"
 ```
 
-- Email
+- Email: The app need to login to your email so that send email to customer. 
 ```
 EMAIL_HOST="smtp.gmail.com"
 EMAIL_USERNAME=""
@@ -51,7 +51,7 @@ EMAIL_PORT=587
 EMAIL_NAME_DISPLAY="BK.CO"
 ```
 
-- JWT
+- JWT: You can create a random string.
 ```
 JWT_SECRET_KEY=""
 ```
