@@ -3,7 +3,7 @@
 use App\core\App;
 
 $title = "Bach Khoa Clothes";
-$viewData["title"] = "Product Manager";
+$viewData["title"] = "Role Manager";
 
 $this
     ->addScript("Role.js")

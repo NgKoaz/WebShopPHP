@@ -286,7 +286,7 @@ function subscribe(event) {
         contentType: false,
         success: function (response) {
             console.log(response);
-            openToast(response.message, true);
+            openToast(response.message);
         },
         error: function (xhr, status, error) {
             // console.error("Request failed:",);

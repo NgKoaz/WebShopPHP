@@ -51,8 +51,8 @@ img {
 
 .price-slider input[type='range']::-webkit-slider-thumb {
     appearance: none;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     background-color: #000;
     cursor: pointer;
@@ -60,6 +60,22 @@ img {
 }
 
 .price-slider input[type='range']::-webkit-slider-thumb:hover {
+    box-shadow: 0px 0px 20px rgb(0, 0, 0, 0.4);
+}
+
+.price-slider input[type='range']::-moz-range-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 50%;
+    background-color: #000;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+
+.price-slider input[type='range']::-moz-range-thumb:hover {
     box-shadow: 0px 0px 20px rgb(0, 0, 0, 0.4);
 }
 

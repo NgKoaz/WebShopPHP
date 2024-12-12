@@ -8,7 +8,7 @@ $viewData["title"] = "Product Manager";
 $this
     ->addScript("Product.js")
     ->addStylesheet("Product.css")
-    ->addLibraryScript("https://cdn.tiny.cloud/1/pblavam10kzc2jmu8nobtm3ah47pgaw34jtkg8qdpxreavzu/tinymce/7/tinymce.min.js");
+    ->addLibraryScript("https://cdn.tiny.cloud/1/0544y3lrrvypwmfug20zuogts1y3isoyvkfge9d3gvqrsgqz/tinymce/7/tinymce.min.js");
 
 ob_start();
 ?>

@@ -114,7 +114,7 @@ TabManager.prototype.setTabState = function (state) {
     switch (state) {
         case "UNPAID":
             this.loadOrderWithOrderList(
-                OrderManager.orders.filter(order => order.status === "UNPAID"),
+                OrderManager.orders.filter(order => order.status === "UNPAID" && order.order_status !== "CANCELLED"),
                 "Unpaid",
                 `<button class="card-btn card-btn-secondary" onclick="OrderActions.cancel(event)">Cancel</button>
                 <button class="card-btn card-btn-primary" onclick="OrderActions.pay(event)">Pay</button>`

@@ -76,12 +76,12 @@ function updateTable(data) {
         tbody.innerHTML += `
             <th scope="row">${product.id}</th>
             <td>${product.name}</td>
-            <td>${product.quantity}</td>
+            <td style="${product.quantity == 0 ? "color:red; font-weight: 700;" : ""}">${product.quantity}</td>
             <td>${Utility.formatCurrency(product.price)}</td>
-            <td>${product.rate}</td>
+            <td>${product.total_reviews != 0 ? Math.round(product.total_rates / product.total_reviews / 20 * 100) / 100 : 0}</td>
             <td>${product.category_name ?? "NULL"}</td>
             <td>${product.slug}</td>
-            <th style="color: ${product.isDeleted ? Color.Red : Color.DarkGreen}">${product.isDeleted ? "Deactive" : "Active"}</th>
+            <th style="color: ${product.isDeleted ? Color.Red : Color.DarkGreen}">${product.isDeleted ? "Inactive" : "Active"}</th>
             <td data-id="${product.id}">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal" onclick="showDetailModal(event)">
                     Detail
@@ -334,7 +334,7 @@ function showDetailModal(event) {
 
         <div class="mb-3 has-validation input-group">
             <span class="input-group-text">Quantity</span>
-            <input type="text" class="form-control" id="quantityInput" name="quantity" placeholder="987..." value="${product.quantity}" required disabled>
+            <input type="text" class="form-control" id="quantityInput" name="quantity" placeholder="987..." style="${product.quantity == 0 ? "color:red; font-weight: 700;" : ""}" value="${product.quantity}" required disabled>
             <div id="quantityInvalidFeedback" class="invalid-feedback"></div>
         </div>
 
@@ -351,7 +351,7 @@ function showDetailModal(event) {
 
         <div class="mb-3 has-validation input-group">
             <span class="input-group-text">Rate</span>
-            <input type="text" class="form-control" value="${product.rate}" required disabled>
+            <input type="text" class="form-control" value="${product.total_reviews != 0 ? Math.round(product.total_rates / product.total_reviews / 20 * 100) / 100 : 0}" required disabled>
         </div>
 
         <div class="input-group mb-3 has-validation">
@@ -511,7 +511,7 @@ function showEditModal(event) {
 
                 <div class="mb-3 has-validation input-group">
                     <span class="input-group-text">Rate</span>
-                    <input type="text" class="form-control" value="${product.rate}" required disabled>
+                    <input type="text" class="form-control" value="${product.total_reviews != 0 ? Math.round(product.total_rates / product.total_reviews / 20 * 100) / 100 : 0}" required disabled>
                 </div>
 
                 <div class="input-group mb-3 has-validation">
@@ -592,7 +592,7 @@ function showDeleteModal(event) {
             </div>
             <div class="input-group mb-3 has-validation">
                 <span class="input-group-text">Quantity</span>
-                <input type="text" class="form-control" value=${product.quantity} disabled>
+                <input type="text" class="form-control" style="${product.quantity == 0 ? "color:red; font-weight: 700;" : ""}" value=${product.quantity} disabled>
             </div>
         </form>
     `;
@@ -706,9 +706,9 @@ function handleFindingSuccess(product) {
         <tr>
             <th>${product.id}</th>
             <td>${product.name}</td>
-            <td>${product.quantity}</td>
+            <td style="${product.quantity == 0 ? "color:red; font-weight: 700;" : ""}">${product.quantity}</td>
             <td>${Utility.formatCurrency(product.price)}</td>
-            <td>${product.rate}</td>
+            <td>${product.total_reviews != 0 ? Math.round(product.totalRates / product.totalReviews / 20 * 100) / 100 : 0}</td>
             <td>${product.slug}</td>
         </tr>
     `;

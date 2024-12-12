@@ -282,6 +282,7 @@ class CheckoutManager
         ArrayHelper::forEach($products, function ($product) {
             $productEntity = $this->productManager->findProductById($product["id"]);
             $productEntity->quantity -= +$product["quantity"];
+            $productEntity->soldNumber += +$product["quantity"];
         });
 
         $this->entityManager->flush();

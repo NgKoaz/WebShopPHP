@@ -1,0 +1,10 @@
+User-agent: *
+
+Disallow: /admin/
+Disallow: /cart
+Disallow: /checkout
+Disallow: /orders
+
+Allow: /
+
+Sitemap: http://localhost:8080/sitemap.xml

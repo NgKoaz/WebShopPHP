@@ -1,6 +1,13 @@
 RewriteEngine On
 
 RewriteBase /
+
+RewriteCond %{REQUEST_URI} ^/robots\.txt$ [OR]
+RewriteCond %{REQUEST_URI} ^/sitemap\.xml$ [OR]
+RewriteCond %{REQUEST_URI} ^/sitemap-index\.xml$ [OR]
+RewriteCond %{REQUEST_URI} ^/sitemaps/ [NC]
+RewriteRule ^ - [L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_URI} !\.js|.css$
 RewriteRule ^(.*)$ index.php [QSA,L]

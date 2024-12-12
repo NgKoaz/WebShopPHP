@@ -274,7 +274,7 @@ function updateTable(data) {
             <td>${user.username}</td>
             <td>${user.email}</td>
             <td>${user.phoneNumber}</td>
-            <th style="color: ${user.isDeleted ? Color.Red : Color.DarkGreen}">${user.isDeleted ? "Deactive" : "Active"}</th>
+            <th style="color: ${user.isDeleted ? Color.Red : Color.DarkGreen}">${user.isDeleted ? "Inactive" : "Active"}</th>
             <td class="buttons" data-id="${user.id}">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal" onclick="ModalManager.gI().show(event, ModalManager.DETAIL)">
                     Detail
