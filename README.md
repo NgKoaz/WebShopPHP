@@ -1,16 +1,37 @@
 ### How to run this project
 
 ## Installation
-- XAMPP Installation
-- Python 3.x.x version
-- Git
+- XAMPP version 8.2 
+- Python version 3.x.x 
+- Git latest version
+- Composer latest version
 
-## Set up
+## Set up 1
 - Clone this project using git clone.
 - Turn on MySQL in XAMPP first, it's better when you keep your password empty. (Username: root, Password: )
+- Turn on Apache, then go to `phpMyAdmin` page.
+- Create database name `webshop`.
+
+
+## Import database
+- Config file importSQL.py. In this file, you will see.
+```
+input_file = "webshop.sql"
+xampp_mysql_path = "" 
+db_user = "root"  
+db_password = ""  
+db_name = ""
+```
+`xampp_mysql_path` is mysql execution file path. In my case: `C:/xampp/mysql/bin`
+`db_name` should be set `webshop`.
+- Then execute it at root project directory (python importSQL.py) and check if they imported at `phpMyAdmin` page . In case the terminal said "python is not found", you need to set up in environment variable.
+
+## Set up Apache
+- Then turn off Apache.
 - Open file httpd.conf in Apache config of XAMPP. Find something like `DocumentRoot "C:/xampp/htdocs" <Directory "C:/xampp/htdocs">`. You can easy find that by searching value `xampp/htdocs`. When you find it, you need to replace those two directory to root directory of project. Example in my case, I will replace those above with `C:\WebShopPHP`.
 - Find this string `extension=gd` and delete a semicolon before it to uncomment this line.
 - Start Apache, and remember your HTTP port (not HTTPS). It can be 80 or 8080,... depends on your setting.
+
 
 ## Create .ENV
 - First, we create `.env` file from `.env.example`.
@@ -55,3 +76,14 @@ EMAIL_NAME_DISPLAY="BK.CO"
 ```
 JWT_SECRET_KEY=""
 ```
+
+## Download library and set up Autoload.
+- Run at root project directory: `composer install`
+
+
+
+
+
+
+
+
