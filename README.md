@@ -1,7 +1,14 @@
+# Video Demo
+- Part 1: [Video](https://youtu.be/5BpqK1OojhU)
+- Part 2: [Video](https://youtu.be/zoQUSrnw7qU)
+- Part 3: [Video](https://youtu.be/NmNIPrOi2Q0)
+
+
 # Figma Design
 - [User Pages](https://www.figma.com/design/WODTtcywtbgvfuzAwmd2iM/E-commerce-Website-Template-(Freebie)-(Community)?node-id=35-740&node-type=frame&t=SJUYJyWysxygRbV3-0)
 - [Admin Pages](https://www.figma.com/design/Mh1T28FboLOfH7G6y18EQy/BankDash---Dashboard-UI-Kit---Admin-Template-Dashboard---Admin-Dashboard-(Community)?node-id=0-1&node-type=canvas&t=Rp7bfVyYpO4D3MAV-0)
 - [Auth Pages](https://www.figma.com/design/T2ZDdG49DDs84t1zQhVH9e/Login-Page-Perfect-UI-(Freebie)-(Community)?node-id=8-2&node-type=canvas&t=H006bWqCuyjbcCTz-0)
+
 
 
 # How to run this project
