@@ -8,9 +8,9 @@
 
 
 ## Installation Guide Video
-- Part 1: `https://youtu.be/ZSDCkz0vZ0U`
-- Part 2: `https://youtu.be/MWiZQ4fh12k`
-- Part 3: `https://youtu.be/_ht08Qp5QDs`
+- Part 1: [Video](https://youtu.be/ZSDCkz0vZ0U)
+- Part 2: [Video](https://youtu.be/MWiZQ4fh12k)
+- Part 3: [Video](https://youtu.be/_ht08Qp5QDs)
 
 
 ## Installation
