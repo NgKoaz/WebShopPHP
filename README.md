@@ -1,4 +1,17 @@
-### How to run this project
+# Figma Design
+- [User Pages](https://www.figma.com/design/WODTtcywtbgvfuzAwmd2iM/E-commerce-Website-Template-(Freebie)-(Community)?node-id=35-740&node-type=frame&t=SJUYJyWysxygRbV3-0)
+- [Admin Pages](https://www.figma.com/design/Mh1T28FboLOfH7G6y18EQy/BankDash---Dashboard-UI-Kit---Admin-Template-Dashboard---Admin-Dashboard-(Community)?node-id=0-1&node-type=canvas&t=Rp7bfVyYpO4D3MAV-0)
+- [Auth Pages](https://www.figma.com/design/T2ZDdG49DDs84t1zQhVH9e/Login-Page-Perfect-UI-(Freebie)-(Community)?node-id=8-2&node-type=canvas&t=H006bWqCuyjbcCTz-0)
+
+
+# How to run this project
+
+
+## Installation Guide Video
+- Part 1: `https://youtu.be/ZSDCkz0vZ0U`
+- Part 2: `https://youtu.be/MWiZQ4fh12k`
+- Part 3: `https://youtu.be/_ht08Qp5QDs`
+
 
 ## Installation
 - XAMPP version 8.2 
